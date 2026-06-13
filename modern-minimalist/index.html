@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Wedding of Romeo & Juliet</title>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,700;1,400&family=Outfit:wght@200;300;400;600&display=swap" rel="stylesheet"/>
+
+  <!-- --- FAVICON (SVG Crown Emoji) --- -->
+    <link href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEita0_M2O-eCuyAVlkD8OIaq8QYjANaZTr61ExHZgO5wk5R3k_-Qg-UMLUIh2Xs1yfe9vHOXM7zl_DZN09EghVT3pmPEpsV5agqavbc54CnQ0CW01eoDtXxhgmVkXReU_tUy04HvF0BgltUDzZSaf35yaVUmnE9bi9_uIjrzpxl-852I-HjE0-2W_mYhJjm/s1280/logo%20296%20studios.png" rel="icon" sizes="32x32" type="image/png"
+    <!-- -->
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root { 
+      --accent: #2d2d2d; 
+      --bg: #ffffff; 
+      --soft: #f8f8f8; 
+    }
+    
+    body { 
+      background: var(--bg); 
+      color: var(--accent); 
+      font-family: 'Inter', sans-serif; 
+      overflow-x: hidden; 
+    }
+    
+    .font-serif { font-family: 'Lora', serif; }
+    .font-outfit { font-family: 'Outfit', sans-serif; }
+
+    /* OVERLAY MINIMALIS */
+    #overlay {
+      position: fixed; 
+      inset: 0; 
+      background: var(--bg); 
+      z-index: 9999;
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), visibility 1s;
+    }
+
+    .btn-minimal {
+      border: 1px solid var(--accent);
+      padding: 12px 40px;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      background: transparent;
+      cursor: pointer;
+    }
+    .btn-minimal:hover:not(:disabled) { 
+      background: var(--accent); 
+      color: white; 
+    }
+    .btn-minimal:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* ANIMASI REVEAL */
+    .reveal { 
+      opacity: 0; 
+      transform: translateY(30px); 
+      transition: opacity 1.2s cubic-bezier(0.215, 0.61, 0.355, 1), transform 1.2s cubic-bezier(0.215, 0.61, 0.355, 1); 
+    }
+    .reveal.active { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+
+    .line-draw { 
+      height: 1px; 
+      background: var(--accent); 
+      width: 0; 
+      transition: width 1.5s cubic-bezier(0.215, 0.61, 0.355, 1); 
+    }
+    .reveal.active .line-draw { 
+      width: 80px; 
+    }
+
+    /* GALLERY */
+    .img-min { 
+      filter: grayscale(100%); 
+      transition: filter 0.8s cubic-bezier(0.4, 0, 0.2, 1); 
+      cursor: crosshair; 
+    }
+    .img-min:hover { 
+      filter: grayscale(0%); 
+    }
+
+    /* Floating Music Controls */
+    #music-control {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 90;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.5s ease;
+    }
+    #music-control.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="antialiased">
+
+<div id="app">
+  <!-- Background Audio (Menggunakan aset instrumental berlisensi bebas yang stabil) -->
+  <audio id="bgMusic" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Floating Music Button -->
+  <button id="music-control" class="bg-white/80 backdrop-blur-md border border-neutral-200 text-neutral-800 p-3 rounded-full shadow-sm hover:bg-neutral-100 transition-all duration-300" onclick="toggleMusic()" aria-label="Toggle Music">
+    <svg id="music-icon-play" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+    </svg>
+    <svg id="music-icon-pause" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.75 5.25v13.5m-7.5-13.5v13.5"></path>
+    </svg>
+  </button>
+
+  <!-- OVERLAY / COVER -->
+  <div id="overlay">
+    <div class="text-center px-6">
+      <p class="text-[10px] uppercase tracking-[0.6em] text-neutral-400 mb-6">The Wedding Of</p>
+      <h1 class="font-serif italic text-5xl md:text-6xl mb-12 tracking-tight">Romeo & Juliet</h1>
+      
+      <div class="mb-12">
+        <p class="text-[9px] uppercase tracking-[0.5em] text-neutral-400 mb-3">Special Invitation For</p>
+        <p class="font-outfit text-xl font-light text-neutral-800" id="display-nama">Our Special Guest</p>
+      </div>
+      
+      <button class="btn-minimal" onclick="openWedding()">Open Invitation</button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div id="main-content" class="hidden opacity-0 transition-opacity duration-1000">
+    
+    <!-- Hero Section -->
+    <section class="h-screen flex flex-col items-center justify-center text-center px-6 bg-neutral-50/50">
+      <div class="reveal">
+        <p class="text-[10px] uppercase tracking-[0.8em] mb-6 text-neutral-500">The Wedding Celebration</p>
+        <h2 class="font-serif text-7xl md:text-9xl mb-4 font-light tracking-wide text-neutral-800">R <span class="text-3xl md:text-5xl align-middle mx-2 font-light italic text-neutral-400">&</span> J</h2>
+        <div class="line-draw mx-auto my-10"></div>
+        <p class="font-outfit font-light tracking-[0.5em] text-sm text-neutral-600">12.07.2026</p>
+      </div>
+    </section>
+
+    <!-- Quote & Intro -->
+    <section class="py-24 md:py-36 px-6">
+      <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
+        <div class="reveal">
+          <img src="https://images.pexels.com/photos/2253879/pexels-photo-2253879.jpeg" alt="Romeo & Juliet" class="img-min w-full h-[450px] object-cover rounded-sm shadow-sm">
+        </div>
+        <div class="reveal space-y-8">
+          <span class="text-[10px] uppercase tracking-[0.5em] text-neutral-400 block">— Our Promise</span>
+          <h3 class="font-serif text-4xl italic text-neutral-800">"Two souls, one heart."</h3>
+          <p class="text-sm font-light leading-relaxed text-neutral-500 max-w-md">
+            Kami mengundang Bapak/Ibu untuk menjadi saksi dimulainya perjalanan hidup baru kami. Kebahagiaan kami tidak lengkap tanpa kehadiran serta doa restu Anda di hari yang istimewa ini.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Event Details (Save The Date) -->
+    <section class="py-32 bg-stone-50 px-6 border-y border-stone-100">
+      <div class="max-w-4xl mx-auto text-center">
+        <div class="reveal mb-16">
+          <h3 class="font-outfit text-xs uppercase tracking-[0.6em] text-neutral-500 mb-2">Save The Date</h3>
+          <p class="font-serif italic text-2xl text-neutral-400">Sunday, July 12, 2026</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 reveal">
+          <div class="space-y-4 p-8 bg-white border border-neutral-100 rounded-sm">
+            <h4 class="font-serif text-2xl italic text-neutral-800">Holy Matrimony</h4>
+            <div class="h-px bg-neutral-200 w-12 mx-auto my-4"></div>
+            <p class="text-sm font-light text-neutral-600">08.00 AM — 10.00 AM</p>
+            <p class="text-xs text-neutral-400">Gedung Serbaguna Indonesia, Lt. 1</p>
+          </div>
+          <div class="space-y-4 p-8 bg-white border border-neutral-100 rounded-sm">
+            <h4 class="font-serif text-2xl italic text-neutral-800">The Reception</h4>
+            <div class="h-px bg-neutral-200 w-12 mx-auto my-4"></div>
+            <p class="text-sm font-light text-neutral-600">12.00 PM — Till End</p>
+            <p class="text-xs text-neutral-400">Gedung Serbaguna Indonesia, Grand Ballroom</p>
+          </div>
+        </div>
+        
+        <div class="mt-20 reveal">
+          <p class="font-outfit text-sm font-semibold tracking-wider uppercase text-neutral-700">Gedung Serbaguna Indonesia</p>
+          <p class="text-xs font-light text-neutral-500 mt-2">Jl. Kebon Jeruk No. 12, Jakarta, Indonesia</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Maps Location -->
+    <section class="py-24 px-6 max-w-5xl mx-auto">
+      <div class="reveal space-y-6">
+        <div class="text-center mb-8">
+          <h3 class="font-serif text-2xl italic">Venue Direction</h3>
+          <p class="text-xs text-neutral-400 tracking-wider uppercase mt-1">Interactive Map</p>
+        </div>
+        <div class="h-[450px] border border-neutral-100 p-2 bg-white rounded-sm shadow-sm">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1662.5394878963755!2d109.75576218550407!3d-7.660818041906312!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7ab7accffe642b%3A0x333c8c9d3b3e3b4e!2sMasjid%20Desa%20Krakal!5e0!3m2!1sid!2sid!4v1774752717189!5m2!1sid!2sid0" 
+            width="100%" height="100%" style="border:0; filter: grayscale(100%) contrast(1.1);" 
+            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery Grid -->
+    <section class="py-24 px-4 bg-neutral-50/50">
+      <div class="max-w-6xl mx-auto space-y-12 reveal">
+        <div class="text-center">
+          <h3 class="font-serif text-3xl italic">Moments Captured</h3>
+          <p class="text-xs text-neutral-400 tracking-widest uppercase mt-2">our sweet gallery</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <img src="https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg" alt="Moment 1" class="img-min h-64 md:h-80 w-full object-cover rounded-sm shadow-sm">
+          <img src="https://images.pexels.com/photos/17834/pexels-photo.jpg" alt="Moment 2" class="img-min h-64 md:h-80 w-full object-cover rounded-sm shadow-sm">
+          <img src="https://images.pexels.com/photos/3352398/pexels-photo-3352398.jpeg" alt="Moment 3" class="img-min h-64 md:h-80 w-full object-cover rounded-sm shadow-sm">
+          <img src="https://images.pexels.com/photos/256737/pexels-photo-256737.jpeg" alt="Moment 4" class="img-min h-64 md:h-80 w-full object-cover rounded-sm shadow-sm">
+        </div>
+      </div>
+    </section>
+
+    <!-- RSVP Section & Toast Message -->
+    <section class="py-32 px-6 bg-stone-50 border-t border-stone-100 relative">
+      <div class="max-w-lg mx-auto reveal">
+        <div class="text-center mb-16">
+          <h3 class="font-serif text-4xl italic mb-4 text-neutral-800">RSVP</h3>
+          <p class="text-[10px] font-light tracking-[0.4em] text-neutral-400 uppercase">Please kindly confirm your attendance</p>
+        </div>
+        
+        <form id="rsvp-form-min" class="space-y-8 bg-white p-8 md:p-10 border border-neutral-100 rounded-sm shadow-sm">
+          <div class="space-y-1">
+            <label class="text-[10px] tracking-wider uppercase text-neutral-400">Full Name</label>
+            <input type="text" name="nama" id="input-nama" placeholder="Your beautiful name" class="w-full bg-transparent border-b border-neutral-200 py-3 outline-none focus:border-neutral-800 transition text-sm font-light text-neutral-800" required>
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-[10px] tracking-wider uppercase text-neutral-400">Attendance Status</label>
+            <select name="kehadiran" class="w-full bg-transparent border-b border-neutral-200 py-3 outline-none focus:border-neutral-800 transition text-sm font-light text-neutral-800">
+              <option value="Hadir">Will Attend</option>
+              <option value="Tidak Hadir">Will Not Attend</option>
+            </select>
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-[10px] tracking-wider uppercase text-neutral-400">Wishes & Message</label>
+            <textarea name="pesan" placeholder="Send your warm wishes..." rows="3" class="w-full bg-transparent border-b border-neutral-200 py-3 outline-none focus:border-neutral-800 transition text-sm font-light text-neutral-800"></textarea>
+          </div>
+          
+          <button type="submit" id="btn-submit" class="btn-minimal w-full pt-4 pb-4">Send Confirmation</button>
+        </form>
+      </div>
+
+      <!-- Custom Toast Notification (Pengganti alert agar UI tetap premium) -->
+      <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-neutral-900 text-white text-xs tracking-wider uppercase py-4 px-8 rounded-full shadow-lg opacity-0 pointer-events-none transition-all duration-500 z-[999]">
+        Your response has been recorded.
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 text-center border-t border-stone-200 bg-white">
+      <p class="text-[9px] tracking-[0.5em] text-neutral-400 uppercase">Architecture of Love by 296 Studios</p>
+      <p class="text-[8px] tracking-[0.2em] text-neutral-300 uppercase mt-2">&copy; 2026 Romeo & Juliet. All Rights Reserved.</p>
+    </footer>
+
+  </div>
+</div>
+
+<script>
+  // 1. Ambil Nama Tamu dari URL Parameter (?to=Nama+Tamu)
+  const uParams = new URLSearchParams(window.location.search);
+  const guest = uParams.get('to');
+  if(guest) {
+    const formatted = decodeURIComponent(guest).replace(/\+/g, ' ');
+    document.getElementById('display-nama').innerText = formatted;
+    document.getElementById('input-nama').value = formatted;
+  }
+
+  // 2. Kontrol Musik Latar Belakang
+  const audio = document.getElementById("bgMusic");
+  const playIcon = document.getElementById("music-icon-play");
+  const pauseIcon = document.getElementById("music-icon-pause");
+
+  function toggleMusic() {
+    if (audio.paused) {
+      audio.play().catch(e => console.log("Audio play blocked"));
+      playIcon.classList.add("hidden");
+      pauseIcon.classList.remove("hidden");
+    } else {
+      audio.pause();
+      playIcon.classList.remove("hidden");
+      pauseIcon.classList.add("hidden");
+    }
+  }
+
+  // 3. Membuka Undangan & Transisi Layar
+  function openWedding() {
+    const overlay = document.getElementById("overlay");
+    const main = document.getElementById("main-content");
+    const musicBtn = document.getElementById("music-control");
+    
+    // Play music otomatis saat undangan dibuka
+    audio.play().catch(e => {
+      console.log("Audio autoplay diblokir oleh browser. Pengguna harus memicu interaksi.");
+      // Tampilkan tombol play di kontrol musik jika diblokir
+      playIcon.classList.remove("hidden");
+      pauseIcon.classList.add("hidden");
+    });
+    
+    overlay.style.opacity = "0";
+    overlay.style.pointerEvents = "none";
+    
+    setTimeout(() => {
+      overlay.classList.add("hidden");
+      main.classList.remove("hidden");
+      
+      // Menampilkan tombol kontrol musik terapung
+      musicBtn.classList.add("show");
+      
+      setTimeout(() => { 
+        main.style.opacity = "1"; 
+        revealElements(); 
+      }, 100);
+    }, 1000);
+  }
+
+  // 4. Animasi Scroll (Reveal Elements)
+  function revealElements() {
+    const reveals = document.querySelectorAll('.reveal');
+    reveals.forEach(el => {
+      const windowHeight = window.innerHeight;
+      const elementTop = el.getBoundingClientRect().top;
+      // Triger animasi sebelum elemen sepenuhnya masuk layar
+      if (elementTop < windowHeight * 0.88) {
+        el.classList.add('active');
+      }
+    });
+  }
+  window.addEventListener('scroll', revealElements);
+
+  // 5. Integrasi RSVP Google Sheets & Tampilan Feedback Toast
+  const scriptURL = 'MASUKKAN_URL_GOOGLE_APPS_SCRIPT_DISINI'; 
+  const form = document.getElementById('rsvp-form-min');
+  const btn = document.getElementById('btn-submit');
+  const toast = document.getElementById('toast');
+
+  function showToast(message) {
+    toast.innerText = message;
+    toast.classList.remove('opacity-0', 'pointer-events-none');
+    toast.classList.add('opacity-100');
+    setTimeout(() => {
+      toast.classList.remove('opacity-100');
+      toast.classList.add('opacity-0', 'pointer-events-none');
+    }, 4000);
+  }
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    btn.disabled = true;
+    btn.innerText = "Sending...";
+
+    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+      .then(response => {
+        btn.innerText = "Thank You";
+        showToast('Your response has been successfully recorded.');
+        form.reset();
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.innerText = "Send Confirmation";
+        }, 3000);
+      })
+      .catch(error => {
+        console.error('Error!', error.message);
+        
+        // Demo feedback jika URL script belum diganti/ditautkan
+        if(scriptURL === 'MASUKKAN_URL_GOOGLE_APPS_SCRIPT_DISINI') {
+           showToast('Demo: Response Sent (Connect Script URL for real integration)');
+           form.reset();
+        } else {
+           showToast('Something went wrong. Please try again.');
+        }
+        
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.innerText = "Send Confirmation";
+        }, 3000);
+      });
+  });
+</script>
+</body>
+</html>

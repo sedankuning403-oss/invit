@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Undangan Pernikahan - Fatri & Iwan</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- --- FAVICON --- -->
+    <link href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEita0_M2O-eCuyAVlkD8OIaq8QYjANaZTr61ExHZgO5wk5R3k_-Qg-UMLUIh2Xs1yfe9vHOXM7zl_DZN09EghVT3pmPEpsV5agqavbc54CnQ0CW01eoDtXxhgmVkXReU_tUy04HvF0BgltUDzZSaf35yaVUmnE9bi9_uIjrzpxl-852I-HjE0-2W_mYhJjm/s1280/logo%20296%20studios.png" rel="icon" sizes="32x32" type="image/png">
+
+    <style>
+        /* Menggunakan font utama dengan prioritas keterbacaan tinggi di mobile */
+        #wedding-invitation-app {
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            background-color: #faf5ed !important;
+            color: #2d231e !important;
+            position: fixed !important;
+            inset: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 99999999 !important; /* Agar di atas elemen tema Blogger */
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            display: block !important;
+            -webkit-text-size-adjust: 100%; /* Mencegah auto-zoom teks pada iOS */
+        }
+        #wedding-invitation-app .font-serif-elegant {
+            font-family: 'Playfair Display', serif !important;
+        }
+        #wedding-invitation-app .font-japanese-accent {
+            font-family: 'Cinzel Decorative', serif !important;
+        }
+        #wedding-invitation-app .japanese-bg {
+            background-color: #faf5ed !important;
+            background-image: radial-gradient(#f3e8d7 1px, transparent 0), radial-gradient(#f3e8d7 1px, #faf5ed 0) !important;
+            background-size: 24px 24px !important;
+            background-position: 0 0, 12px 12px !important;
+        }
+        /* Frame Khas Jepang */
+        #wedding-invitation-app .jp-frame {
+            border: 2px solid #b45309 !important;
+            position: relative !important;
+        }
+        #wedding-invitation-app .jp-frame::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 4px !important; left: 4px !important; right: 4px !important; bottom: 4px !important;
+            border: 1px dashed #d97706 !important;
+            pointer-events: none !important;
+        }
+        @keyframes pulse-soft {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+        }
+        #wedding-invitation-app .pulse-btn {
+            animation: pulse-soft 2.2s infinite ease-in-out !important;
+        }
+        /* Animasi Reveal Scroll */
+        #wedding-invitation-app .reveal {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: all 0.8s ease-out;
+        }
+        #wedding-invitation-app .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Canvas Sakura */
+        #sakura-canvas {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            pointer-events: none !important;
+            z-index: 99999990 !important;
+        }
+    </style>
+</head>
+<body>
+
+<div id="wedding-invitation-app" class="japanese-bg select-none">
+
+    <canvas id="sakura-canvas"></canvas>
+
+    <!-- AUDIO BACKGROUND -->
+    <audio id="bg-music" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-japanese-culture-1763.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- AUDIO CONTROLLER -->
+    <div id="music-control" class="fixed bottom-6 right-6 z-[99999995] hidden">
+        <button onclick="toggleMusic()" class="bg-amber-700 hover:bg-amber-800 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300">
+            <i id="music-icon" class="fa-solid fa-compact-disc fa-spin text-lg"></i>
+        </button>
+    </div>
+
+    <!-- PRELOADER / LOADING SCREEN -->
+    <div id="loading-screen" class="fixed inset-0 z-[99999999] flex flex-col items-center justify-center bg-stone-950 text-stone-100 transition-all duration-700">
+        <div class="relative flex flex-col items-center">
+            <div class="w-24 h-24 border-2 border-dashed border-amber-500/30 rounded-full animate-spin [animation-duration:10s] absolute"></div>
+            
+            <div id="loading-icon-wrapper" class="w-16 h-16 flex items-center justify-center text-amber-500 text-4xl mb-4 relative z-10">
+                <i class="fa-solid fa-circle-notch animate-spin"></i>
+            </div>
+            
+            <p id="loading-text" class="font-japanese-accent text-xs tracking-widest text-amber-500 uppercase mt-2">Memuat Undangan...</p>
+            <p class="text-[10px] text-stone-500 font-mono mt-1">Fatri & Iwan</p>
+        </div>
+    </div>
+
+    <div id="welcome-screen" class="absolute inset-0 z-[99999992] flex flex-col items-center justify-between text-center bg-stone-950 text-stone-100 px-6 py-12 transition-all duration-1000 hidden">
+        <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('https://images.unsplash.com/photo-1522383225653-ed111181a951?q=80&w=1200');"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-stone-950 via-transparent to-stone-950"></div>
+
+        <div class="relative z-10 mt-8">
+            <p class="text-amber-500 font-japanese-accent tracking-widest text-xs md:text-sm uppercase mb-3">Undangan Pernikahan</p>
+            <div class="w-16 h-0.5 bg-amber-500 mx-auto my-2"></div>
+            <h1 class="font-serif-elegant text-4xl md:text-5xl lg:text-6xl font-extrabold text-amber-100 mt-4 leading-normal px-2">Fatri & Iwan</h1>
+            <p class="text-xs md:text-sm text-stone-400 mt-2 tracking-wider font-mono">04 . 06 . 2026</p>
+        </div>
+
+        <div class="relative z-10 bg-black/40 backdrop-blur-md p-6 rounded-2xl border border-stone-800 max-w-md w-full my-6">
+            <p class="text-stone-400 text-xs md:text-sm uppercase tracking-widest mb-1">Kepada Yang Terhormat</p>
+            <p class="text-stone-300 text-xs md:text-sm italic mb-2">Bapak/Ibu/Saudara/i</p>
+            <h2 id="guest-name" class="font-serif-elegant text-2xl md:text-3xl font-bold text-amber-400 mb-4 px-2">-</h2>
+            <button onclick="openWedding()" class="pulse-btn bg-amber-600 hover:bg-amber-700 text-white font-semibold px-8 py-3 rounded-full shadow-lg transition-colors flex items-center justify-center gap-2 mx-auto text-sm tracking-wide">
+                <i class="fa-solid fa-envelope-open-text animate-bounce"></i>
+                Buka Undangan
+            </button>
+        </div>
+
+        <div class="relative z-10">
+            <p class="text-stone-500 text-xs md:text-sm">Mirit, Kebumen, Jawa Tengah</p>
+        </div>
+    </div>
+
+    <div id="main-content" class="hidden min-h-screen pb-24 relative z-10">
+
+        <div class="w-full h-3 bg-gradient-to-r from-rose-900 via-amber-600 to-rose-900"></div>
+
+        <!-- Section: Pembuka -->
+        <section class="relative min-h-screen flex items-center justify-center text-center px-4 py-12 md:py-16 overflow-hidden">
+            <div class="max-w-xl mx-auto jp-frame p-6 sm:p-10 bg-white/95 shadow-2xl rounded-3xl animate__animated animate__fadeIn">
+                <div class="w-12 h-12 border-2 border-amber-700 rounded-full mx-auto flex items-center justify-center mb-5 text-amber-700">
+                    <i class="fa-solid fa-snowflake text-lg"></i>
+                </div>
+                <p class="font-japanese-accent text-amber-800 text-xs md:text-sm tracking-widest mb-4">Maha Suci Allah SWT</p>
+                <p class="text-sm sm:text-base text-stone-600 leading-relaxed mb-6">
+                    Dengan memohon rahmat dan ridho Allah SWT, kami mengharapkan kehadiran Bapak/Ibu/Saudara/i untuk menghadiri hari bahagia pernikahan kami:
+                </p>
+                
+                <h2 class="font-serif-elegant text-3xl sm:text-4xl font-extrabold text-stone-800 mb-2">Fatri & Iwan</h2>
+                <p class="text-xs sm:text-sm font-semibold text-amber-700 tracking-wider mb-6">04 Juni 2026 • Kebumen</p>
+
+                <div class="text-stone-500 text-xs sm:text-sm italic border-t border-stone-200 pt-6 leading-relaxed">
+                    "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya..." <br><strong>(Ar-Rum: 21)</strong>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 md:py-20 px-4 bg-white/60">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="font-serif-elegant text-2xl sm:text-3xl font-bold text-stone-800 mb-2 reveal">Kedua Mempelai</h2>
+                <div class="w-12 h-1 bg-amber-700 mx-auto mb-10 sm:mb-16 rounded"></div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16">
+                    <!-- Mempelai Wanita -->
+                    <div class="reveal jp-frame p-6 sm:p-8 rounded-2xl bg-white shadow-xl flex flex-col items-center">
+                        <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-amber-600 shadow-md mb-6 flex items-center justify-center bg-rose-50 text-rose-400">
+                            <i class="fa-solid fa-venus text-4xl sm:text-5xl"></i>
+                        </div>
+                        <h3 class="font-serif-elegant text-xl sm:text-2xl font-bold text-amber-950 mb-1">Fatri Meliana</h3>
+                        <p class="text-xs sm:text-sm text-amber-700 font-semibold tracking-wide uppercase mb-3">Mempelai Wanita</p>
+                        <p class="text-xs sm:text-sm text-stone-600">Putri tercinta dari:</p>
+                        <p class="text-sm sm:text-base font-bold text-stone-800 mt-1">Bapak Anwar Sidik / Tugirin</p>
+                        <p class="text-xs text-stone-500 my-0.5">&</p>
+                        <p class="text-sm sm:text-base font-bold text-stone-800">Ibu Sutiyah</p>
+                    </div>
+
+                    <!-- Mempelai Pria -->
+                    <div class="reveal jp-frame p-6 sm:p-8 rounded-2xl bg-white shadow-xl flex flex-col items-center">
+                        <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-amber-600 shadow-md mb-6 flex items-center justify-center bg-amber-50 text-amber-600">
+                            <i class="fa-solid fa-mars text-4xl sm:text-5xl"></i>
+                        </div>
+                        <h3 class="font-serif-elegant text-xl sm:text-2xl font-bold text-amber-950 mb-1">Miswanto / Iwan</h3>
+                        <p class="text-xs sm:text-sm text-amber-700 font-semibold tracking-wide uppercase mb-3">Mempelai Pria</p>
+                        <p class="text-xs sm:text-sm text-stone-600">Putra tercinta dari:</p>
+                        <p class="text-sm sm:text-base font-bold text-stone-800 mt-1">Bapak Madaris (Alm.)</p>
+                        <p class="text-xs text-stone-500 my-0.5">&</p>
+                        <p class="text-sm sm:text-base font-bold text-stone-800">Ibu Saliyem</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 md:py-20 px-4 bg-stone-900 text-stone-100 relative">
+            <div class="absolute inset-0 bg-cover bg-center opacity-10" style="background-image: url('https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1200');"></div>
+            
+            <div class="max-w-4xl mx-auto text-center relative z-10">
+                <h2 class="font-serif-elegant text-2xl sm:text-3xl font-bold text-amber-400 mb-2 reveal">Waktu & Tempat Acara</h2>
+                <div class="w-12 h-0.5 bg-amber-400 mx-auto mb-10"></div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+                    <div class="reveal border border-stone-800 bg-black/40 p-5 rounded-2xl flex flex-col items-center">
+                        <i class="fa-solid fa-calendar-day text-amber-400 text-2xl sm:text-3xl mb-3"></i>
+                        <h4 class="font-serif-elegant text-base sm:text-lg font-bold text-stone-200 mb-1">Hari & Tanggal</h4>
+                        <p class="text-xs sm:text-sm text-stone-400 font-medium">Kamis, 04 Juni 2026</p>
+                    </div>
+
+                    <div class="reveal border border-stone-800 bg-black/40 p-5 rounded-2xl flex flex-col items-center">
+                        <i class="fa-solid fa-clock text-amber-400 text-2xl sm:text-3xl mb-3"></i>
+                        <h4 class="font-serif-elegant text-base sm:text-lg font-bold text-stone-200 mb-1">Waktu Acara</h4>
+                        <p class="text-xs sm:text-sm text-stone-400 font-medium">Pukul 11.00 WIB s/d selesai</p>
+                    </div>
+
+                    <div class="reveal border border-stone-800 bg-black/40 p-5 rounded-2xl flex flex-col items-center">
+                        <i class="fa-solid fa-map-location-dot text-amber-400 text-2xl sm:text-3xl mb-3"></i>
+                        <h4 class="font-serif-elegant text-base sm:text-lg font-bold text-stone-200 mb-1">Lokasi</h4>
+                        <p class="text-xs sm:text-sm text-stone-400 leading-relaxed text-center px-1">
+                            Dk. Sampang RT 001 / RW 001, Selotumpeng, Kec. Mirit, Kab. Kebumen.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- COUNTDOWN TIMER -->
+                <div class="reveal bg-stone-950/70 border border-amber-900/40 p-6 sm:p-8 rounded-3xl max-w-2xl mx-auto mb-10 shadow-inner">
+                    <p class="text-xs uppercase tracking-widest text-amber-500 font-japanese-accent mb-4">Menuju Hari Bahagia</p>
+                    <div class="grid grid-cols-4 gap-2 sm:gap-4 max-w-sm sm:max-w-md mx-auto">
+                        <div class="bg-stone-900 border border-stone-800 p-3 sm:p-4 rounded-xl">
+                            <span id="days" class="font-serif-elegant text-2xl sm:text-3xl font-extrabold text-amber-400 block">00</span>
+                            <span class="text-[9px] sm:text-[10px] uppercase text-stone-500 tracking-wider">Hari</span>
+                        </div>
+                        <div class="bg-stone-900 border border-stone-800 p-3 sm:p-4 rounded-xl">
+                            <span id="hours" class="font-serif-elegant text-2xl sm:text-3xl font-extrabold text-amber-400 block">00</span>
+                            <span class="text-[9px] sm:text-[10px] uppercase text-stone-500 tracking-wider">Jam</span>
+                        </div>
+                        <div class="bg-stone-900 border border-stone-800 p-3 sm:p-4 rounded-xl">
+                            <span id="minutes" class="font-serif-elegant text-2xl sm:text-3xl font-extrabold text-amber-400 block">00</span>
+                            <span class="text-[9px] sm:text-[10px] uppercase text-stone-500 tracking-wider">Menit</span>
+                        </div>
+                        <div class="bg-stone-900 border border-stone-800 p-3 sm:p-4 rounded-xl">
+                            <span id="seconds" class="font-serif-elegant text-2xl sm:text-3xl font-extrabold text-amber-400 block">00</span>
+                            <span class="text-[9px] sm:text-[10px] uppercase text-stone-500 tracking-wider">Detik</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal">
+                    <a href="https://maps.google.com/?q=Selotumpeng+Mirit+Kebumen" target="_blank" class="inline-flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-stone-100 font-semibold px-6 sm:px-8 py-3 rounded-full transition-colors duration-300 shadow-md shadow-amber-950/50 text-xs sm:text-sm">
+                        <i class="fa-solid fa-location-arrow"></i>
+                        Buka Google Maps
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 md:py-20 px-4 bg-white/40 text-center">
+            <div class="max-w-2xl mx-auto">
+                <h2 class="font-serif-elegant text-2xl sm:text-3xl font-bold text-stone-800 mb-2 reveal">Turut Mengundang</h2>
+                <div class="w-12 h-1 bg-amber-700 mx-auto mb-8 rounded"></div>
+
+                <div class="reveal border-2 border-dashed border-stone-300 rounded-3xl p-6 sm:p-8 bg-white/90 shadow-lg space-y-6">
+                    <div class="pb-5 border-b border-stone-200">
+                        <i class="fa-solid fa-dharmachakra text-amber-700 text-lg sm:text-xl mb-2"></i>
+                        <p class="font-serif-elegant font-semibold text-base sm:text-lg text-stone-800">Pengasuh Pon-pes Al Istiqomah Tanjungsari</p>
+                        <p class="text-xs sm:text-sm text-stone-500">Petanahan, Kebumen (YAPIKA)</p>
+                    </div>
+                    <div class="pt-2">
+                        <i class="fa-solid fa-kaaba text-amber-700 text-lg sm:text-xl mb-2"></i>
+                        <p class="font-serif-elegant font-semibold text-base sm:text-lg text-stone-800">Abah Mukhayan</p>
+                        <p class="text-xs sm:text-sm text-stone-500">Pembina Mafia Sholawat Kebumen</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 md:py-20 px-4 bg-stone-900 text-stone-100">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="font-serif-elegant text-2xl sm:text-3xl font-bold text-amber-400 mb-2 reveal">Wedding Gift</h2>
+                <p class="text-xs sm:text-sm text-stone-400 max-w-md mx-auto mb-10 reveal">
+                    Doa restu Anda adalah karunia terindah bagi kami. Namun apabila Anda ingin mengirimkan tanda kasih, Anda dapat melakukannya melalui opsi di bawah ini:
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
+                    <!-- Bank BRI -->
+                    <div class="reveal border border-stone-800 bg-stone-950/50 p-6 rounded-2xl relative overflow-hidden flex flex-col items-center">
+                        <h4 class="font-serif-elegant font-bold text-amber-400 text-base sm:text-lg mb-4">Bank BRI</h4>
+                        <div class="text-stone-300 font-mono text-base sm:text-lg font-bold tracking-wider mb-2" id="bri-number">302901035215509</div>
+                        <p class="text-xs sm:text-sm text-stone-400 mb-4">Atas Nama: <strong class="text-stone-200">Miswanto</strong></p>
+                        <button onclick="copyAccount('bri-number', this)" class="inline-flex items-center gap-1.5 bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-semibold py-2 px-4 rounded-full transition-all">
+                            <i class="fa-solid fa-copy"></i>
+                            <span>Salin No. Rekening</span>
+                        </button>
+                    </div>
+
+                    <!-- Bank BNI -->
+                    <div class="reveal border border-stone-800 bg-stone-950/50 p-6 rounded-2xl relative overflow-hidden flex flex-col items-center">
+                        <h4 class="font-serif-elegant font-bold text-amber-400 text-base sm:text-lg mb-4">Bank BNI</h4>
+                        <div class="text-stone-300 font-mono text-base sm:text-lg font-bold tracking-wider mb-2" id="bni-number">1234567890</div>
+                        <p class="text-xs sm:text-sm text-stone-400 mb-4">Atas Nama: <strong class="text-stone-200">Fatri Meliana</strong></p>
+                        <button onclick="copyAccount('bni-number', this)" class="inline-flex items-center gap-1.5 bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-semibold py-2 px-4 rounded-full transition-all">
+                            <i class="fa-solid fa-copy"></i>
+                            <span>Salin No. Rekening</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Alamat Pengiriman -->
+                <div class="reveal border border-stone-800 bg-stone-950/30 p-6 sm:p-8 rounded-3xl max-w-xl mx-auto">
+                    <i class="fa-solid fa-gift text-amber-400 text-xl sm:text-2xl mb-3"></i>
+                    <h4 class="font-serif-elegant text-base sm:text-lg font-bold text-stone-200 mb-2">Kirim Kado / Logistik</h4>
+                    <p class="text-xs sm:text-sm text-stone-400 leading-relaxed mb-4 px-2">
+                        Dk. Sampang RT 001 / RW 001, Selotumpeng, Kec. Mirit, Kab. Kebumen.
+                    </p>
+                    <button onclick="copyText('Dk. Sampang RT 001 / RW 001, Selotumpeng, Kec. Mirit, Kab. Kebumen.', this)" class="inline-flex items-center gap-1.5 bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-semibold py-2 px-4 rounded-full transition-all">
+                        <i class="fa-solid fa-copy"></i>
+                        <span>Salin Alamat</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 md:py-20 px-4 bg-white/50">
+            <div class="max-w-xl mx-auto">
+                <div class="text-center mb-10">
+                    <h2 class="font-serif-elegant text-2xl sm:text-3xl font-bold text-stone-800 mb-2 reveal">Ucapan & Doa Restu</h2>
+                    <div class="w-12 h-1 bg-amber-700 mx-auto mb-4 rounded"></div>
+                    <p class="text-xs sm:text-sm text-stone-600">Berikan ucapan selamat dan doa terbaik Anda untuk kedua mempelai.</p>
+                </div>
+
+                <!-- Formulir Ucapan -->
+                <div class="reveal bg-white p-5 sm:p-6 rounded-3xl border border-stone-200 shadow-xl mb-8">
+                    <form id="ucapan-form" onsubmit="submitUcapan(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-stone-500 tracking-wider mb-1">Nama</label>
+                            <input type="text" id="form-name" required class="w-full px-4 py-2 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all text-sm" placeholder="Nama Anda">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-stone-500 tracking-wider mb-1">Kehadiran</label>
+                            <select id="form-presence" required class="w-full px-4 py-2 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all text-sm bg-white">
+                                <option value="Hadir">Hadir</option>
+                                <option value="Tidak Hadir">Tidak Hadir</option>
+                                <option value="Masih Ragu">Masih Ragu</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-stone-500 tracking-wider mb-1">Pesan / Doa</label>
+                            <textarea id="form-message" required rows="4" class="w-full px-4 py-2 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all text-sm" placeholder="Tuliskan doa indah Anda..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-amber-700 hover:bg-amber-800 text-white font-semibold py-2.5 rounded-xl transition-colors shadow-md text-sm">
+                            Kirim Ucapan
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Daftar Ucapan -->
+                <div class="reveal bg-white p-5 sm:p-6 rounded-3xl border border-stone-200 shadow-xl">
+                    <h4 class="font-serif-elegant text-base sm:text-lg font-bold text-stone-800 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-comments text-amber-700"></i>
+                        Pesan Hangat (<span id="count-ucapan">0</span>)
+                    </h4>
+                    <div id="list-ucapan" class="space-y-4 max-h-80 overflow-y-auto pr-2 divide-y divide-stone-100">
+                        <!-- Diisi secara dinamis -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-12 bg-stone-950 text-stone-500 text-center border-t border-stone-900">
+            <p class="font-serif-elegant text-lg text-amber-100 mb-2">Fatri & Iwan</p>
+            <p class="text-xs mb-6">Matur Nuwun / Terima Kasih</p>
+            <div class="w-12 h-px bg-stone-800 mx-auto mb-6"></div>
+        </footer>
+
+    </div>
+
+</div>
+
+<script>
+    // =======================================================
+    // BREAKOUT SCRIPT: Memindahkan Undangan langsung ke Body
+    // Menghindari gangguan pembatasan container tema Blogger
+    // =======================================================
+    (function breakoutToBody() {
+        const app = document.getElementById('wedding-invitation-app');
+        if (app && app.parentElement !== document.body) {
+            document.body.appendChild(app);
+            console.log("Aplikasi dipindahkan ke root body untuk mencegah bentrok layout tema.");
+        }
+    })();
+
+    // =======================================================
+    // KONFIGURASI UTAMA INTEGRASI GOOGLE SHEET (RSVP)
+    // =======================================================
+    // GANTI TULISAN DI BAWAH INI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA
+    const SCRIPT_URL = "MASUKKAN_URL_WEB_APP_ANDA_DISINI";
+
+    // ==========================================
+    // 1. KONFIGURASI UTAMA LOADING & TEMA SAKURA
+    // ==========================================
+    const LOADING_CONFIG = {
+        loaderType: 'font-awesome', 
+        faIconClass: 'fa-solid fa-circle-notch animate-spin text-amber-500 text-5xl',
+        customImageUrl: '', 
+        minimumDuration: 1800, 
+        loadingText: "Memuat Undangan Cantik..."
+    };
+
+    document.addEventListener("DOMContentLoaded", function() {
+        setupLoadingIndicator();
+
+        // Mengurai nama tamu dari parameter URL (?to=Nama+Tamu)
+        const urlParams = new URLSearchParams(window.location.search);
+        const guestName = urlParams.get('to') || 'Bapak/Ibu/Saudara/i';
+        document.getElementById('guest-name').innerText = decodeURIComponent(guestName.replace(/\+/g, ' '));
+        
+        // Memuat daftar ucapan dari localStorage
+        renderUcapan();
+
+        // Mengunci scroll di awal agar tidak bisa meluncur sebelum "Buka Undangan" diklik
+        const appContainer = document.getElementById('wedding-invitation-app');
+        if (appContainer) {
+            appContainer.style.overflowY = 'hidden';
+            appContainer.addEventListener('scroll', revealSections);
+        }
+    });
+
+    // Jalankan penutupan loading screen setelah window sepenuhnya termuat
+    window.onload = function() {
+        setTimeout(() => {
+            const loadingScreen = document.getElementById('loading-screen');
+            const welcomeScreen = document.getElementById('welcome-screen');
+            
+            if (welcomeScreen) {
+                welcomeScreen.classList.remove('hidden');
+            }
+            if (loadingScreen) {
+                loadingScreen.classList.add('opacity-0');
+                setTimeout(() => {
+                    loadingScreen.classList.add('hidden');
+                }, 700);
+            }
+        }, LOADING_CONFIG.minimumDuration);
+    };
+
+    function setupLoadingIndicator() {
+        const wrapper = document.getElementById('loading-icon-wrapper');
+        const textElement = document.getElementById('loading-text');
+
+        if (textElement) {
+            textElement.innerText = LOADING_CONFIG.loadingText;
+        }
+
+        if (wrapper) {
+            if (LOADING_CONFIG.loaderType === 'image' && LOADING_CONFIG.customImageUrl !== '') {
+                wrapper.innerHTML = `<img src="${LOADING_CONFIG.customImageUrl}" alt="Loading" class="max-w-full h-auto max-h-16 object-contain" />`;
+            } else {
+                wrapper.innerHTML = `<i class="${LOADING_CONFIG.faIconClass}"></i>`;
+            }
+        }
+    }
+
+    function revealSections() {
+        const reveals = document.querySelectorAll('#wedding-invitation-app .reveal');
+        const appContainer = document.getElementById('wedding-invitation-app');
+        if (!appContainer) return;
+        const containerHeight = appContainer.clientHeight;
+
+        for (let i = 0; i < reveals.length; i++) {
+            const elementTop = reveals[i].getBoundingClientRect().top;
+            const elementVisible = 100;
+            if (elementTop < containerHeight - elementVisible) {
+                reveals[i].classList.add('active');
+            }
+        }
+    }
+
+    function openWedding() {
+        const music = document.getElementById('bg-music');
+        if (music) {
+            music.play().then(() => {
+                document.getElementById('music-control').classList.remove('hidden');
+            }).catch(e => {
+                console.log("Autoplay dicegah oleh browser. Musik disiapkan untuk aksi lanjut.");
+                document.getElementById('music-control').classList.remove('hidden');
+                document.getElementById('music-icon').classList.remove('fa-spin');
+            });
+        }
+
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const mainContent = document.getElementById('main-content');
+        const appContainer = document.getElementById('wedding-invitation-app');
+
+        if (welcomeScreen) {
+            welcomeScreen.classList.add('opacity-0');
+        }
+
+        setTimeout(() => {
+            if (welcomeScreen) welcomeScreen.classList.add('hidden');
+            if (mainContent) mainContent.classList.remove('hidden');
+            
+            if (appContainer) {
+                appContainer.style.overflowY = 'auto';
+            }
+
+            // Jalankan animasi guguran Sakura
+            startSakuraEffect();
+            
+            // Jalankan hitung mundur
+            initCountdown();
+
+            // Picu deteksi scroll awal
+            revealSections();
+        }, 1000);
+    }
+
+    function toggleMusic() {
+        const music = document.getElementById('bg-music');
+        const icon = document.getElementById('music-icon');
+        if (!music || !icon) return;
+        
+        if (music.paused) {
+            music.play();
+            icon.classList.add('fa-spin');
+        } else {
+            music.pause();
+            icon.classList.remove('fa-spin');
+        }
+    }
+
+    function copyAccount(elementId, btnElement) {
+        const targetText = document.getElementById(elementId).innerText;
+        copyStringToClipboard(targetText, btnElement);
+    }
+
+    function copyText(text, btnElement) {
+        copyStringToClipboard(text, btnElement);
+    }
+
+    function copyStringToClipboard(str, btnElement) {
+        const el = document.createElement('textarea');
+        el.value = str;
+        el.setAttribute('readonly', '');
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        el.select();
+        
+        try {
+            document.execCommand('copy');
+            const originalHTML = btnElement.innerHTML;
+            btnElement.innerHTML = '<i class="fa-solid fa-check text-green-500"></i> <span class="text-green-500">Berhasil Disalin!</span>';
+            setTimeout(() => {
+                btnElement.innerHTML = originalHTML;
+            }, 2500);
+        } catch (err) {
+            console.error("Gagal menyalin text: ", err);
+        }
+        document.body.removeChild(el);
+    }
+
+    // ==========================================
+    // 2. ANIMASI SAKURA BERGUGURAN (CANVAS)
+    // ==========================================
+    function startSakuraEffect() {
+        const canvas = document.getElementById('sakura-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', function() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        const petals = [];
+        const petalCount = 35;
+
+        class Petal {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height - height;
+                this.r = Math.random() * 6 + 4;
+                this.d = Math.random() * petalCount;
+                this.speed = Math.random() * 1.5 + 0.5;
+                this.swing = Math.random() * 1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2, false);
+                ctx.fillStyle = 'rgba(255, 183, 197, 0.6)';
+                ctx.fill();
+            }
+            update() {
+                this.y += this.speed;
+                this.x += Math.sin(this.d) * this.swing;
+                this.d += 0.01;
+                
+                if (this.y > height) {
+                    this.y = -10;
+                    this.x = Math.random() * width;
+                }
+            }
+        }
+
+        for (let i = 0; i < petalCount; i++) {
+            petals.push(new Petal());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            petals.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    }
+
+    // ==========================================
+    // 3. LOGIKA HITUNG MUNDUR (COUNTDOWN)
+    // ==========================================
+    function initCountdown() {
+        // Target tanggal akad / resepsi pernikahan: 04 Juni 2026 pukul 11:00 WIB
+        const targetDate = new Date("June 4, 2026 11:00:00").getTime();
+        
+        // Deklarasi interval terlebih dahulu untuk menghindari temporal dead zone reference error
+        let interval;
+        
+        function updateTimer() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference < 0) {
+                if (interval) clearInterval(interval);
+                return;
+            }
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            const daysEl = document.getElementById('days');
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+
+            if (daysEl) daysEl.innerText = String(days).padStart(2, '0');
+            if (hoursEl) hoursEl.innerText = String(hours).padStart(2, '0');
+            if (minutesEl) minutesEl.innerText = String(minutes).padStart(2, '0');
+            if (secondsEl) secondsEl.innerText = String(seconds).padStart(2, '0');
+        }
+
+        updateTimer();
+        interval = setInterval(updateTimer, 1000);
+    }
+
+    // ==========================================
+    // 4. RSVP & INTEGRASI GOOGLE SHEETS
+    // ==========================================
+    function submitUcapan(event) {
+        event.preventDefault();
+
+        const nameInput = document.getElementById('form-name');
+        const presenceInput = document.getElementById('form-presence');
+        const messageInput = document.getElementById('form-message');
+        const submitBtn = event.target.querySelector('button[type="submit"]');
+
+        const name = nameInput.value.trim();
+        const presence = presenceInput.value;
+        const message = messageInput.value.trim();
+
+        if (!name || !message) return;
+
+        // Feedback Visual saat loading pengiriman
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Mengirim...';
+
+        // Langkah 1: Simpan instan ke Local Storage agar langsung tampil bagi user secara dinamis
+        const ucapanList = JSON.parse(localStorage.getItem('wedding_ucapan') || '[]');
+        const newUcapan = {
+            id: Date.now(),
+            name: name,
+            presence: presence,
+            message: message,
+            date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+        };
+        ucapanList.unshift(newUcapan);
+        localStorage.setItem('wedding_ucapan', JSON.stringify(ucapanList));
+        
+        // Render ulang daftar ucapan secara lokal
+        renderUcapan();
+
+        // Langkah 2: Kirim data ke Google Sheets jika SCRIPT_URL sudah dikonfigurasi
+        if (SCRIPT_URL && SCRIPT_URL !== "MASUKKAN_URL_WEB_APP_ANDA_DISINI") {
+            const formData = new URLSearchParams();
+            formData.append('name', name);
+            formData.append('presence', presence);
+            formData.append('message', message);
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors', // Menghindari isu blokir browser CORS di Blogger
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: formData.toString()
+            })
+            .then(() => {
+                console.log('RSVP berhasil terkirim ke Google Sheets!');
+                finalizeSubmit();
+            })
+            .catch(err => {
+                console.error('Koneksi Google Sheet gagal:', err);
+                finalizeSubmit();
+            });
+        } else {
+            console.warn('URL Google Apps Script belum dikonfigurasi. RSVP hanya disimpan secara lokal.');
+            finalizeSubmit();
+        }
+
+        function finalizeSubmit() {
+            // Bersihkan input form
+            nameInput.value = '';
+            messageInput.value = '';
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnText;
+        }
+    }
+
+    function renderUcapan() {
+        const listContainer = document.getElementById('list-ucapan');
+        const countElement = document.getElementById('count-ucapan');
+        if (!listContainer) return;
+
+        const ucapanList = JSON.parse(localStorage.getItem('wedding_ucapan') || '[]');
+        
+        if (countElement) {
+            countElement.innerText = ucapanList.length;
+        }
+
+        if (ucapanList.length === 0) {
+            listContainer.innerHTML = `
+                <div class="text-center py-8 text-stone-400 text-sm italic">
+                    Belum ada ucapan. Jadilah yang pertama memberikan doa restu!
+                </div>
+            `;
+            return;
+        }
+
+        listContainer.innerHTML = ucapanList.map(item => {
+            let badgeColor = 'bg-stone-100 text-stone-600';
+            if (item.presence === 'Hadir') badgeColor = 'bg-green-50 text-green-700 border border-green-200';
+            else if (item.presence === 'Tidak Hadir') badgeColor = 'bg-rose-50 text-rose-700 border border-rose-200';
+            else if (item.presence === 'Masih Ragu') badgeColor = 'bg-amber-50 text-amber-700 border border-amber-200';
+
+            return `
+                <div class="py-4 first:pt-0">
+                    <div class="flex items-center justify-between gap-2 mb-1">
+                        <h5 class="font-bold text-stone-800 text-sm">${escapeHTML(item.name)}</h5>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full font-semibold ${badgeColor}">${item.presence}</span>
+                    </div>
+                    <p class="text-xs text-stone-500 mb-2 font-mono">${item.date || ''}</p>
+                    <p class="text-stone-600 text-sm whitespace-pre-line">${escapeHTML(item.message)}</p>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function escapeHTML(str) {
+        return str.replace(/[&<>'"]/g, 
+            tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag] || tag)
+        );
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Wedding of Romeo & Juliet</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+  <!-- --- FAVICON (SVG Crown Emoji) --- -->
+    <link href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEita0_M2O-eCuyAVlkD8OIaq8QYjANaZTr61ExHZgO5wk5R3k_-Qg-UMLUIh2Xs1yfe9vHOXM7zl_DZN09EghVT3pmPEpsV5agqavbc54CnQ0CW01eoDtXxhgmVkXReU_tUy04HvF0BgltUDzZSaf35yaVUmnE9bi9_uIjrzpxl-852I-HjE0-2W_mYhJjm/s1280/logo%20296%20studios.png" rel="icon" sizes="32x32" type="image/png"
+    <!-- -->
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root { 
+      --gold: #c5a059; 
+      --dark: #2c2c2c; 
+      --cream: #faf7f2; 
+    }
+    
+    body { 
+      background: var(--cream); 
+      color: var(--dark); 
+      font-family: 'Montserrat', sans-serif; 
+      overflow-x: hidden; 
+    }
+    
+    /* Tipografi Estetik */
+    .font-estetik { font-family: 'Pinyon Script', cursive; }
+    .font-serif { font-family: 'Playfair Display', serif; }
+
+    /* Overlay Style */
+    #overlay {
+      position: fixed; 
+      inset: 0; 
+      background: #fff; 
+      z-index: 9999;
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      transition: 1.5s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    .gold-border {
+      border: 1px solid var(--gold);
+      padding: 40px;
+      position: relative;
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: white;
+      padding: 14px 40px;
+      letter-spacing: 3px;
+      font-size: 10px;
+      font-weight: bold;
+      transition: 0.4s;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+    .btn-gold:hover { 
+      background: transparent; 
+      color: var(--gold); 
+      border-color: var(--gold); 
+    }
+
+    /* Animasi Muncul */
+    .fade-in { 
+      opacity: 0; 
+      transform: translateY(30px); 
+      transition: 1.2s ease-out; 
+    }
+    .fade-in.active { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+
+    /* Frame Foto */
+    .img-frame { 
+      border: 8px solid white; 
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+    }
+
+    /* Floating Music Controls */
+    .music-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 999;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    .music-btn:hover {
+      background: var(--gold);
+      color: #fff;
+    }
+    
+    /* Custom Modal */
+    .custom-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+    }
+  </style>
+</head>
+<body>
+
+<div id="app">
+  <!-- Audio element -->
+  <audio id="myAudio" loop>
+    <source src="https://github.com/elrosyadi296/elrosyadi296.github.io/raw/refs/heads/main/Shane%20Filan%20-%20Beautiful%20In%20White.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Tombol Musik Melayang (Awalnya tersembunyi) -->
+  <button id="musicToggleBtn" class="music-btn hidden text-[var(--gold)]" onclick="toggleMusic()">
+    <!-- Icon Play / Pause SVG -->
+    <svg id="musicIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 9l10.5-3m0 0v13.5m0-13.5L9 16.5m10.5-3v1.5m-13.5-3l13.5-3m-13.5 3V16.5m0-3V19.5" />
+    </svg>
+  </button>
+
+  <!-- MODAL NOTIFIKASI KUSTOM -->
+  <div id="customModal" class="custom-modal p-4">
+    <div class="bg-white max-w-sm w-full mx-auto p-8 rounded shadow-lg text-center border-t-4 border-[var(--gold)]">
+      <h4 class="font-serif italic text-2xl mb-3 text-amber-800">Pemberitahuan</h4>
+      <p id="modalMessage" class="text-sm text-gray-600 mb-6 leading-relaxed">Pesan notifikasi di sini.</p>
+      <button class="btn-gold py-2 px-8" onclick="closeModal()">TUTUP</button>
+    </div>
+  </div>
+
+  <!-- OVERLAY / SPLASH SCREEN -->
+  <div id="overlay">
+    <div class="text-center gold-border max-w-sm mx-auto shadow-xl bg-white m-4">
+      <p class="uppercase tracking-[0.5em] text-[9px] mb-8 text-gray-400">Wedding Invitation</p>
+      <h1 class="font-serif italic text-4xl mb-1">Romeo</h1>
+      <p class="font-estetik text-5xl my-2 text-[var(--gold)]">&</p>
+      <h1 class="font-serif italic text-4xl mb-8">Juliet</h1>
+      
+      <div class="mb-10 text-xs">
+        <p class="italic text-gray-400 mb-2">Kepada Yth:</p>
+        <p class="font-bold tracking-widest uppercase border-b border-gray-200 pb-2 inline-block text-gray-700" id="display-nama">Nama Tamu</p>
+      </div>
+      
+      <button class="btn-gold" onclick="bukaUndangan()">BUKA UNDANGAN</button>
+    </div>
+  </div>
+
+  <!-- KONTEN UTAMA -->
+  <div id="main-content" class="hidden opacity-0 transition-opacity duration-1000">
+    
+    <!-- Hero Section -->
+    <section class="min-h-screen flex flex-col items-center justify-center text-center px-6 relative">
+      <div class="fade-in max-w-2xl mx-auto">
+        <p class="font-estetik text-5xl text-[var(--gold)] mb-4">The Wedding of</p>
+        <h2 class="font-serif text-5xl md:text-8xl italic">Romeo <span class="text-3xl block md:inline md:mx-4 not-italic font-light">&</span> Juliet</h2>
+        <div class="w-24 h-[1px] bg-[var(--gold)] mx-auto my-8"></div>
+        <p class="tracking-[0.4em] uppercase text-xs font-semibold text-gray-500 mb-10">Minggu, 12 Juli 2026</p>
+        
+        <!-- Countdown Timer -->
+        <div class="grid grid-cols-4 gap-2 max-w-md mx-auto mt-6 text-center">
+          <div class="bg-white p-3 rounded shadow-sm border border-gray-100">
+            <span id="days" class="font-serif text-2xl font-bold text-[var(--gold)]">00</span>
+            <p class="text-[9px] uppercase tracking-wider text-gray-400 mt-1">Hari</p>
+          </div>
+          <div class="bg-white p-3 rounded shadow-sm border border-gray-100">
+            <span id="hours" class="font-serif text-2xl font-bold text-[var(--gold)]">00</span>
+            <p class="text-[9px] uppercase tracking-wider text-gray-400 mt-1">Jam</p>
+          </div>
+          <div class="bg-white p-3 rounded shadow-sm border border-gray-100">
+            <span id="minutes" class="font-serif text-2xl font-bold text-[var(--gold)]">00</span>
+            <p class="text-[9px] uppercase tracking-wider text-gray-400 mt-1">Menit</p>
+          </div>
+          <div class="bg-white p-3 rounded shadow-sm border border-gray-100">
+            <span id="seconds" class="font-serif text-2xl font-bold text-[var(--gold)]">00</span>
+            <p class="text-[9px] uppercase tracking-wider text-gray-400 mt-1">Detik</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Kisah Cinta & Waktu Acara -->
+    <section class="py-20 bg-white px-4">
+      <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div class="fade-in">
+          <img src="https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg" class="img-frame w-full h-[500px] object-cover rounded-lg" alt="Prewedding Romeo & Juliet">
+        </div>
+        <div class="fade-in text-center md:text-left space-y-6">
+          <h3 class="font-estetik text-6xl text-[var(--gold)]">Our Love Story</h3>
+          <p class="text-sm leading-relaxed text-gray-500 italic">"Mencintaimu adalah anugerah terindah, dan memilikimu adalah tujuan selamanya."</p>
+          
+          <div class="bg-[var(--cream)] p-8 border-l-4 border-[var(--gold)] shadow-sm rounded-r-lg space-y-2">
+            <p class="font-serif font-bold text-lg text-gray-800">Gedung Serbaguna, Indonesia</p>
+            <p class="text-xs uppercase tracking-widest text-gray-500">Pukul 09.00 WIB - Selesai</p>
+            <p class="text-xs text-gray-400 leading-relaxed pt-2 border-t border-gray-200">Merupakan kehormatan bagi kami sekalian jika Bapak/Ibu/Saudara/i berkenan hadir di hari bahagia kami.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Konfirmasi Kehadiran / RSVP -->
+    <section class="py-24 px-6 bg-[var(--cream)]">
+      <div class="max-w-xl mx-auto fade-in bg-white p-8 md:p-12 shadow-md border border-gray-100 rounded-lg">
+        <h3 class="text-center font-serif italic text-3xl mb-4 text-gray-800">Konfirmasi Kehadiran</h3>
+        <p class="text-center text-xs text-gray-400 tracking-wider uppercase mb-10">RSVP & Ucapan Bahagia</p>
+        
+        <form id="rsvp-form" class="space-y-6">
+          <div>
+            <label class="text-[10px] uppercase tracking-widest font-bold text-gray-400">Nama Lengkap</label>
+            <input type="text" name="nama" id="input-nama" class="w-full border-b border-gray-200 py-2 outline-none focus:border-[var(--gold)] text-gray-700 transition" required>
+          </div>
+          <div>
+            <label class="text-[10px] uppercase tracking-widest font-bold text-gray-400">Kehadiran</label>
+            <select name="kehadiran" class="w-full border-b border-gray-200 py-2 outline-none focus:border-[var(--gold)] text-gray-700 bg-transparent transition">
+              <option value="Hadir">Hadir</option>
+              <option value="Tidak Hadir">Tidak Hadir</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-[10px] uppercase tracking-widest font-bold text-gray-400">Pesan Singkat / Doa</label>
+            <textarea name="pesan" rows="3" class="w-full border-b border-gray-200 py-2 outline-none focus:border-[var(--gold)] text-gray-700 transition" placeholder="Tuliskan ucapan dan doa tulus Anda..."></textarea>
+          </div>
+          <button type="submit" id="btn-submit-rsvp" class="btn-gold w-full py-4 tracking-[0.2em]">KIRIM KONFIRMASI</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Lokasi & Peta -->
+    <section class="py-20 bg-white px-4">
+      <div class="max-w-4xl mx-auto text-center fade-in">
+        <h3 class="font-estetik text-5xl text-[var(--gold)] mb-6">Lokasi Acara</h3>
+        <p class="font-serif italic text-2xl mb-2 text-gray-800">Gedung Serbaguna Indonesia</p>
+        <p class="text-xs uppercase tracking-widest text-gray-400 mb-10">Jl. Raya Utama No. 123, Jakarta Selatan</p>
+        
+        <div class="relative p-2 border border-[var(--gold)] max-w-3xl mx-auto shadow-2xl rounded">
+          <div class="overflow-hidden h-80 w-full bg-gray-100 rounded">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.275333190885!2d106.80164807490412!3d-6.22738729376092!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f14d30000001%3A0x1d8fd068867a0364!2sGelora%20Bung%20Karno%20Main%20Stadium!5e0!3m2!1sen!2sid!4v1711234567890!5m2!1sen!2sid" 
+              width="100%" 
+              height="100%" 
+              style="border:0; filter: grayscale(15%) sepia(8%);" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+        </div>
+        
+        <a href="https://maps.app.goo.gl/K99Aox5WcizXun398" target="_blank" class="inline-block mt-8 btn-gold">
+          BUKA PETA LOKASI
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16 text-center bg-[var(--cream)] border-t border-gray-100">
+      <p class="font-serif italic text-lg mb-2 text-gray-600">Terima Kasih</p>
+      <p class="text-[10px] tracking-[0.3em] uppercase text-gray-400">Created with Love by 296 Studios</p>
+    </footer>
+
+  </div>
+</div>
+
+<script>
+  // 1. Logika Ambil Nama Tamu melalui URL Query Parameter "?to="
+  const uParams = new URLSearchParams(window.location.search);
+  const guestName = uParams.get('to');
+  if(guestName) {
+    const cleanName = decodeURIComponent(guestName).replace(/\+/g, ' ');
+    document.getElementById('display-nama').innerText = cleanName;
+    document.getElementById('input-nama').value = cleanName;
+  } else {
+    document.getElementById('display-nama').innerText = "Tamu Undangan";
+  }
+
+  // 2. Kontrol Musik Latar Belakang
+  const audio = document.getElementById("myAudio");
+  const musicBtn = document.getElementById("musicToggleBtn");
+  const musicIcon = document.getElementById("musicIcon");
+  let isPlaying = false;
+
+  function toggleMusic() {
+    if (isPlaying) {
+      audio.pause();
+      isPlaying = false;
+      // Ganti ikon ke mode Mute/Play
+      musicIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6L4.5 9H1.5v6h3l4.5 3.75V5.25z" />`;
+    } else {
+      audio.play().then(() => {
+        isPlaying = true;
+        // Ganti ikon ke mode Active/Playing
+        musicIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />`;
+      }).catch(err => {
+        console.log("Pemutaran audio otomatis ditolak browser:", err);
+      });
+    }
+  }
+
+  // 3. Fungsi Buka Undangan
+  function bukaUndangan() {
+    const overlay = document.getElementById("overlay");
+    const main = document.getElementById("main-content");
+    
+    // Play Audio Utama
+    toggleMusic();
+    
+    // Transisi Overlay Keluar
+    overlay.style.opacity = "0";
+    overlay.style.transform = "scale(1.1)";
+    
+    setTimeout(() => {
+      overlay.classList.add("hidden");
+      main.classList.remove("hidden");
+      musicBtn.classList.remove("hidden");
+      
+      setTimeout(() => { 
+        main.style.opacity = "1"; 
+        triggerFade(); 
+      }, 100);
+    }, 1200);
+  }
+
+  // 4. Scroll Trigger Animation untuk Efek Fade-In Elemen
+  function triggerFade() {
+    const items = document.querySelectorAll('.fade-in');
+    items.forEach(item => {
+      const rect = item.getBoundingClientRect();
+      if(rect.top < window.innerHeight * 0.95) {
+        item.classList.add('active');
+      }
+    });
+  }
+  window.addEventListener('scroll', triggerFade);
+  window.addEventListener('resize', triggerFade);
+
+  // 5. Countdown Timer (Menghitung Mundur)
+  const targetDate = new Date("July 12, 2026 09:00:00").getTime();
+  
+  const countdownInterval = setInterval(function() {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("days").innerText = d < 10 ? "0" + d : d;
+    document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
+    document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
+    document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
+
+    if (distance < 0) {
+      clearInterval(countdownInterval);
+      document.getElementById("days").innerText = "00";
+      document.getElementById("hours").innerText = "00";
+      document.getElementById("minutes").innerText = "00";
+      document.getElementById("seconds").innerText = "00";
+    }
+  }, 1000);
+
+  // 6. Sistem Pemberitahuan Kustom (Mengganti fungsi alert bawaan)
+  const modal = document.getElementById("customModal");
+  const modalMsg = document.getElementById("modalMessage");
+
+  function showMessage(msg) {
+    modalMsg.innerText = msg;
+    modal.style.display = "flex";
+  }
+
+  function closeModal() {
+    modal.style.display = "none";
+  }
+
+  // 7. Pengiriman Data RSVP ke Google Sheets
+  // Silakan masukkan Web App URL Google Apps Script yang Anda miliki di bawah ini:
+  const scriptURL = 'MASUKKAN_URL_GOOGLE_APPS_SCRIPT_DISINI'; 
+  const form = document.getElementById('rsvp-form');
+  const btnSubmit = document.getElementById('btn-submit-rsvp');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    btnSubmit.disabled = true;
+    btnSubmit.innerText = "MENGIRIM...";
+
+    // Cek jika URL masih default (untuk simulasi demo)
+    if(scriptURL === 'MASUKKAN_URL_GOOGLE_APPS_SCRIPT_DISINI') {
+      setTimeout(() => {
+        btnSubmit.disabled = false;
+        btnSubmit.innerText = "KIRIM KONFIRMASI";
+        showMessage('Demo Sukses: Terima kasih! Konfirmasi kehadiran Anda berhasil disimulasikan. (Silakan lengkapi konstanta "scriptURL" dengan URL Apps Script Anda untuk pengiriman data nyata)');
+        form.reset();
+      }, 1000);
+    } else {
+      // Jalankan pengiriman nyata menggunakan Fetch API
+      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => {
+          btnSubmit.disabled = false;
+          btnSubmit.innerText = "KIRIM KONFIRMASI";
+          showMessage('Terima kasih banyak! Konfirmasi kehadiran Anda telah sukses kami terima.');
+          form.reset();
+        })
+        .catch(error => {
+          console.error('Error!', error.message);
+          btnSubmit.disabled = false;
+          btnSubmit.innerText = "KIRIM KONFIRMASI";
+          showMessage('Maaf, terjadi kesalahan saat mengirim konfirmasi. Silakan dicoba lagi nanti.');
+        });
+    }
+  });
+</script>
+</body>
+</html>

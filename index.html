@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>403 - Akses Ditolak</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Space Grotesk & JetBrains Mono -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #030712;
+        }
+        .mono-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        /* Efek Glitch Teks */
+        .glitch {
+            position: relative;
+            animation: glitch 1s linear infinite;
+        }
+        @keyframes glitch {
+            2%, 64% { transform: translate(2px, 0) skew(0deg); }
+            4%, 60% { transform: translate(-2px, 0) skew(0deg); }
+            62% { transform: translate(0, 0) skew(5deg); }
+        }
+        .glitch:before, .glitch:after {
+            content: attr(title);
+            position: absolute;
+            left: 0;
+        }
+        .glitch:before {
+            animation: glitchTop 1s linear infinite;
+            clip-path: rect(0 900px 0 0);
+            text-shadow: -2px 0 #ef4444;
+        }
+        .glitch:after {
+            animation: glitchBottom 1.5s linear infinite;
+            clip-path: rect(0 900px 0 0);
+            text-shadow: 2px 0 #3b82f6;
+        }
+        @keyframes glitchTop {
+            2%, 64% { transform: translate(2px, -2px); }
+            4%, 60% { transform: translate(-2px, 2px); }
+            62% { transform: translate(13px, -1px); clip-path: rect(13px, 9999px, 85px, 0); }
+        }
+        @keyframes glitchBottom {
+            2%, 64% { transform: translate(-2px, 2px); }
+            4%, 60% { transform: translate(-2px, -2px); }
+            62% { transform: translate(-22px, 5px); clip-path: rect(78px, 9999px, 5px, 0); }
+        }
+        /* Garis Pemindai Laser */
+        .scanner-line {
+            height: 4px;
+            background: linear-gradient(90deg, rgba(239,68,68,0) 0%, rgba(239,68,68,1) 50%, rgba(239,68,68,0) 100%);
+            box-shadow: 0 0 15px #ef4444;
+            animation: scan 3s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-100 flex flex-col justify-between overflow-x-hidden select-none">
+
+    <!-- Efek Latar Belakang Digital Grid -->
+    <div class="fixed inset-0 bg-[linear-gradient(to_right,#1f293710_1px,transparent_1px),linear-gradient(to_bottom,#1f293710_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none z-0"></div>
+
+    <!-- Header / Navbar Minimalis -->
+    <header class="w-full max-w-7xl mx-auto px-6 py-6 flex justify-between items-center z-10">
+        <div class="flex items-center space-x-3">
+            <div class="w-3 h-3 bg-red-500 rounded-full animate-ping"></div>
+            <span class="text-sm font-semibold tracking-widest text-red-500 uppercase mono-font">Sistem Deteksi Intrusi</span>
+        </div>
+        <div class="text-xs text-slate-500 mono-font hidden sm:block">
+            IP: <span id="user-ip">192.168.1.104</span> | Kode Sesi: <span id="session-code">SEC-992X</span>
+        </div>
+    </header>
+
+    <!-- Konten Utama -->
+    <main class="flex-grow flex flex-col justify-center items-center px-4 py-8 z-10">
+        <div class="max-w-xl w-full text-center relative">
+            
+            <!-- Ilustrasi Gembok Digital -->
+            <div class="relative w-44 h-44 mx-auto mb-8 border border-red-500/20 rounded-2xl bg-red-950/10 flex items-center justify-center overflow-hidden">
+                <!-- Laser Scan Line -->
+                <div class="scanner-line absolute left-0 w-full z-10"></div>
+                
+                <!-- Ikon Gembok Utama -->
+                <div class="relative z-0 text-red-500 text-6xl drop-shadow-[0_0_20px_rgba(239,68,68,0.5)]">
+                    <i class="fa-solid fa-shield-halved animate-pulse"></i>
+                </div>
+            </div>
+
+            <!-- Pesan Kesalahan Utama -->
+            <h1 class="text-8xl md:text-9xl font-extrabold text-red-500 tracking-tight glitch" title="403">403</h1>
+            <h2 class="text-2xl md:text-3xl font-bold mt-2 text-slate-200 tracking-wide">Akses Ditolak (Forbidden)</h2>
+            <p class="text-slate-400 mt-4 max-w-md mx-auto text-sm sm:text-base">
+                Maaf, Anda tidak memiliki izin autentikasi yang sah untuk melihat atau berinteraksi dengan direktori pangkalan data ini.
+            </p>
+
+            <!-- Konsol Log Terminal Interaktif -->
+            <div class="mt-8 bg-black/60 border border-slate-800 rounded-lg p-4 text-left text-xs text-green-400 mono-font shadow-2xl relative overflow-hidden">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-2">
+                    <div class="flex space-x-1.5">
+                        <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                    </div>
+                    <span class="text-slate-500 text-[10px]">terminal_output.log</span>
+                </div>
+                <div class="space-y-1" id="terminal-logs">
+                    <p class="text-slate-500">[INFO] Memulai jabat tangan keamanan...</p>
+                    <p class="text-red-400 font-semibold">[PERINGATAN] Pengguna tidak terdaftar pada ACL (Access Control List)!</p>
+                    <p class="text-red-500 font-bold">[GAGAL] Akses HTTP 403: Terlarang untuk jalur administratif.</p>
+                </div>
+            </div>
+
+            <!-- Tombol Aksi -->
+            <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="https://undangan.296.web.id" class="w-full sm:w-auto px-6 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-lg transition-all duration-200 shadow-md flex items-center justify-center space-x-2 border border-slate-700">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Kembali ke Beranda</span>
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full text-center py-6 text-xs text-slate-600 mono-font z-10 border-t border-slate-900">
+        <p>&copy; 2026 Otoritas Keamanan Sistem. Semua Hak Dilindungi.</p>
+    </footer>
+
+    
+    
+
+    <!-- LOGIKA JAVASCRIPT -->
+    <script>
+        // Simulasi detail data acak saat dimuat
+        window.addEventListener('DOMContentLoaded', () => {
+            // Hasilkan IP Acak untuk Tampilan Simulasi Keamanan
+            const randomIP = `${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`;
+            document.getElementById('user-ip').textContent = randomIP;
+
+            // Hasilkan Kode Sesi Acak
+            const hexChars = '0123456789ABCDEF';
+            let randomSession = 'SEC-';
+            for (let i = 0; i < 4; i++) {
+                randomSession += hexChars[Math.floor(Math.random() * 16)];
+            }
+            document.getElementById('session-code').textContent = randomSession;
+
+            // Tambahkan baris log simulasi secara terjadwal
+            const logsContainer = document.getElementById('terminal-logs');
+            setTimeout(() => {
+                const logItem = document.createElement('p');
+                logItem.className = 'text-yellow-500';
+                logItem.textContent = `[SISTEM] Geofence terdeteksi di koordinat simpul lokal.`;
+                logsContainer.appendChild(logItem);
+            }, 1500);
+
+            setTimeout(() => {
+                const logItem = document.createElement('p');
+                logItem.className = 'text-red-400';
+                logItem.textContent = `[PERINGATAN] Mencatat aktivitas IP ${randomIP} ke database audit keamanan...`;
+                logsContainer.appendChild(logItem);
+            }, 3000);
+        });
+
+        // Kontrol Modal Tanpa Alur Eksternal / Alert
+        const modal = document.getElementById('modalAkses');
+        const modalContent = document.getElementById('modalContent');
+        const notif = document.getElementById('notifikasiModal');
+
+        function bukaModal() {
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+            }, 50);
+        }
+
+        function tutupModal() {
+            modal.classList.add('opacity-0');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                // Atur ulang status notifikasi
+                notif.classList.add('hidden');
+                document.getElementById('formAkses').reset();
+            }, 300);
+        }
+
+        function kirimForm(event) {
+            event.preventDefault();
+            
+            // Simulasi proses pengiriman data
+            notif.className = "text-xs p-3 rounded border bg-blue-950/50 border-blue-800 text-blue-300 mb-4";
+            notif.innerHTML = "<i class='fa-solid fa-spinner animate-spin mr-1.5'></i> Mengirimkan pengajuan izin Anda...";
+            notif.classList.remove('hidden');
+
+            setTimeout(() => {
+                notif.className = "text-xs p-3 rounded border bg-green-950/50 border-green-800 text-green-300 mb-4";
+                notif.innerHTML = "<i class='fa-solid fa-circle-check mr-1.5'></i> Pengajuan terkirim! Admin kami akan meninjau permintaan Anda segera.";
+                
+                // Tutup otomatis setelah beberapa detik sukses kirim
+                setTimeout(() => {
+                    tutupModal();
+                }, 2500);
+            }, 1800);
+        }
+    </script>
+</body>
+</html>

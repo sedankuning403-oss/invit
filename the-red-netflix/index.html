@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wedding of Adit & Devi - Netflix Style Invitation</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    
+	<!-- --- FAVICON (SVG Crown Emoji) --- -->
+    <link href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEita0_M2O-eCuyAVlkD8OIaq8QYjANaZTr61ExHZgO5wk5R3k_-Qg-UMLUIh2Xs1yfe9vHOXM7zl_DZN09EghVT3pmPEpsV5agqavbc54CnQ0CW01eoDtXxhgmVkXReU_tUy04HvF0BgltUDzZSaf35yaVUmnE9bi9_uIjrzpxl-852I-HjE0-2W_mYhJjm/s1280/logo%20296%20studios.png" rel="icon" sizes="32x32" type="image/png">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        netflixRed: '#E50914',
+                        netflixDark: '#141414',
+                        netflixGray: '#181818',
+                        netflixLightGray: '#2F2F2F',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        bebas: ['Bebas Neue', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Animate.css for entrance animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <!-- Custom Tailwind Customizations & Transitions -->
+    <style>
+        body {
+            background-color: #141414;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        /* Custom scrollbar to match Netflix style */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #141414;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E50914;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #b20710;
+        }
+        /* Hide scrollbars for gallery list while keeping scroll functionality */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        /* Soft overlay styling */
+        .netflix-gradient-bottom {
+            background: linear-gradient(to top, #141414 0%, rgba(20, 20, 20, 0.8) 40%, rgba(20, 20, 20, 0) 100%);
+        }
+        .netflix-gradient-top {
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
+        }
+        .card-glow:hover {
+            box-shadow: 0 10px 25px -5px rgba(229, 9, 20, 0.4);
+            transform: scale(1.05);
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- GATE SCREEN / WHO'S WATCHING SELECTOR -->
+    <div id="gate-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black transition-all duration-1000 ease-in-out">
+        <div class="text-center px-4 animate__animated animate__fadeIn">
+            <!-- Netflix Title Logo styled as the Groom & Bride Initials -->
+            <h1 class="text-netflixRed text-5xl md:text-7xl font-bebas tracking-wider mb-12 animate__animated animate__pulse animate__infinite">
+                A&D WEDDING
+            </h1>
+            
+            <p class="text-gray-300 text-lg md:text-2xl font-light mb-8">Who is watching this invitation?</p>
+            
+            <!-- Profiles Container -->
+            <div class="flex flex-wrap justify-center gap-6 md:gap-10 max-w-4xl mx-auto mb-12">
+                <!-- VIP Guest Profile (Dynamic based on URL query '?to=') -->
+                <div onclick="unlockInvitation()" class="group cursor-pointer text-center focus:outline-none">
+                    <div class="relative w-24 h-24 md:w-32 md:h-32 mx-auto rounded-md overflow-hidden border-4 border-transparent group-hover:border-white transition-all duration-300 shadow-lg flex items-center justify-center bg-gradient-to-tr from-netflixRed to-rose-500">
+                        <!-- Custom Icon or Avatar representing VIP Guest -->
+                        <span class="text-white text-4xl md:text-5xl font-bebas tracking-wide">VIP</span>
+                        <div class="absolute bottom-1 right-1 bg-black text-[10px] text-netflixRed px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">
+                            Guest
+                        </div>
+                    </div>
+                    <p id="guest-profile-name" class="mt-4 text-gray-400 font-medium group-hover:text-white transition-colors duration-300 text-sm md:text-base truncate max-w-[120px] md:max-w-[150px] mx-auto">
+                        Tamu Undangan
+                    </p>
+                </div>
+
+                <!-- Bride Character Profile -->
+                <div onclick="unlockInvitation()" class="group cursor-pointer text-center">
+                    <div class="w-24 h-24 md:w-32 md:h-32 mx-auto rounded-md overflow-hidden border-4 border-transparent group-hover:border-white transition-all duration-300 shadow-lg bg-emerald-700 flex items-center justify-center relative">
+                        <i class="fa-solid fa-venus text-white text-4xl md:text-5xl"></i>
+                    </div>
+                    <p class="mt-4 text-gray-400 font-medium group-hover:text-white transition-colors duration-300 text-sm md:text-base">Devina (Bride)</p>
+                </div>
+
+                <!-- Groom Character Profile -->
+                <div onclick="unlockInvitation()" class="group cursor-pointer text-center">
+                    <div class="w-24 h-24 md:w-32 md:h-32 mx-auto rounded-md overflow-hidden border-4 border-transparent group-hover:border-white transition-all duration-300 shadow-lg bg-sky-700 flex items-center justify-center relative">
+                        <i class="fa-solid fa-mars text-white text-4xl md:text-5xl"></i>
+                    </div>
+                    <p class="mt-4 text-gray-400 font-medium group-hover:text-white transition-colors duration-300 text-sm md:text-base">Aditya (Groom)</p>
+                </div>
+
+                <!-- Kids / Family Profile -->
+                <div onclick="unlockInvitation()" class="group cursor-pointer text-center hidden sm:block">
+                    <div class="w-24 h-24 md:w-32 md:h-32 mx-auto rounded-md overflow-hidden border-4 border-transparent group-hover:border-white transition-all duration-300 shadow-lg bg-amber-600 flex items-center justify-center relative">
+                        <i class="fa-solid fa-users text-white text-4xl md:text-5xl"></i>
+                    </div>
+                    <p class="mt-4 text-gray-400 font-medium group-hover:text-white transition-colors duration-300 text-sm md:text-base">Kerabat Baik</p>
+                </div>
+            </div>
+
+            <!-- Manage Profiles Mode Indicator -->
+            <button onclick="unlockInvitation()" class="border border-gray-600 text-gray-500 hover:text-white hover:border-white px-6 py-2 tracking-widest text-xs uppercase font-semibold transition-all duration-300 rounded hover:bg-zinc-900">
+                Unlock Invitation <i class="fa-solid fa-lock-open ml-2"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN INVITATION PAGE (Hidden by default, shown after profile unlock) -->
+    <div id="main-content" class="opacity-0 transition-opacity duration-1000 hidden">
+        
+        <!-- NETFLIX FLOATING HEADER BAR -->
+        <nav id="navbar" class="fixed top-0 left-0 right-0 z-40 transition-colors duration-500 flex items-center justify-between px-4 md:px-12 py-3 md:py-4 netflix-gradient-top">
+            <div class="flex items-center space-x-4 md:space-x-8">
+                <!-- Netflix Red Logo -->
+                <a href="#" class="text-netflixRed font-bebas text-3xl md:text-4xl tracking-wider hover:scale-105 transition-transform duration-200">
+                    N<span class="text-white text-lg font-light font-sans ml-1 tracking-tight hidden md:inline">WEDDING</span>
+                </a>
+                
+                <!-- Desktop Navigation Menu Links -->
+                <div class="hidden md:flex space-x-6 text-sm font-semibold text-gray-300">
+                    <a href="#home" class="hover:text-white transition-colors">Home</a>
+                    <a href="#mempelai" class="hover:text-white transition-colors">Cast & Crew</a>
+                    <a href="#cerita" class="hover:text-white transition-colors">Episodes</a>
+                    <a href="#galeri" class="hover:text-white transition-colors">Trailers & More</a>
+                    <a href="#acara" class="hover:text-white transition-colors">Showtimes</a>
+                    <a href="#buku-tamu" class="hover:text-white transition-colors">Reviews (RSVP)</a>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4 md:space-x-6">
+                <!-- Sound Toggle Widget -->
+                <button onclick="toggleMusic()" class="text-white hover:text-netflixRed transition-colors focus:outline-none p-2 bg-zinc-900/60 rounded-full border border-zinc-800 flex items-center justify-center w-10 h-10 shadow-lg">
+                    <i id="sound-icon" class="fa-solid fa-volume-high"></i>
+                </button>
+                
+                <!-- Quick Link RSVP Button -->
+                <a href="#buku-tamu" class="bg-netflixRed text-white px-4 py-1.5 rounded text-xs md:text-sm font-bold hover:bg-red-700 transition-all duration-300 shadow">
+                    RSVP
+                </a>
+                
+                <!-- Guest Mini Avatar Display -->
+                <div class="w-8 h-8 rounded-md bg-gradient-to-tr from-netflixRed to-rose-500 flex items-center justify-center font-bebas text-xs font-bold shadow-md cursor-pointer border border-white/20" title="Profile Aktif">
+                    VIP
+                </div>
+            </div>
+        </nav>
+
+        <!-- BILLBOARD HERO SECTION (HOME) -->
+        <section id="home" class="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-16 md:pt-0">
+            <!-- Background Prewedding Image with cinematic dark gradient overlay -->
+            <div class="absolute inset-0 z-0">
+                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1920" 
+                     onerror="this.src='https://placehold.co/1920x1080/1c1c1c/E50914?text=Our+Wedding+Premier'"
+                     class="w-full h-full object-cover object-center scale-105 animate-[pulse_8s_infinite] filter brightness-50" 
+                     alt="Prewedding Backdrop">
+                <div class="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent"></div>
+                <div class="absolute inset-x-0 bottom-0 h-48 netflix-gradient-bottom"></div>
+            </div>
+
+            <!-- Billboard Content -->
+            <div class="relative z-10 w-full max-w-7xl mx-auto px-4 md:px-12 py-12 flex flex-col justify-end min-h-[85vh] md:min-h-screen">
+                <div class="max-w-2xl animate__animated animate__fadeInUp">
+                    <!-- Movie / Wedding Label Category -->
+                    <div class="flex items-center space-x-2 text-xs md:text-sm font-bold tracking-widest text-gray-300 uppercase mb-3">
+                        <span class="border border-white/40 px-2 py-0.5 rounded text-white bg-black/40">ORIGINAL SERIES</span>
+                        <span class="text-netflixRed"><i class="fa-solid fa-crown mr-1"></i> SPECIAL EVENT</span>
+                    </div>
+
+                    <!-- Title Banner Styling -->
+                    <h2 class="text-5xl md:text-8xl font-bebas tracking-wide leading-none mb-4 bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
+                        THE MARRIAGE
+                    </h2>
+                    
+                    <!-- Sub-title / Couple Initials -->
+                    <h3 class="text-xl md:text-3xl font-serif italic text-rose-300 mb-6 font-medium">
+                        Aditya & Devina: The Final Season
+                    </h3>
+
+                    <!-- Cinematic Specs Metadata -->
+                    <div class="flex flex-wrap items-center gap-3 text-xs md:text-sm font-semibold mb-6 text-gray-300">
+                        <span class="text-emerald-500 font-bold">99% Match</span>
+                        <span class="border border-gray-500 px-1.5 py-0.2 rounded text-[11px]">2026</span>
+                        <span class="border border-gray-500 px-1.5 py-0.2 rounded text-[11px]">17+</span>
+                        <span>1 Episode (Special Live Premiere)</span>
+                        <span class="bg-zinc-800 text-white px-2 py-0.5 rounded text-[10px] font-bold">Ultra HD 4K</span>
+                    </div>
+
+                    <!-- Short Synopsis Romantic Hook -->
+                    <p class="text-gray-300 text-sm md:text-base leading-relaxed mb-8 font-light max-w-xl">
+                        Setelah perjalanan cinta yang mengagumkan selama beberapa musim, petualangan romantis Aditya & Devina akhirnya mencapai babak akhir yang paling membahagiakan: Pernikahan Kudus. Saksikan penayangan perdana komitmen suci mereka secara eksklusif.
+                    </p>
+
+                    <!-- Quick RSVP Callout Dynamic Panel -->
+                    <div class="bg-netflixGray/85 border border-zinc-800/80 rounded-lg p-4 mb-8 backdrop-blur-md max-w-lg shadow-2xl">
+                        <p class="text-netflixRed text-xs font-bold uppercase tracking-wider mb-1">
+                            <i class="fa-solid fa-user-tag mr-1.5 animate-bounce"></i> VIP Guest Invitation For:
+                        </p>
+                        <h4 id="guest-name-card" class="text-white text-xl md:text-2xl font-bold tracking-tight mb-2">
+                            Nama Tamu Undangan
+                        </h4>
+                        <p class="text-xs text-gray-400">
+                            Merupakan suatu kehormatan bagi kami untuk menyambut kehadiran Anda dalam penayangan perdana ikatan janji suci kami secara langsung.
+                        </p>
+                    </div>
+
+                    <!-- CTA Actions (Play and More Info style) -->
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#acara" class="flex items-center justify-center space-x-2 bg-white text-black font-bold px-6 py-3 rounded-md hover:bg-neutral-200 transition-all duration-300 shadow-lg text-sm md:text-base w-full sm:w-auto">
+                            <i class="fa-solid fa-play text-lg"></i>
+                            <span>Hadir di Acara</span>
+                        </a>
+                        <a href="#cerita" class="flex items-center justify-center space-x-2 bg-zinc-700/80 hover:bg-zinc-600/90 text-white font-bold px-6 py-3 rounded-md transition-all duration-300 shadow-lg text-sm md:text-base w-full sm:w-auto backdrop-blur-sm border border-zinc-500/20">
+                            <i class="fa-solid fa-circle-info text-lg"></i>
+                            <span>Our Love Story</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COUNTDOWN & SPIRITUAL CARD SECTION -->
+        <section class="relative z-20 bg-netflixDark px-4 md:px-12 py-16">
+            <div class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-zinc-900/60 border border-zinc-800 rounded-xl p-6 md:p-10 backdrop-blur-lg shadow-2xl">
+                <!-- Countdown Clock Card Left Side -->
+                <div class="lg:col-span-7 space-y-4">
+                    <div class="flex items-center space-x-2 text-netflixRed font-bold text-xs md:text-sm tracking-wider uppercase">
+                        <span class="animate-pulse w-2 h-2 rounded-full bg-netflixRed"></span>
+                        <span>Official Release Countdown</span>
+                    </div>
+                    <h3 class="text-2xl md:text-4xl font-bebas tracking-wide">COMING SOON ON SUNDAY, 20 SEPTEMBER 2026</h3>
+                    
+                    <!-- Countdown Display Grid -->
+                    <div class="grid grid-cols-4 gap-2 md:gap-4 pt-4">
+                        <div class="bg-netflixGray border border-zinc-800 rounded-lg p-3 text-center">
+                            <span id="countdown-days" class="block text-2xl md:text-4xl font-bebas text-netflixRed">00</span>
+                            <span class="text-[10px] md:text-xs text-gray-400 font-semibold tracking-wider uppercase">Days</span>
+                        </div>
+                        <div class="bg-netflixGray border border-zinc-800 rounded-lg p-3 text-center">
+                            <span id="countdown-hours" class="block text-2xl md:text-4xl font-bebas text-white">00</span>
+                            <span class="text-[10px] md:text-xs text-gray-400 font-semibold tracking-wider uppercase">Hours</span>
+                        </div>
+                        <div class="bg-netflixGray border border-zinc-800 rounded-lg p-3 text-center">
+                            <span id="countdown-minutes" class="block text-2xl md:text-4xl font-bebas text-white">00</span>
+                            <span class="text-[10px] md:text-xs text-gray-400 font-semibold tracking-wider uppercase">Mins</span>
+                        </div>
+                        <div class="bg-netflixGray border border-zinc-800 rounded-lg p-3 text-center">
+                            <span id="countdown-seconds" class="block text-2xl md:text-4xl font-bebas text-netflixRed animate-pulse">00</span>
+                            <span class="text-[10px] md:text-xs text-gray-400 font-semibold tracking-wider uppercase">Secs</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spiritual Quote Card Right Side -->
+                <div class="lg:col-span-5 border-t lg:border-t-0 lg:border-l border-zinc-800 pt-6 lg:pt-0 lg:pl-8 text-center lg:text-left">
+                    <i class="fa-solid fa-quote-left text-netflixRed text-3xl mb-4 opacity-50 block lg:inline"></i>
+                    <p class="text-gray-300 italic text-sm md:text-base leading-relaxed font-serif">
+                        “Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.”
+                    </p>
+                    <span class="block mt-4 text-xs font-bold tracking-wider uppercase text-netflixRed">
+                        — QS. Ar-Rum: 21
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- CAST & CREW SECTION (PROFILE MEMPELAI) -->
+        <section id="mempelai" class="relative z-20 bg-netflixDark px-4 md:px-12 py-16 border-t border-zinc-900">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-12">
+                    <h2 class="text-3xl md:text-5xl font-bebas tracking-wide text-white mb-2">
+                        Meet the Main Cast
+                    </h2>
+                    <p class="text-gray-400 text-sm md:text-base">Click on any cast member to view their biological dossier.</p>
+                </div>
+
+                <!-- Cast Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 max-w-4xl mx-auto">
+                    
+                    <!-- Groom Actor Card -->
+                    <div onclick="openCastModal('groom')" class="group cursor-pointer bg-netflixGray border border-zinc-800 rounded-xl overflow-hidden card-glow transition-all duration-300 shadow-xl">
+                        <div class="relative h-96 md:h-[28rem] overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800" 
+                                 onerror="this.src='https://placehold.co/600x800/1c1c1c/ffffff?text=Groom+Actor'"
+                                 class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" 
+                                 alt="Aditya Pratama">
+                            <div class="absolute inset-0 bg-gradient-to-t from-netflixGray via-transparent to-transparent"></div>
+                            <div class="absolute bottom-4 left-4 right-4">
+                                <span class="bg-netflixRed text-white text-[10px] font-bold tracking-widest uppercase px-2 py-1 rounded">Mempelai Pria</span>
+                                <h3 class="text-2xl md:text-3xl font-bebas tracking-wide text-white mt-2">Aditya Pratama, S.T.</h3>
+                                <p class="text-xs text-rose-300 font-serif italic">Sebagai Pemeran Utama Pria</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-xs text-gray-400 mb-2 font-semibold">Putra pertama dari:</p>
+                            <p class="text-sm text-gray-200 font-bold mb-4">Bapak Dr. Ir. H. Bambang Widjojo & Ibu Hj. Retno Lestari</p>
+                            <span class="text-netflixRed text-xs font-bold group-hover:underline">
+                                Lihat Bio Lengkap <i class="fa-solid fa-circle-chevron-right ml-1"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Bride Actor Card -->
+                    <div onclick="openCastModal('bride')" class="group cursor-pointer bg-netflixGray border border-zinc-800 rounded-xl overflow-hidden card-glow transition-all duration-300 shadow-xl">
+                        <div class="relative h-96 md:h-[28rem] overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800" 
+                                 onerror="this.src='https://placehold.co/600x800/1c1c1c/ffffff?text=Bride+Actress'"
+                                 class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" 
+                                 alt="Devina Putri">
+                            <div class="absolute inset-0 bg-gradient-to-t from-netflixGray via-transparent to-transparent"></div>
+                            <div class="absolute bottom-4 left-4 right-4">
+                                <span class="bg-netflixRed text-white text-[10px] font-bold tracking-widest uppercase px-2 py-1 rounded">Mempelai Wanita</span>
+                                <h3 class="text-2xl md:text-3xl font-bebas tracking-wide text-white mt-2">Devina Putri, M.B.A.</h3>
+                                <p class="text-xs text-rose-300 font-serif italic">Sebagai Pemeran Utama Wanita</p>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-xs text-gray-400 mb-2 font-semibold">Putri kedua dari:</p>
+                            <p class="text-sm text-gray-200 font-bold mb-4">Bapak Drs. H. Ahmad Fauzi & Ibu Hj. Siti Aminah</p>
+                            <span class="text-netflixRed text-xs font-bold group-hover:underline">
+                                Lihat Bio Lengkap <i class="fa-solid fa-circle-chevron-right ml-1"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- CAST BIOGRAPHY MODALS -->
+        <div id="cast-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+            <div class="relative bg-zinc-900 border border-zinc-800 rounded-xl max-w-lg w-full overflow-hidden shadow-2xl animate__animated">
+                <!-- Close Button -->
+                <button onclick="closeCastModal()" class="absolute top-4 right-4 z-10 text-white bg-black/60 hover:bg-netflixRed hover:text-white w-8 h-8 rounded-full flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                
+                <!-- Dynamic Content Container -->
+                <div id="cast-modal-body" class="p-6 md:p-8 space-y-6">
+                    <!-- Loaded dynamically via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- EPISODES SECTION (LOVE STORY TIMELINE) -->
+        <section id="cerita" class="relative z-20 bg-netflixDark px-4 md:px-12 py-16 border-t border-zinc-900">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                    <div class="mb-4 md:mb-0">
+                        <h2 class="text-3xl md:text-5xl font-bebas tracking-wide text-white mb-2">
+                            Episodes: Our Love Journey
+                        </h2>
+                        <p class="text-gray-400 text-sm md:text-base">Season 1: Dari Perkenalan Hingga Menuju Janji Suci</p>
+                    </div>
+                    
+                    <!-- Styled Season Dropdown (Static Showcase) -->
+                    <div class="relative inline-block">
+                        <span class="bg-zinc-800 border border-zinc-700 text-white px-4 py-2 rounded text-xs md:text-sm font-bold flex items-center space-x-2 cursor-default">
+                            <span>Season 1 (3 Episodes)</span>
+                            <i class="fa-solid fa-chevron-down text-gray-400"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Episodes List Layout (Netflix Episode Style) -->
+                <div class="space-y-6 max-w-5xl mx-auto">
+                    
+                    <!-- Episode 1 -->
+                    <div class="flex flex-col md:flex-row gap-6 p-4 md:p-6 bg-zinc-900/40 hover:bg-zinc-900/80 rounded-xl border border-zinc-800/40 transition-colors duration-300">
+                        <div class="relative md:w-64 h-40 shrink-0 overflow-hidden rounded-lg bg-zinc-800">
+                            <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80&w=400" 
+                                 onerror="this.src='https://placehold.co/400x250/1c1c1c/ffffff?text=First+Meet'"
+                                 class="w-full h-full object-cover" alt="First Meet">
+                            <div class="absolute bottom-2 right-2 bg-black/80 px-1.5 py-0.5 rounded text-[10px] font-bold text-white tracking-wider">
+                                OCT 2022
+                            </div>
+                        </div>
+                        <div class="flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <h3 class="text-lg md:text-xl font-bold text-white">1. Episode Pertama: Awal Mula Takdir</h3>
+                                    <span class="text-xs text-netflixRed font-bold uppercase tracking-wider"><i class="fa-solid fa-star mr-1"></i> Special</span>
+                                </div>
+                                <p class="text-gray-300 text-xs md:text-sm leading-relaxed font-light mb-4">
+                                    Pertemuan yang tak disengaja di sebuah seminar nasional membawa kami dalam perbincangan hangat. Berawal dari bertukar kontak bisnis, kami menyadari ada kecocokan pandangan hidup dan ketertarikan mendalam yang mulai tumbuh secara organik.
+                                </p>
+                            </div>
+                            <span class="text-[11px] text-gray-500 font-semibold uppercase tracking-widest">Runtime: 12 Months of friendship</span>
+                        </div>
+                    </div>
+
+                    <!-- Episode 2 -->
+                    <div class="flex flex-col md:flex-row gap-6 p-4 md:p-6 bg-zinc-900/40 hover:bg-zinc-900/80 rounded-xl border border-zinc-800/40 transition-colors duration-300">
+                        <div class="relative md:w-64 h-40 shrink-0 overflow-hidden rounded-lg bg-zinc-800">
+                            <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=400" 
+                                 onerror="this.src='https://placehold.co/400x250/1c1c1c/ffffff?text=The+Proposal'"
+                                 class="w-full h-full object-cover" alt="The Proposal">
+                            <div class="absolute bottom-2 right-2 bg-black/80 px-1.5 py-0.5 rounded text-[10px] font-bold text-white tracking-wider">
+                                DEC 2024
+                            </div>
+                        </div>
+                        <div class="flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <h3 class="text-lg md:text-xl font-bold text-white">2. Episode Kedua: Mengikat Janji (Engagement)</h3>
+                                    <span class="text-xs text-netflixRed font-bold uppercase tracking-wider"><i class="fa-solid fa-heart mr-1"></i> Love Match</span>
+                                </div>
+                                <p class="text-gray-300 text-xs md:text-sm leading-relaxed font-light mb-4">
+                                    Setelah melewati pasang surut bersama, kami memutuskan untuk membawa hubungan ini ke arah yang lebih serius. Dengan restu penuh dari kedua belah pihak keluarga, prosesi lamaran resmi diadakan dengan penuh kehangatan dan rasa syukur yang luar biasa.
+                                </p>
+                            </div>
+                            <span class="text-[11px] text-gray-500 font-semibold uppercase tracking-widest">Runtime: Step Closer to Forever</span>
+                        </div>
+                    </div>
+
+                    <!-- Episode 3 -->
+                    <div class="flex flex-col md:flex-row gap-6 p-4 md:p-6 bg-zinc-900/40 hover:bg-zinc-900/80 rounded-xl border border-zinc-800/40 transition-colors duration-300">
+                        <div class="relative md:w-64 h-40 shrink-0 overflow-hidden rounded-lg bg-zinc-800">
+                            <img src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&q=80&w=400" 
+                                 onerror="this.src='https://placehold.co/400x250/1c1c1c/ffffff?text=The+Wedding'"
+                                 class="w-full h-full object-cover" alt="The Wedding">
+                            <div class="absolute bottom-2 right-2 bg-black/80 px-1.5 py-0.5 rounded text-[10px] font-bold text-white tracking-wider">
+                                SEP 2026
+                            </div>
+                        </div>
+                        <div class="flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <h3 class="text-lg md:text-xl font-bold text-white">3. Episode Ketiga: Babak Baru Selamanya</h3>
+                                    <span class="text-xs text-emerald-500 font-bold uppercase tracking-wider"><i class="fa-solid fa-star-of-life mr-1"></i> Premiere</span>
+                                </div>
+                                <p class="text-gray-300 text-xs md:text-sm leading-relaxed font-light mb-4">
+                                    Hari istimewa di mana kami berdua mengikrarkan janji suci pernikahan di hadapan Sang Pencipta, keluarga tercinta, dan seluruh sahabat dekat. Inilah awal mula komitmen seumur hidup kami untuk saling mencintai, menjaga, dan berbagi takdir.
+                                </p>
+                            </div>
+                            <span class="text-[11px] text-gray-500 font-semibold uppercase tracking-widest">Runtime: Lifetime & Beyond</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- TRAILERS & MORE (GALLERY CAROUSEL) -->
+        <section id="galeri" class="relative z-20 bg-netflixDark px-4 md:px-12 py-16 border-t border-zinc-900">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-10">
+                    <h2 class="text-3xl md:text-5xl font-bebas tracking-wide text-white mb-2">
+                        Trailers & More: Photo Gallery
+                    </h2>
+                    <p class="text-gray-400 text-sm md:text-base">Sneak peek pre-wedding moments designed like cinematic promotional posters.</p>
+                </div>
+
+                <!-- Horizontal scrollable list container with fade masks -->
+                <div class="relative group">
+                    <div class="flex overflow-x-auto space-x-6 py-4 px-2 no-scrollbar scroll-smooth" id="gallery-scroller">
+                        
+                        <!-- Poster 1 -->
+                        <div onclick="openLightbox('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=800')" class="flex-none w-64 h-96 bg-zinc-800 rounded-lg overflow-hidden border border-zinc-800 cursor-pointer card-glow transition-all duration-300 relative">
+                            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=400" 
+                                 onerror="this.src='https://placehold.co/400x600/1c1c1c/E50914?text=Love+Session+1'"
+                                 class="w-full h-full object-cover" alt="Prewedding Love">
+                            <div class="absolute inset-0 bg-black/40 hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 hover:opacity-100 duration-300">
+                                <i class="fa-solid fa-play bg-white/20 hover:bg-white text-white hover:text-black w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-sm border border-white text-2xl transition-all duration-300 transform scale-90 hover:scale-100"></i>
+                            </div>
+                        </div>
+
+                        <!-- Poster 2 -->
+                        <div onclick="openLightbox('https://images.unsplash.com/photo-1519225495810-7512c696505a?auto=format&fit=crop&q=80&w=800')" class="flex-none w-64 h-96 bg-zinc-800 rounded-lg overflow-hidden border border-zinc-800 cursor-pointer card-glow transition-all duration-300 relative">
+                            <img src="https://images.unsplash.com/photo-1519225495810-7512c696505a?auto=format&fit=crop&q=80&w=400" 
+                                 onerror="this.src='https://placehold.co/400x600/1c1c1c/E50914?text=Love+Session+2'"
+                                 class="w-full h-full object-cover" alt="Prewedding Love">
+                            <div class="absolute inset-0 bg-black/40 hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 hover:opacity-100 duration-300">
+                                <i class="fa-solid fa-play bg-white/20 hover:bg-white text-white hover:text-black w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-sm border border-white text-2xl transition-all duration-300 transform scale-90 hover:scale-100"></i>
+                            </div>
+                        </div>
+
+                        <!-- Poster 3 -->
+                        <div onclick="openLightbox('https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=800')" class="flex-none w-64 h-96 bg-zinc-800 rounded-lg overflow-hidden border border-zinc-800 cursor-pointer card-glow transition-all duration-300 relative">
+                            <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=400" 
+                                 onerror="this.src='https://placehold.co/400x600/1c1c1c/E50914?text=Love+Session+3'"
+                                 class="w-full h-full object-cover" alt="Prewedding Love">
+                            <div class="absolute inset-0 bg-black/40 hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 hover:opacity-100 duration-300">
+                                <i class="fa-solid fa-play bg-white/20 hover:bg-white text-white hover:text-black w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-sm border border-white text-2xl transition-all duration-300 transform scale-90 hover:scale-100"></i>
+                            </div>
+                        </div>
+
+                        <!-- Poster 4 -->
+                        <div onclick="openLightbox('https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800')" class="flex-none w-64 h-96 bg-zinc-800 rounded-lg overflow-hidden border border-zinc-800 cursor-pointer card-glow transition-all duration-300 relative">
+                            <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=400" 
+                                 onerror="this.src='https://placehold.co/400x600/1c1c1c/E50914?text=Love+Session+4'"
+                                 class="w-full h-full object-cover" alt="Prewedding Love">
+                            <div class="absolute inset-0 bg-black/40 hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 hover:opacity-100 duration-300">
+                                <i class="fa-solid fa-play bg-white/20 hover:bg-white text-white hover:text-black w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-sm border border-white text-2xl transition-all duration-300 transform scale-90 hover:scale-100"></i>
+                            </div>
+                        </div>
+
+                        <!-- Poster 5 -->
+                        <div onclick="openLightbox('https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&q=80&w=800')" class="flex-none w-64 h-96 bg-zinc-800 rounded-lg overflow-hidden border border-zinc-800 cursor-pointer card-glow transition-all duration-300 relative">
+                            <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&q=80&w=400" 
+                                 onerror="this.src='https://placehold.co/400x600/1c1c1c/E50914?text=Love+Session+5'"
+                                 class="w-full h-full object-cover" alt="Prewedding Love">
+                            <div class="absolute inset-0 bg-black/40 hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 hover:opacity-100 duration-300">
+                                <i class="fa-solid fa-play bg-white/20 hover:bg-white text-white hover:text-black w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-sm border border-white text-2xl transition-all duration-300 transform scale-90 hover:scale-100"></i>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Scroll navigation indicators -->
+                    <button onclick="scrollGallery(-300)" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-netflixRed text-white w-12 h-12 rounded-full hidden md:flex items-center justify-center focus:outline-none shadow-lg z-10 border border-zinc-800 transition-colors duration-200">
+                        <i class="fa-solid fa-chevron-left text-xl"></i>
+                    </button>
+                    <button onclick="scrollGallery(300)" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-netflixRed text-white w-12 h-12 rounded-full hidden md:flex items-center justify-center focus:outline-none shadow-lg z-10 border border-zinc-800 transition-colors duration-200">
+                        <i class="fa-solid fa-chevron-right text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- LIGHTBOX MODAL FOR IMAGES -->
+        <div id="lightbox-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+            <button onclick="closeLightbox()" class="absolute top-4 right-4 z-10 text-white bg-black/60 hover:bg-netflixRed hover:text-white w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="max-w-4xl max-h-[90vh] overflow-hidden rounded-lg shadow-2xl">
+                <img id="lightbox-img" src="" class="max-w-full max-h-[85vh] object-contain rounded-lg border border-zinc-800" alt="Prewedding Fullscreen">
+            </div>
+        </div>
+
+        <!-- SHOWTIMES SECTION (ACARA & LOKASI) -->
+        <section id="acara" class="relative z-20 bg-netflixDark px-4 md:px-12 py-16 border-t border-zinc-900">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-12 text-center">
+                    <h2 class="text-3xl md:text-5xl font-bebas tracking-wide text-white mb-2">
+                        Showtimes: Date, Time & Venue
+                    </h2>
+                    <p class="text-gray-400 text-sm md:text-base">Please mark your calendars for the special release of our lifetime premiere.</p>
+                </div>
+
+                <!-- Event Details Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    
+                    <!-- Akad Nikah Card -->
+                    <div class="bg-netflixGray border border-zinc-800 rounded-xl p-6 md:p-8 card-glow transition-all duration-300 flex flex-col justify-between shadow-2xl">
+                        <div>
+                            <div class="flex items-center justify-between mb-6">
+                                <span class="bg-amber-600 text-white text-xs font-bold tracking-widest uppercase px-3 py-1 rounded">
+                                    THE SOLEMN CEREMONY
+                                </span>
+                                <i class="fa-solid fa-heart text-netflixRed text-2xl"></i>
+                            </div>
+                            <h3 class="text-3xl font-bebas tracking-wide mb-4">Akad Nikah (Exclusively Private)</h3>
+                            
+                            <ul class="space-y-4 text-gray-300 mb-8">
+                                <li class="flex items-start">
+                                    <i class="fa-regular fa-calendar-check text-netflixRed text-xl mr-3 mt-0.5"></i>
+                                    <div>
+                                        <p class="font-bold text-white">Minggu, 20 September 2026</p>
+                                        <p class="text-xs text-gray-400">Pukul 08.00 - 10.00 WIB</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa-solid fa-map-pin text-netflixRed text-xl mr-3 mt-0.5"></i>
+                                    <div>
+                                        <p class="font-bold text-white">Waroeng Djoglo, Joglo Jakarta</p>
+                                        <p class="text-xs text-gray-400 leading-relaxed">
+                                            Jl. Meruya Selatan No. 17, Kembangan, RT.1/RW.1, Joglo, Kec. Kembangan, Kota Jakarta Barat, 11640
+                                        </p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Calendar CTA -->
+                        <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Akad+Nikah+Aditya+%26+Devina&dates=20260920T010000Z/20260920T030000Z&details=Selamat+datang+di+Akad+Nikah+Aditya+%26+Devina.&location=Waroeng+Djoglo%2C+Jakarta" 
+                           target="_blank" 
+                           class="w-full bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-3 px-4 rounded-md text-center transition-all duration-300 block text-sm border border-zinc-700/50">
+                            <i class="fa-regular fa-calendar-plus mr-2"></i> Add to Google Calendar
+                        </a>
+                    </div>
+
+                    <!-- Resepsi Card -->
+                    <div class="bg-netflixGray border border-zinc-800 rounded-xl p-6 md:p-8 card-glow transition-all duration-300 flex flex-col justify-between shadow-2xl">
+                        <div>
+                            <div class="flex items-center justify-between mb-6">
+                                <span class="bg-netflixRed text-white text-xs font-bold tracking-widest uppercase px-3 py-1 rounded">
+                                    GRAND GALA CELEBRATION
+                                </span>
+                                <i class="fa-solid fa-champagne-glasses text-rose-400 text-2xl"></i>
+                            </div>
+                            <h3 class="text-3xl font-bebas tracking-wide mb-4">Resepsi Pernikahan</h3>
+                            
+                            <ul class="space-y-4 text-gray-300 mb-8">
+                                <li class="flex items-start">
+                                    <i class="fa-regular fa-calendar-check text-netflixRed text-xl mr-3 mt-0.5"></i>
+                                    <div>
+                                        <p class="font-bold text-white">Minggu, 20 September 2026</p>
+                                        <p class="text-xs text-gray-400">Pukul 11.00 - 16.00 WIB</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa-solid fa-map-pin text-netflixRed text-xl mr-3 mt-0.5"></i>
+                                    <div>
+                                        <p class="font-bold text-white">Waroeng Djoglo, Joglo Jakarta</p>
+                                        <p class="text-xs text-gray-400 leading-relaxed">
+                                            Jl. Meruya Selatan No. 17, Kembangan, RT.1/RW.1, Joglo, Kec. Kembangan, Kota Jakarta Barat, 11640
+                                        </p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Directions CTA -->
+                        <a href="https://maps.app.goo.gl/9r9r7Y3Z4f36S7yN7" 
+                           target="_blank" 
+                           class="w-full bg-netflixRed hover:bg-red-700 text-white font-bold py-3 px-4 rounded-md text-center transition-all duration-300 block text-sm shadow">
+                            <i class="fa-solid fa-map-location-dot mr-2"></i> Open Google Maps Navigation
+                        </a>
+                    </div>
+
+                </div>
+
+                <!-- Google Maps Embed Container -->
+                <div class="max-w-5xl mx-auto mt-12 bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow-2xl h-96">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1m2!1s0x2e69f76a599691d1%3A0xe443e20e170f3f2d!2sWaroeng%20Djoglo!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
+                        class="w-full h-full border-0 grayscale invert contrast-125 opacity-80"
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- AUDIENCE REVIEWS & BOOK GUEST SECTION -->
+        <section id="buku-tamu" class="relative z-20 bg-netflixDark px-4 md:px-12 py-16 border-t border-zinc-900">
+            <div class="max-w-5xl mx-auto">
+                <div class="mb-12 text-center">
+                    <h2 class="text-3xl md:text-5xl font-bebas tracking-wide text-white mb-2">
+                        Audience Reviews & Wishes
+                    </h2>
+                    <p class="text-gray-400 text-sm md:text-base">Please submit your RSVP rating and share your beautiful prayers for the newlyweds.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- RSVP Review Form -->
+                    <div class="lg:col-span-5 bg-netflixGray border border-zinc-800 p-6 rounded-xl h-fit shadow-2xl">
+                        <h3 class="text-xl font-bold text-white mb-6 flex items-center">
+                            <i class="fa-solid fa-pen-fancy text-netflixRed mr-2"></i> Write your Review
+                        </h3>
+                        
+                        <form id="rsvp-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                            <!-- Name Field -->
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Your Profile Name</label>
+                                <input type="text" id="form-name" required 
+                                       class="w-full bg-zinc-800 border border-zinc-700 rounded p-3 text-white focus:outline-none focus:border-netflixRed text-sm">
+                            </div>
+
+                            <!-- RSVP Status Attendance -->
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Attendance Confirmation</label>
+                                <select id="form-status" required 
+                                        class="w-full bg-zinc-800 border border-zinc-700 rounded p-3 text-white focus:outline-none focus:border-netflixRed text-sm">
+                                    <option value="" disabled selected>Pilih Status Kehadiran</option>
+                                    <option value="Hadir">Iya, Saya Akan Datang (Confirm Match)</option>
+                                    <option value="Tidak Hadir">Maaf, Saya Tidak Bisa Datang (Decline)</option>
+                                    <option value="Ragu-Ragu">Masih Ragu-Ragu (Tentative)</option>
+                                </select>
+                            </div>
+
+                            <!-- Romantic Rating Stars -->
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Match Rating</label>
+                                <div class="flex items-center space-x-2">
+                                    <input type="hidden" id="form-rating" value="5">
+                                    <div class="flex text-amber-500 text-2xl cursor-pointer" id="star-container">
+                                        <i onclick="setRating(1)" class="fa-solid fa-star star-btn"></i>
+                                        <i onclick="setRating(2)" class="fa-solid fa-star star-btn"></i>
+                                        <i onclick="setRating(3)" class="fa-solid fa-star star-btn"></i>
+                                        <i onclick="setRating(4)" class="fa-solid fa-star star-btn font-regular"></i>
+                                        <i onclick="setRating(5)" class="fa-solid fa-star star-btn font-regular"></i>
+                                    </div>
+                                    <span id="rating-label" class="text-xs text-gray-400 ml-2">(3/5 Stars)</span>
+                                </div>
+                            </div>
+
+                            <!-- Wishes Textbox -->
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Wishes & Review Message</label>
+                                <textarea id="form-message" rows="4" required placeholder="Tulis doa restu terbaikmu untuk kami..."
+                                          class="w-full bg-zinc-800 border border-zinc-700 rounded p-3 text-white focus:outline-none focus:border-netflixRed text-sm"></textarea>
+                            </div>
+
+                            <!-- Submit CTA Button -->
+                            <button type="submit" class="w-full bg-netflixRed hover:bg-red-700 text-white font-bold py-3 px-4 rounded-md transition-all duration-300 text-sm shadow flex items-center justify-center">
+                                <i class="fa-solid fa-paper-plane mr-2"></i> Submit Official Review
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Live Dynamic Comments Display -->
+                    <div class="lg:col-span-7 bg-netflixGray border border-zinc-800 p-6 rounded-xl shadow-2xl flex flex-col h-[550px]">
+                        <div class="flex items-center justify-between border-b border-zinc-800 pb-4 mb-4">
+                            <h3 class="text-xl font-bold text-white flex items-center">
+                                <i class="fa-solid fa-comments text-netflixRed mr-2"></i> Guest Reviews 
+                                <span id="comments-count" class="ml-2 text-xs bg-zinc-800 px-2 py-1 rounded text-gray-300 font-semibold">0</span>
+                            </h3>
+                            <div class="flex space-x-2 text-xs">
+                                <span class="text-emerald-500 font-semibold"><span id="rsvp-present-count">0</span> Hadir</span>
+                                <span class="text-gray-400">|</span>
+                                <span class="text-gray-400"><span id="rsvp-absent-count">0</span> Absen</span>
+                            </div>
+                        </div>
+
+                        <!-- Scrollable list of comments -->
+                        <div id="comments-list-box" class="flex-1 overflow-y-auto space-y-4 pr-2 no-scrollbar">
+                            <!-- Dynamic Comments get appended here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PREMIUM SUPPORT PLAN SECTION (ANGPAO / GIFT) -->
+        <section id="gift" class="relative z-20 bg-netflixDark px-4 md:px-12 py-16 border-t border-zinc-900">
+            <div class="max-w-5xl mx-auto">
+                <div class="mb-12 text-center">
+                    <h2 class="text-3xl md:text-5xl font-bebas tracking-wide text-white mb-2">
+                        Premium Plan Support: Wedding Gift
+                    </h2>
+                    <p class="text-gray-400 text-sm md:text-base">Support the happy couple by choosing a premium contribution plan below.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    
+                    <!-- Bank BCA Card -->
+                    <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 relative overflow-hidden card-glow transition-all duration-300 shadow-2xl flex flex-col justify-between">
+                        <div>
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-netflixRed/10 rounded-full blur-2xl"></div>
+                            <div class="flex justify-between items-start mb-6">
+                                <span class="font-bebas text-2xl tracking-wider text-sky-400">BCA BANKING</span>
+                                <i class="fa-solid fa-credit-card text-sky-400 text-2xl"></i>
+                            </div>
+                            <p class="text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">Account Number</p>
+                            <h4 id="bank-acc-1" class="text-2xl font-bold tracking-wider text-white mb-4">6041234567</h4>
+                            <p class="text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">Account Holder</p>
+                            <p class="text-lg font-bold text-gray-200 mb-6">Aditya Pratama</p>
+                        </div>
+                        <button onclick="copyToClipboard('bank-acc-1')" class="w-full bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-2.5 px-4 rounded text-sm transition-all duration-300 border border-zinc-700/60">
+                            <i class="fa-regular fa-copy mr-2"></i> Copy Account Number
+                        </button>
+                    </div>
+
+                    <!-- Bank Mandiri Card -->
+                    <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 relative overflow-hidden card-glow transition-all duration-300 shadow-2xl flex flex-col justify-between">
+                        <div>
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-netflixRed/10 rounded-full blur-2xl"></div>
+                            <div class="flex justify-between items-start mb-6">
+                                <span class="font-bebas text-2xl tracking-wider text-amber-500">MANDIRI BANKING</span>
+                                <i class="fa-solid fa-wallet text-amber-500 text-2xl"></i>
+                            </div>
+                            <p class="text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">Account Number</p>
+                            <h4 id="bank-acc-2" class="text-2xl font-bold tracking-wider text-white mb-4">123000456789</h4>
+                            <p class="text-xs text-gray-400 uppercase tracking-widest font-bold mb-1">Account Holder</p>
+                            <p class="text-lg font-bold text-gray-200 mb-6">Devina Putri</p>
+                        </div>
+                        <button onclick="copyToClipboard('bank-acc-2')" class="w-full bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-2.5 px-4 rounded text-sm transition-all duration-300 border border-zinc-700/60">
+                            <i class="fa-regular fa-copy mr-2"></i> Copy Account Number
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- Custom Notification Toast -->
+                <div id="toast" class="fixed bottom-6 right-6 z-50 bg-neutral-900 border border-netflixRed text-white px-6 py-3 rounded-lg shadow-2xl opacity-0 transform translate-y-4 transition-all duration-300 flex items-center space-x-3 pointer-events-none">
+                    <i class="fa-solid fa-circle-check text-netflixRed text-lg"></i>
+                    <span id="toast-message" class="text-xs font-semibold">Berhasil disalin!</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER OUTRO -->
+        <footer class="bg-black text-gray-500 text-center py-12 px-4 border-t border-zinc-900">
+            <div class="max-w-4xl mx-auto space-y-4">
+                <h3 class="text-netflixRed font-bebas text-2xl tracking-widest">N WEDDING</h3>
+                <p class="text-xs max-w-md mx-auto leading-relaxed">
+                    Terima kasih atas segala perhatian, doa, dan cinta yang tulus. Kami berharap dapat merayakan hari bahagia ini bersama Anda semua secara penuh sukacita.
+                </p>
+                <div class="flex justify-center space-x-6 text-sm py-4">
+                    <span class="hover:text-white cursor-default">Privacy Policy</span>
+                    <span>•</span>
+                    <span class="hover:text-white cursor-default">Terms of Use</span>
+                    <span>•</span>
+                    <span class="hover:text-white cursor-default">FAQ</span>
+                </div>
+                <p class="text-[10px] text-zinc-700">
+                    &copy; 2026 296GROUP. Inspired by Netflix layout templates.
+                </p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC BLOCK -->
+    <script>
+        // Global variables for audio state and active parameters
+        let isMusicPlaying = false;
+        let audioContext = null;
+        let bgmAudio = null;
+        let activeRating = 3; // Default rating score
+
+        // 1. EXTRACT URL PARAMETERS (DETERMINE VISITOR NAME)
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        window.onload = function() {
+            // Set Guest name dynamically from query "?to="
+            let guestName = getQueryParam('to');
+            if (!guestName) {
+                guestName = "Tamu Undangan VIP";
+            } else {
+                guestName = decodeURIComponent(guestName.replace(/\+/g, ' '));
+            }
+
+            // Update DOM text representations
+            document.getElementById('guest-profile-name').innerText = guestName;
+            document.getElementById('guest-name-card').innerText = guestName;
+            document.getElementById('form-name').value = guestName;
+
+            // Load saved messages from localStorage
+            loadComments();
+
+            // Setup Event Countdown Clock
+            startCountdown();
+
+            // Set Initial Match Rating stars colors
+            setRating(activeRating);
+        };
+
+        // 2. TUDUM SYNTH ENGINE (GENERATE NETFLIX INTRO CHORD)
+        function playTudumSynth() {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const now = audioContext.currentTime;
+
+                // Deep bass rumble foundation
+                const osc1 = audioContext.createOscillator();
+                const gain1 = audioContext.createGain();
+                osc1.type = 'triangle';
+                osc1.frequency.setValueAtTime(80, now);
+                osc1.frequency.exponentialRampToValueAtTime(110, now + 0.1);
+                gain1.gain.setValueAtTime(0.6, now);
+                gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.9);
+                osc1.connect(gain1);
+                gain1.connect(audioContext.destination);
+
+                // Sharp harmonic brassy swipe starting briefly after
+                const osc2 = audioContext.createOscillator();
+                const gain2 = audioContext.createGain();
+                osc2.type = 'sawtooth';
+                osc2.frequency.setValueAtTime(160, now + 0.08);
+                osc2.frequency.exponentialRampToValueAtTime(95, now + 0.45);
+                gain2.gain.setValueAtTime(0.5, now + 0.08);
+                gain2.gain.exponentialRampToValueAtTime(0.01, now + 1.2);
+
+                // Analog lowpass-style cinematic bandpass filter
+                const filter = audioContext.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 135;
+                filter.Q.value = 1.1;
+
+                osc2.connect(filter);
+                filter.connect(gain2);
+                gain2.connect(audioContext.destination);
+
+                osc1.start(now);
+                osc1.stop(now + 1.0);
+                osc2.start(now + 0.08);
+                osc2.stop(now + 1.3);
+            } catch (err) {
+                console.warn("Web Audio Context not permitted or fully supported: ", err);
+            }
+        }
+
+        // 3. GATE UNLOCK EVENT (WHO'S WATCHING INTERACTION)
+        function unlockInvitation() {
+            // Re-use or initialize Web Audio engine directly from user interaction
+            playTudumSynth();
+
+            // Slowly slide out the Netflix gatekeeper gate screen
+            const gate = document.getElementById('gate-screen');
+            gate.classList.add('scale-150', 'opacity-0');
+            
+            setTimeout(() => {
+                gate.style.display = 'none';
+                
+                // Show main invitation section with a beautiful smooth fade-in
+                const main = document.getElementById('main-content');
+                main.classList.remove('hidden');
+                setTimeout(() => {
+                    main.classList.add('opacity-100');
+                }, 50);
+
+                // Start automated romantic bgm loop safely
+                startBgm();
+            }, 800);
+        }
+
+        // 4. ROMANTIC MUSIC PLAYER CONTROLLER
+        function startBgm() {
+            if (!bgmAudio) {
+                // Initialize high-quality royalty-free instrumental cinematic ambient music source
+                bgmAudio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'); 
+                bgmAudio.loop = true;
+                bgmAudio.volume = 0.55;
+            }
+            
+            bgmAudio.play()
+                .then(() => {
+                    isMusicPlaying = true;
+                    document.getElementById('sound-icon').className = 'fa-solid fa-volume-high';
+                })
+                .catch(err => {
+                    console.log("Autoplay music blocked by modern browser privacy controls: ", err);
+                    isMusicPlaying = false;
+                    document.getElementById('sound-icon').className = 'fa-solid fa-volume-xmark text-red-500';
+                });
+        }
+
+        function toggleMusic() {
+            if (!bgmAudio) return;
+            if (isMusicPlaying) {
+                bgmAudio.pause();
+                isMusicPlaying = false;
+                document.getElementById('sound-icon').className = 'fa-solid fa-volume-xmark text-red-500';
+                showToast("Audio dinonaktifkan");
+            } else {
+                bgmAudio.play();
+                isMusicPlaying = true;
+                document.getElementById('sound-icon').className = 'fa-solid fa-volume-high';
+                showToast("Lagu romantis diputar");
+            }
+        }
+
+        // 5. STICKY DYNAMIC NAVBAR SCROLL ANIMATION
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-netflixDark/95', 'shadow-xl', 'backdrop-blur-md');
+                navbar.classList.remove('netflix-gradient-top');
+            } else {
+                navbar.classList.remove('bg-netflixDark/95', 'shadow-xl', 'backdrop-blur-md');
+                navbar.classList.add('netflix-gradient-top');
+            }
+        });
+
+        // 6. OFFICIAL EVENT RELEASE COUNTDOWN TIMER
+        function startCountdown() {
+            // Match Target Date: Sunday, Sept 20, 2026, 08:00:00 (Jakarta GMT+7)
+            const targetDate = new Date("Sep 20, 2026 08:00:00").getTime();
+            
+            const timer = setInterval(() => {
+                const now = new Date().getTime();
+                const difference = targetDate - now;
+                
+                if (difference < 0) {
+                    clearInterval(timer);
+                    document.getElementById('countdown-days').innerText = "00";
+                    document.getElementById('countdown-hours').innerText = "00";
+                    document.getElementById('countdown-minutes').innerText = "00";
+                    document.getElementById('countdown-seconds').innerText = "00";
+                    return;
+                }
+                
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+                
+                document.getElementById('countdown-days').innerText = String(days).padStart(2, '0');
+                document.getElementById('countdown-hours').innerText = String(hours).padStart(2, '0');
+                document.getElementById('countdown-minutes').innerText = String(minutes).padStart(2, '0');
+                document.getElementById('countdown-seconds').innerText = String(seconds).padStart(2, '0');
+            }, 1000);
+        }
+
+        // 7. ACTOR CAST DETAILED MODAL CONTROLS
+        function openCastModal(actorType) {
+            const modal = document.getElementById('cast-modal');
+            const body = document.getElementById('cast-modal-body');
+            
+            let htmlContent = '';
+            
+            if (actorType === 'groom') {
+                htmlContent = `
+                    <div class="flex flex-col items-center text-center">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=300" class="w-32 h-32 rounded-full object-cover border-4 border-netflixRed mb-4" alt="Groom Actor">
+                        <span class="bg-netflixRed text-white text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 rounded">Mempelai Pria</span>
+                        <h3 class="text-3xl font-bebas tracking-wide mt-3 text-white">Aditya Pratama, S.T.</h3>
+                        <p class="text-xs text-zinc-400 font-serif italic mb-6">"Pemeran Utama Pria yang penyabar & visioner"</p>
+                        
+                        <div class="text-left w-full space-y-3 text-sm text-gray-300 border-t border-zinc-800 pt-4">
+                            <p><strong class="text-white">Lahir:</strong> Jakarta, 14 April 1998</p>
+                            <p><strong class="text-white">Orang Tua:</strong> Bapak Dr. Ir. H. Bambang Widjojo & Ibu Hj. Retno Lestari</p>
+                            <p><strong class="text-white">Hobi:</strong> Fotografi, Coding, & Berpetualang di Alam Bebas</p>
+                            <p class="text-xs text-gray-400 italic pt-2">"Aditya meyakini bahwa takdir sejati ditemukan bukan dengan menunggu, melainkan dengan mempersiapkan diri menyambut saat terbaik."</p>
+                        </div>
+                        
+                        <div class="flex space-x-4 mt-6">
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors text-xl"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors text-xl"><i class="fa-brands fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                `;
+            } else if (actorType === 'bride') {
+                htmlContent = `
+                    <div class="flex flex-col items-center text-center">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=300" class="w-32 h-32 rounded-full object-cover border-4 border-netflixRed mb-4" alt="Bride Actor">
+                        <span class="bg-netflixRed text-white text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 rounded">Mempelai Wanita</span>
+                        <h3 class="text-3xl font-bebas tracking-wide mt-3 text-white">Devina Putri, M.B.A.</h3>
+                        <p class="text-xs text-zinc-400 font-serif italic mb-6">"Pemeran Utama Wanita yang anggun & penuh kasih"</p>
+                        
+                        <div class="text-left w-full space-y-3 text-sm text-gray-300 border-t border-zinc-800 pt-4">
+                            <p><strong class="text-white">Lahir:</strong> Bandung, 28 September 1999</p>
+                            <p><strong class="text-white">Orang Tua:</strong> Bapak Drs. H. Ahmad Fauzi & Ibu Hj. Siti Aminah</p>
+                            <p><strong class="text-white">Hobi:</strong> Musik Klasik, Memasak, & Desain Kreatif</p>
+                            <p class="text-xs text-gray-400 italic pt-2">"Devina percaya cinta sejati adalah ruang aman di mana dua kepribadian berbeda bisa tertawa bersama tanpa rasa cemas."</p>
+                        </div>
+                        
+                        <div class="flex space-x-4 mt-6">
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors text-xl"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors text-xl"><i class="fa-brands fa-twitter"></i></a>
+                        </div>
+                    </div>
+                `;
+            }
+
+            body.innerHTML = htmlContent;
+            modal.classList.remove('pointer-events-none', 'opacity-0');
+            modal.querySelector('.relative').classList.add('animate__zoomIn');
+        }
+
+        function closeCastModal() {
+            const modal = document.getElementById('cast-modal');
+            modal.querySelector('.relative').classList.remove('animate__zoomIn');
+            modal.querySelector('.relative').classList.add('animate__fadeOut');
+            
+            setTimeout(() => {
+                modal.classList.add('pointer-events-none', 'opacity-0');
+                modal.querySelector('.relative').classList.remove('animate__fadeOut');
+            }, 250);
+        }
+
+        // 8. GALLERY HORIZONTAL CAROUSEL NAVIGATOR
+        function scrollGallery(distance) {
+            const container = document.getElementById('gallery-scroller');
+            container.scrollBy({ left: distance, behavior: 'smooth' });
+        }
+
+        // LIGHTBOX VISUAL GALLERY VIEWER
+        function openLightbox(imgSrc) {
+            const lightbox = document.getElementById('lightbox-modal');
+            const targetImg = document.getElementById('lightbox-img');
+            targetImg.src = imgSrc;
+            lightbox.classList.remove('pointer-events-none', 'opacity-0');
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox-modal');
+            lightbox.classList.add('pointer-events-none', 'opacity-0');
+        }
+
+        // 9. FIVE-STAR RATING SYSTEM (FOR RSVP INTERACTION)
+        function setRating(ratingValue) {
+            activeRating = ratingValue;
+            document.getElementById('form-rating').value = ratingValue;
+            
+            const stars = document.querySelectorAll('.star-btn');
+            stars.forEach((star, index) => {
+                if (index < ratingValue) {
+                    star.className = 'fa-solid fa-star star-btn';
+                } else {
+                    star.className = 'fa-regular fa-star star-btn';
+                }
+            });
+
+            const labels = ["Sangat Kecewa", "Kurang Memuaskan", "Cukup Bagus", "Sangat Direkomendasikan", "Pasangan Sempurna! (100% Match)"];
+            document.getElementById('rating-label').innerText = `(${ratingValue}/5) ${labels[ratingValue - 1]}`;
+        }
+
+        // 10. LOCAL STORAGE FOR RSVP AND WISHES GUESTBOOK
+        function loadComments() {
+            // Fallback default review items to populate guestbook beautifully
+            const defaultComments = [
+                { name: "Andhika & Sisca", status: "Hadir", message: "Gak sabar banget buat liat premiere-nya! Semoga lancar jaya sampai hari H bro Adit & sis Devi! Bahagia selamanya ya!", rating: 5, date: "3 jam yang lalu" },
+                { name: "Rina Herawati", status: "Tidak Hadir", message: "Selamat ya Devi & Adit! Maaf banget gak bisa hadir langsung karena masih ada tugas belajar di luar negeri. Semoga rumah tangga kalian selalu diberkati sakinah mawaddah warahmah.", rating: 5, date: "1 hari yang lalu" },
+                { name: "Kevin Sanjaya", status: "Hadir", message: "Season penutup yang sangat memuaskan, haha! Ditunggu season kelanjutannya ya yaitu season momongan. Lancar terus ya pren!", rating: 5, date: "2 hari yang lalu" }
+            ];
+
+            let comments = JSON.parse(localStorage.getItem('wedding_rsvp_comments'));
+            if (!comments) {
+                comments = defaultComments;
+                localStorage.setItem('wedding_rsvp_comments', JSON.stringify(defaultComments));
+            }
+
+            renderComments(comments);
+        }
+
+        function renderComments(comments) {
+            const box = document.getElementById('comments-list-box');
+            box.innerHTML = ''; // Clear prior entries
+            
+            let presentCount = 0;
+            let absentCount = 0;
+
+            comments.forEach(comment => {
+                // Track attendance counts
+                if (comment.status === 'Hadir') presentCount++;
+                if (comment.status === 'Tidak Hadir') absentCount++;
+
+                // Build Star Icons string based on rating
+                let starsHtml = '';
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= comment.rating) {
+                        starsHtml += '<i class="fa-solid fa-star text-amber-500 text-xs"></i>';
+                    } else {
+                        starsHtml += '<i class="fa-regular fa-star text-zinc-600 text-xs"></i>';
+                    }
+                }
+
+                // Styled dynamic badge for attendance status
+                let badgeClass = 'bg-zinc-800 text-gray-400';
+                if (comment.status === 'Hadir') badgeClass = 'bg-emerald-900/40 text-emerald-400 border border-emerald-800/40';
+                if (comment.status === 'Tidak Hadir') badgeClass = 'bg-rose-900/40 text-rose-400 border border-rose-800/40';
+                if (comment.status === 'Ragu-Ragu') badgeClass = 'bg-amber-900/40 text-amber-400 border border-amber-800/40';
+
+                const card = document.createElement('div');
+                card.className = "bg-zinc-900 p-4 rounded-lg border border-zinc-800/60 flex flex-col justify-between space-y-3 hover:border-zinc-700 transition-colors duration-200";
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-bold text-white text-sm md:text-base">${escapeHTML(comment.name)}</h4>
+                            <span class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider">${comment.date || 'Baru Saja'}</span>
+                        </div>
+                        <span class="text-xs px-2.5 py-0.5 rounded-full font-semibold ${badgeClass}">
+                            ${comment.status}
+                        </span>
+                    </div>
+                    <p class="text-xs md:text-sm text-gray-300 font-light leading-relaxed">
+                        ${escapeHTML(comment.message)}
+                    </p>
+                    <div class="flex items-center justify-between border-t border-zinc-800/30 pt-2.5">
+                        <div class="flex space-x-0.5">
+                            ${starsHtml}
+                        </div>
+                        <span class="text-[10px] text-zinc-500 font-bold uppercase"><i class="fa-solid fa-circle-check text-netflixRed mr-1"></i> Verified Fan</span>
+                    </div>
+                `;
+                box.appendChild(card);
+            });
+
+            // Update stats indicators
+            document.getElementById('comments-count').innerText = comments.length;
+            document.getElementById('rsvp-present-count').innerText = presentCount;
+            document.getElementById('rsvp-absent-count').innerText = absentCount;
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('form-name').value.trim();
+            const status = document.getElementById('form-status').value;
+            const message = document.getElementById('form-message').value.trim();
+            const rating = parseInt(document.getElementById('form-rating').value);
+
+            if (!status) {
+                alert("Silakan pilih status kehadiran terlebih dahulu!");
+                return;
+            }
+
+            const newComment = {
+                name: name,
+                status: status,
+                message: message,
+                rating: rating,
+                date: "Baru saja"
+            };
+
+            let comments = JSON.parse(localStorage.getItem('wedding_rsvp_comments')) || [];
+            // Unshift adds new item directly to top of array list
+            comments.unshift(newComment);
+            localStorage.setItem('wedding_rsvp_comments', JSON.stringify(comments));
+
+            // Refresh UI list display
+            renderComments(comments);
+            
+            // Success alert & Reset textbox inputs
+            showToast("Review Berhasil Dikirimkan!");
+            document.getElementById('form-message').value = '';
+            setRating(3);
+        }
+
+        // Helper string encoder to avoid HTML Injection
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    "'": '&#39;',
+                    '"': '&quot;'
+                }[tag] || tag)
+            );
+        }
+
+        // 11. SECURE DEPRECATED AND MODERN CLIPBOARD COPY FALLBACK SYSTEM
+        function copyToClipboard(elementId) {
+            const textToCopy = document.getElementById(elementId).innerText;
+            
+            // Temporary DOM node to facilitate legacy browser copies securely
+            const tempInput = document.createElement("input");
+            tempInput.value = textToCopy;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999); // Secure select for mobile compatibility
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast("No. Rekening berhasil disalin!");
+                } else {
+                    showToast("Gagal menyalin, silakan salin manual.");
+                }
+            } catch (err) {
+                showToast("Kesalahan sistem saat menyalin.");
+            }
+            
+            document.body.removeChild(tempInput);
+        }
+
+        // 12. DYNAMIC SLIDEOVER TOAST DISPLAY CHIP
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            
+            toastMsg.innerText = message;
+            toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+            toast.classList.add('opacity-100', 'translate-y-0');
+            
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+                toast.classList.remove('opacity-100', 'translate-y-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

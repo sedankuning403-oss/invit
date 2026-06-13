@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Digital - Lion February Gathering</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Playfair Display for Premium Look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind Custom Configuration -->
+	<!-- --- FAVICON (SVG Crown Emoji) --- -->
+    <link href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEita0_M2O-eCuyAVlkD8OIaq8QYjANaZTr61ExHZgO5wk5R3k_-Qg-UMLUIh2Xs1yfe9vHOXM7zl_DZN09EghVT3pmPEpsV5agqavbc54CnQ0CW01eoDtXxhgmVkXReU_tUy04HvF0BgltUDzZSaf35yaVUmnE9bi9_uIjrzpxl-852I-HjE0-2W_mYhJjm/s1280/logo%20296%20studios.png" rel="icon" sizes="32x32" type="image/png">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lion: {
+                            red: '#E12026',
+                            darkRed: '#B01419',
+                            yellow: '#FFC80A',
+                            dark: '#1E1E24',
+                            light: '#FAFAFA'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Styles & Keyframes */
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .bg-pattern {
+            background-image: radial-gradient(rgba(225, 32, 38, 0.08) 1.5px, transparent 1.5px), radial-gradient(rgba(225, 32, 38, 0.08) 1.5px, #fafafa 1.5px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(0.95); opacity: 0.5; }
+        }
+        .pulse-element {
+            animation: pulse-ring 3s infinite ease-in-out;
+        }
+        /* Lock scroll while gate is open */
+        body.locked {
+            overflow: hidden;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body class="bg-lion-light font-sans text-lion-dark locked bg-pattern antialiased">
+
+    <!-- AUDIO PLAYER ELEMENT (Instrumental Premium Background Music) -->
+    <audio id="bgmAudio" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- FLOATING MUSIC CONTROLLER -->
+    <div id="musicControl" class="fixed bottom-24 right-6 z-50 hidden">
+        <button onclick="toggleMusic()" class="w-12 h-12 bg-lion-red hover:bg-lion-darkRed text-white rounded-full flex items-center justify-center shadow-lg transition-transform transform active:scale-95 focus:outline-none">
+            <i id="musicIcon" class="fas fa-compact-disc fa-spin text-xl"></i>
+        </button>
+    </div>
+
+    <!-- COVER GATE (Pintu Pembuka Undangan) -->
+    <div id="coverGate" class="fixed inset-0 z-[100] flex flex-col items-center justify-center text-center px-4 transition-all duration-1000 bg-gradient-to-br from-lion-dark to-black text-white">
+        <!-- Brand Logo / Badge -->
+        <div class="mb-6 scale-95 opacity-0 transition-all duration-700 delay-100 transform" id="gateBrand">
+            <div class="bg-lion-red text-white font-bold tracking-widest px-4 py-1.5 rounded-full text-xs inline-block mb-3 border border-lion-yellow/40">
+                GATHERING & SEMINAR
+            </div>
+            <div class="flex items-center justify-center space-x-2">
+                <span class="text-3xl font-serif font-bold text-lion-yellow">Lion</span>
+                <span class="text-3xl font-bold tracking-tight text-white">February</span>
+            </div>
+            <div class="w-16 h-[2px] bg-lion-red mx-auto mt-4"></div>
+        </div>
+
+        <!-- Decorative Elegant Card -->
+        <div class="w-full max-w-md glassmorphism text-lion-dark p-8 rounded-3xl shadow-2xl mx-auto scale-90 opacity-0 transition-all duration-1000 delay-300 transform" id="gateCard">
+            <p class="text-xs uppercase tracking-widest text-gray-500 mb-2 font-semibold">Undangan Spesial Untuk Anda</p>
+            
+            <!-- Recipient Name Holder -->
+            <div class="bg-gray-50 rounded-2xl py-6 px-4 my-5 border border-gray-100">
+                <h3 class="text-xs text-gray-400 font-medium mb-1">Kepada Yth. Bapak/Ibu/Saudara/i :</h3>
+                <h2 id="recipientName" class="text-2xl font-bold text-lion-red font-serif">Nama Tamu Undangan</h2>
+            </div>
+            
+            <p class="text-xs text-gray-500 mb-6 italic leading-relaxed">
+                "Mengharap kehadiran Bapak/Ibu sekalian dalam agenda tahunan dan peluncuran layanan logistik terbaru."
+            </p>
+
+            <button onclick="openInvitation()" class="w-full bg-lion-red hover:bg-lion-darkRed text-white py-3 px-6 rounded-2xl font-semibold shadow-lg shadow-lion-red/30 hover:shadow-lion-red/40 transition-all transform active:scale-95 flex items-center justify-center space-x-2 group">
+                <i class="fas fa-envelope-open transition-transform group-hover:scale-110"></i>
+                <span>Buka Undangan</span>
+            </button>
+        </div>
+
+        <div class="mt-8 text-xs text-gray-400 opacity-0 transition-opacity duration-1000 delay-500" id="gateFooter">
+            <p>© 2026. Powered by 296GROUP</p>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENTS (Initially hidden partially using css overlay control or scrolls up gracefully) -->
+    <div id="mainContent" class="opacity-0 transition-opacity duration-1000">
+
+        <!-- HERO SECTION (Sambutan & Judul Utama) -->
+        <header id="beranda" class="relative min-h-screen flex items-center justify-center py-20 px-4 overflow-hidden bg-gradient-to-b from-white via-lion-light to-white">
+            <div class="absolute inset-0 opacity-40">
+                <div class="absolute -top-10 -left-10 w-72 h-72 bg-lion-red rounded-full filter blur-[100px]"></div>
+                <div class="absolute -bottom-10 -right-10 w-96 h-96 bg-lion-yellow rounded-full filter blur-[100px]"></div>
+            </div>
+
+            <div class="relative z-10 max-w-4xl text-center">
+                <!-- Mini Pill Banner -->
+                <div class="inline-flex items-center space-x-2 bg-lion-red/10 border border-lion-red/20 px-4 py-2 rounded-full mb-6">
+                    <span class="w-2.5 h-2.5 rounded-full bg-lion-red animate-ping"></span>
+                    <span class="text-xs font-semibold text-lion-red uppercase tracking-wider">ANNUAL GATHERING 2026</span>
+                </div>
+
+                <h1 class="text-4xl md:text-6xl font-extrabold text-lion-dark mb-4 leading-tight font-serif">
+                    Sinergi Logistik <br>
+                    <span class="text-lion-red">Indonesia Lebih Cepat</span>
+                </h1>
+                
+                <p class="text-gray-600 max-w-xl mx-auto text-sm md:text-base leading-relaxed mb-8">
+                    Mari bergabung dalam malam apresiasi mitra kerja dan peluncuran inovasi pengiriman digital Lion February di tahun 2026.
+                </p>
+
+                <!-- COUNTDOWN TIMER CONTAINER -->
+                <div class="max-w-xl mx-auto bg-white p-6 rounded-3xl shadow-xl border border-gray-100/60 mb-8">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Acara Akan Dimulai Dalam</p>
+                    <div class="grid grid-cols-4 gap-2 md:gap-4 text-center">
+                        <div class="bg-lion-light p-3 md:p-4 rounded-2xl border border-gray-100">
+                            <span id="days" class="block text-2xl md:text-3xl font-extrabold text-lion-red">00</span>
+                            <span class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Hari</span>
+                        </div>
+                        <div class="bg-lion-light p-3 md:p-4 rounded-2xl border border-gray-100">
+                            <span id="hours" class="block text-2xl md:text-3xl font-extrabold text-lion-red">00</span>
+                            <span class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Jam</span>
+                        </div>
+                        <div class="bg-lion-light p-3 md:p-4 rounded-2xl border border-gray-100">
+                            <span id="minutes" class="block text-2xl md:text-3xl font-extrabold text-lion-red">00</span>
+                            <span class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Menit</span>
+                        </div>
+                        <div class="bg-lion-light p-3 md:p-4 rounded-2xl border border-gray-100">
+                            <span id="seconds" class="block text-2xl md:text-3xl font-extrabold text-lion-red">00</span>
+                            <span class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Detik</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Small Callout info -->
+                <div class="flex items-center justify-center space-x-6 text-xs text-gray-500 font-medium">
+                    <div>
+                        <i class="far fa-calendar-alt text-lion-red mr-1.5 text-sm"></i> Kamis, 26 Februari 2026
+                    </div>
+                    <div>
+                        <i class="far fa-clock text-lion-red mr-1.5 text-sm"></i> 18:00 WIB - Selesai
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- EVENT DETAILS SECTION (Waktu & Lokasi) -->
+        <section id="acara" class="py-20 px-4 bg-white">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <span class="text-xs font-bold text-lion-red uppercase tracking-widest bg-lion-red/5 px-3.5 py-1.5 rounded-full">Pelaksanaan Acara</span>
+                    <h2 class="text-3xl font-serif font-bold text-lion-dark mt-3">Waktu & Tempat Kegiatan</h2>
+                    <div class="w-12 h-1 bg-lion-yellow mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <!-- Event Cards (Double Card Layout) -->
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                    <!-- Card 1: Waktu -->
+                    <div class="bg-lion-light border border-gray-100 p-8 rounded-3xl shadow-md flex flex-col justify-between transform transition duration-300 hover:shadow-xl hover:-translate-y-1">
+                        <div>
+                            <div class="w-12 h-12 bg-lion-red/10 text-lion-red rounded-2xl flex items-center justify-center mb-6 text-xl">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4 font-serif text-lion-dark">Malam Puncak</h3>
+                            <div class="space-y-3 text-sm text-gray-600">
+                                <div class="flex items-start">
+                                    <span class="font-semibold text-lion-dark w-24 flex-shrink-0">Hari/Tgl:</span>
+                                    <span>Kamis, 26 Februari 2026</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="font-semibold text-lion-dark w-24 flex-shrink-0">Pukul:</span>
+                                    <span>18.00 WIB - Selesai</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="font-semibold text-lion-dark w-24 flex-shrink-0">Dress Code:</span>
+                                    <span class="text-lion-red font-semibold">Red & Gold Executive Elegant</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="saveToCalendar()" class="mt-8 w-full bg-white border border-gray-200 text-lion-dark hover:bg-lion-dark hover:text-white py-3 px-4 rounded-2xl text-xs font-bold transition-all flex items-center justify-center space-x-2">
+                            <i class="far fa-calendar-plus text-sm"></i>
+                            <span>Simpan Acara ke Kalender</span>
+                        </button>
+                    </div>
+
+                    <!-- Card 2: Lokasi -->
+                    <div class="bg-lion-light border border-gray-100 p-8 rounded-3xl shadow-md flex flex-col justify-between transform transition duration-300 hover:shadow-xl hover:-translate-y-1">
+                        <div>
+                            <div class="w-12 h-12 bg-lion-yellow/20 text-lion-dark rounded-2xl flex items-center justify-center mb-6 text-xl">
+                                <i class="fas fa-map-marked-alt"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4 font-serif text-lion-dark">Lokasi Utama</h3>
+                            <div class="space-y-2 text-sm text-gray-600">
+                                <p class="font-bold text-lion-dark text-base">Grand Ballroom Hotel Mulia</p>
+                                <p>Jl. Asia Afrika, Senayan, Jakarta Pusat, DKI Jakarta, 10270</p>
+                                <p class="text-xs text-gray-400 italic">Harap membawa QR Code undangan yang dikirimkan via WhatsApp untuk kemudahan check-in.</p>
+                            </div>
+                        </div>
+                        <a href="https://maps.google.com" target="_blank" class="mt-8 w-full bg-lion-red hover:bg-lion-darkRed text-white py-3 px-4 rounded-2xl text-xs font-bold transition-all flex items-center justify-center space-x-2 shadow-md shadow-lion-red/20">
+                            <i class="fas fa-navigation"></i>
+                            <span>Petunjuk Rute Google Maps</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Embedded Map Mockup (Beautiful styled vector representation or actual map element) -->
+                <div class="bg-lion-light p-3 rounded-3xl border border-gray-100 shadow-md">
+                    <div class="relative overflow-hidden rounded-2xl h-80 bg-gray-200 border border-gray-200 flex items-center justify-center">
+                        <!-- Image Fallback for Embedded Map -->
+                        <div class="absolute inset-0 bg-cover bg-center opacity-60" style="background-image: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=800');"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                        
+                        <div class="relative z-10 text-center text-white px-4">
+                            <div class="inline-flex items-center justify-center w-14 h-14 bg-lion-red rounded-full shadow-lg shadow-lion-red/50 pulse-element mb-3">
+                                <i class="fas fa-map-pin text-xl text-white"></i>
+                            </div>
+                            <h4 class="font-bold text-lg mb-1">Grand Ballroom Hotel Mulia</h4>
+                            <p class="text-xs text-gray-300 max-w-sm mx-auto mb-4">Jakarta Pusat - Parkir valet gratis tersedia bagi para mitra dan undangan VIP.</p>
+                            <a href="https://maps.google.com" target="_blank" class="bg-white text-lion-dark hover:bg-lion-red hover:text-white px-5 py-2.5 rounded-xl text-xs font-semibold transition-all shadow-md inline-flex items-center space-x-1.5">
+                                <span>Buka Navigasi Langsung</span>
+                                <i class="fas fa-chevron-right text-[10px]"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SPEAKERS SECTION (Pembicara Tamu) -->
+        <section id="pembicara" class="py-20 px-4 bg-lion-light">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="text-xs font-bold text-lion-red uppercase tracking-widest bg-lion-red/5 px-3.5 py-1.5 rounded-full">Narasumber Utama</span>
+                    <h2 class="text-3xl font-serif font-bold text-lion-dark mt-3">Sesi Khusus & Pembicara</h2>
+                    <p class="text-sm text-gray-500 mt-2 max-w-md mx-auto">Mendengarkan paparan inovasi dan transformasi digital dari para pakar industri terkemuka.</p>
+                    <div class="w-12 h-1 bg-lion-yellow mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <!-- Speakers Grid -->
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Speaker 1 -->
+                    <div class="bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 text-center flex flex-col justify-between group">
+                        <div class="relative">
+                            <!-- Image container with SVG avatar for elegant custom illustration -->
+                            <div class="h-64 bg-gradient-to-tr from-lion-red/20 to-lion-yellow/20 flex items-center justify-center overflow-hidden">
+                                <svg class="w-40 h-40 text-lion-red/80 transition-transform duration-500 group-hover:scale-105" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                </svg>
+                            </div>
+                            <div class="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
+                        </div>
+                        <div class="p-6 pt-2">
+                            <h3 class="text-lg font-bold text-lion-dark">Ferry Septiadi</h3>
+                            <p class="text-xs font-semibold text-lion-red uppercase tracking-wider mb-2">Chief Executive Officer</p>
+                            <p class="text-xs text-gray-400 italic">"Peta Jalan Keunggulan Layanan Pengiriman Indonesia di Tahun Emas"</p>
+                        </div>
+                    </div>
+
+                    <!-- Speaker 2 -->
+                    <div class="bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 text-center flex flex-col justify-between group">
+                        <div class="relative">
+                            <div class="h-64 bg-gradient-to-tr from-lion-yellow/20 to-lion-red/10 flex items-center justify-center overflow-hidden">
+                                <svg class="w-40 h-40 text-lion-dark/70 transition-transform duration-500 group-hover:scale-105" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                </svg>
+                            </div>
+                            <div class="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
+                        </div>
+                        <div class="p-6 pt-2">
+                            <h3 class="text-lg font-bold text-lion-dark">Prof. Dr. Rhenald Kasali</h3>
+                            <p class="text-xs font-semibold text-lion-red uppercase tracking-wider mb-2">Pakar Manajemen & Disrupsi</p>
+                            <p class="text-xs text-gray-400 italic">"Logistik Sebagai Lokomotif Pertumbuhan Ekonomi Digital Berkelanjutan"</p>
+                        </div>
+                    </div>
+
+                    <!-- Speaker 3 -->
+                    <div class="bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 text-center flex flex-col justify-between group">
+                        <div class="relative">
+                            <div class="h-64 bg-gradient-to-tr from-lion-red/10 to-lion-yellow/30 flex items-center justify-center overflow-hidden">
+                                <svg class="w-40 h-40 text-lion-red/80 transition-transform duration-500 group-hover:scale-105" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                </svg>
+                            </div>
+                            <div class="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
+                        </div>
+                        <div class="p-6 pt-2">
+                            <h3 class="text-lg font-bold text-lion-dark">Denny Sumargo</h3>
+                            <p class="text-xs font-semibold text-lion-red uppercase tracking-wider mb-2">Brand Ambassador & Creator</p>
+                            <p class="text-xs text-gray-400 italic">"Membangun Kepercayaan Pelanggan di Era Instan Melalui Konten Kreatif"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AGENDA (RUNDOWN TIMELINE) SECTION -->
+        <section id="agenda" class="py-20 px-4 bg-white">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="text-xs font-bold text-lion-red uppercase tracking-widest bg-lion-red/5 px-3.5 py-1.5 rounded-full">Agenda Kegiatan</span>
+                    <h2 class="text-3xl font-serif font-bold text-lion-dark mt-3">Rundown Acara</h2>
+                    <p class="text-sm text-gray-500 mt-2">Susunan urutan kegiatan selama jalannya acara berlangsung.</p>
+                    <div class="w-12 h-1 bg-lion-yellow mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <!-- Timeline Layout -->
+                <div class="relative border-l border-gray-200 ml-4 md:ml-32 space-y-8">
+                    
+                    <!-- Item 1 -->
+                    <div class="relative pl-8 md:pl-12">
+                        <!-- Left Time Marker (Visible only on medium screens and up) -->
+                        <span class="hidden md:block absolute -left-32 top-1 text-right w-24 font-bold text-lion-red text-sm">
+                            18.00 - 18.30
+                        </span>
+                        <!-- Bullets / Pin -->
+                        <span class="absolute -left-3.5 top-1.5 w-7 h-7 rounded-full bg-lion-red/10 border-2 border-lion-red flex items-center justify-center text-lion-red text-xs">
+                            <i class="fas fa-users-cog"></i>
+                        </span>
+                        <div>
+                            <span class="inline-block md:hidden text-xs font-bold text-lion-red mb-1">18.00 - 18.30 WIB</span>
+                            <h3 class="text-base font-bold text-lion-dark">Registrasi Tamu & QR Check-in</h3>
+                            <p class="text-xs text-gray-500 mt-1">Pintu Grand Ballroom dibuka, menikmati suguhan kopi pembuka dan verifikasi kode QR tamu di meja registrasi depan.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="relative pl-8 md:pl-12">
+                        <span class="hidden md:block absolute -left-32 top-1 text-right w-24 font-bold text-lion-red text-sm">
+                            18.30 - 19.15
+                        </span>
+                        <span class="absolute -left-3.5 top-1.5 w-7 h-7 rounded-full bg-lion-yellow/20 border-2 border-lion-yellow flex items-center justify-center text-lion-dark text-xs">
+                            <i class="fas fa-guitar"></i>
+                        </span>
+                        <div>
+                            <span class="inline-block md:hidden text-xs font-bold text-lion-red mb-1">18.30 - 19.15 WIB</span>
+                            <h3 class="text-base font-bold text-lion-dark">Pembukaan & Entertainment Performance</h3>
+                            <p class="text-xs text-gray-500 mt-1">Pertunjukan tari seni kolaborasi modern nusantara, disusul oleh sapaan resmi dari Master of Ceremony (MC).</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="relative pl-8 md:pl-12">
+                        <span class="hidden md:block absolute -left-32 top-1 text-right w-24 font-bold text-lion-red text-sm">
+                            19.15 - 20.00
+                        </span>
+                        <span class="absolute -left-3.5 top-1.5 w-7 h-7 rounded-full bg-lion-red/10 border-2 border-lion-red flex items-center justify-center text-lion-red text-xs">
+                            <i class="fas fa-lightbulb"></i>
+                        </span>
+                        <div>
+                            <span class="inline-block md:hidden text-xs font-bold text-lion-red mb-1">19.15 - 20.00 WIB</span>
+                            <h3 class="text-base font-bold text-lion-dark">Keynote Presentation: Strategi Pengiriman Indonesia</h3>
+                            <p class="text-xs text-gray-500 mt-1">Presentasi eksklusif mengenai inovasi, optimasi rute logistik cerdas, serta peluncuran produk paket Lion February.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="relative pl-8 md:pl-12">
+                        <span class="hidden md:block absolute -left-32 top-1 text-right w-24 font-bold text-lion-red text-sm">
+                            20.00 - 21.00
+                        </span>
+                        <span class="absolute -left-3.5 top-1.5 w-7 h-7 rounded-full bg-lion-yellow/20 border-2 border-lion-yellow flex items-center justify-center text-lion-dark text-xs">
+                            <i class="fas fa-utensils"></i>
+                        </span>
+                        <div>
+                            <span class="inline-block md:hidden text-xs font-bold text-lion-red mb-1">20.00 - 21.00 WIB</span>
+                            <h3 class="text-base font-bold text-lion-dark">Apresiasi Mitra, Makan Malam & Jejaring</h3>
+                            <p class="text-xs text-gray-500 mt-1">Pemberian piagam penghargaan apresiasi bagi agen pengiriman terbaik, dilanjutkan makan malam formal berteman orkestra musik.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 5 -->
+                    <div class="relative pl-8 md:pl-12">
+                        <span class="hidden md:block absolute -left-32 top-1 text-right w-24 font-bold text-lion-red text-sm">
+                            21.00 - Selesai
+                        </span>
+                        <span class="absolute -left-3.5 top-1.5 w-7 h-7 rounded-full bg-lion-red/10 border-2 border-lion-red flex items-center justify-center text-lion-red text-xs">
+                            <i class="fas fa-camera"></i>
+                        </span>
+                        <div>
+                            <span class="inline-block md:hidden text-xs font-bold text-lion-red mb-1">21.00 - Selesai</span>
+                            <h3 class="text-base font-bold text-lion-dark">Sesi Foto Bersama & Penutupan</h3>
+                            <p class="text-xs text-gray-500 mt-1">Sesi ramah tamah, foto dokumentasi panggung, pembagian goody bag spesial eksklusif, serta penutupan acara.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- PROTOCOLS & GUIDELINES -->
+        <section class="py-16 px-4 bg-lion-light">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="mb-10">
+                    <h3 class="text-2xl font-serif font-bold text-lion-dark">Aturan & Panduan Acara</h3>
+                    <p class="text-xs text-gray-500 mt-2">Guna kenyamanan bersama di venue, mohon perhatikan pedoman berikut.</p>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                        <div class="w-10 h-10 bg-lion-red/10 text-lion-red rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        <h4 class="font-bold text-xs text-lion-dark mb-1">Membawa QR</h4>
+                        <p class="text-[10px] text-gray-400">Siapkan kode unik undangan digital di ponsel Anda.</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                        <div class="w-10 h-10 bg-lion-yellow/20 text-lion-dark rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h4 class="font-bold text-xs text-lion-dark mb-1">Dresscode</h4>
+                        <p class="text-[10px] text-gray-400">Pakaian formal bernuansa Merah, Hitam, atau Emas.</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                        <div class="w-10 h-10 bg-lion-red/10 text-lion-red rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-hands-wash"></i>
+                        </div>
+                        <h4 class="font-bold text-xs text-lion-dark mb-1">Tetap Higienis</h4>
+                        <p class="text-[10px] text-gray-400">Hand sanitizer tersedia melimpah di sekeliling venue.</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                        <div class="w-10 h-10 bg-lion-yellow/20 text-lion-dark rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h4 class="font-bold text-xs text-lion-dark mb-1">Tepat Waktu</h4>
+                        <p class="text-[10px] text-gray-400">Hadir minimal 15 menit sebelum pembukaan dimulai.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RSVP & BOOK GUEST (Buku Tamu / Konfirmasi & Ucapan) -->
+        <section id="rsvp" class="py-20 px-4 bg-white relative">
+            <!-- Decorative Vector Shape -->
+            <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-lion-light to-transparent"></div>
+
+            <div class="max-w-4xl mx-auto relative z-10">
+                <div class="text-center mb-16">
+                    <span class="text-xs font-bold text-lion-red uppercase tracking-widest bg-lion-red/5 px-3.5 py-1.5 rounded-full">Konfirmasi Kehadiran</span>
+                    <h2 class="text-3xl font-serif font-bold text-lion-dark mt-3">RSVP & Ucapan Selamat</h2>
+                    <p class="text-sm text-gray-500 mt-2">Berikan kabar kepastian kehadiran Anda dan sampaikan ucapan hangat Anda.</p>
+                    <div class="w-12 h-1 bg-lion-yellow mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <div class="grid md:grid-cols-12 gap-8 items-start">
+                    <!-- Formrsvp -->
+                    <div class="md:col-span-5 bg-lion-light p-6 rounded-3xl border border-gray-100 shadow-sm">
+                        <h3 class="text-lg font-bold text-lion-dark mb-4 font-serif">Isi Buku Kehadiran</h3>
+                        <form id="rsvpForm" onsubmit="handleRSVPSubmit(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Nama Lengkap</label>
+                                <input type="text" id="formName" required placeholder="Contoh: Budi Santoso" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-lion-red text-sm transition-all bg-white">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Kehadiran</label>
+                                <select id="formStatus" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-lion-red text-sm bg-white transition-all">
+                                    <option value="" disabled selected>Pilih Status Kehadiran</option>
+                                    <option value="Hadir">Saya akan Hadir</option>
+                                    <option value="Tidak Hadir">Mohon maaf, Tidak Bisa Hadir</option>
+                                    <option value="Ragu-ragu">Masih Ragu-ragu / Tentatif</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Jumlah Tamu</label>
+                                <select id="formCount" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-lion-red text-sm bg-white transition-all">
+                                    <option value="1">1 Orang (Sendiri)</option>
+                                    <option value="2">2 Orang (+ Rekan/Pasangan)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">Ucapan / Pesan Singkat</label>
+                                <textarea id="formMessage" required rows="4" placeholder="Tuliskan harapan atau ucapan untuk acara..." class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-lion-red text-sm transition-all bg-white"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full bg-lion-red hover:bg-lion-darkRed text-white py-3 px-6 rounded-xl font-bold shadow-md shadow-lion-red/20 hover:shadow-lion-red/35 transition-all flex items-center justify-center space-x-2">
+                                <i class="fas fa-paper-plane text-xs"></i>
+                                <span>Kirim Konfirmasi</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- List of Wishes (Guest Book Feed) -->
+                    <div class="md:col-span-7">
+                        <div class="bg-lion-light p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col h-[520px]">
+                            <div class="flex items-center justify-between mb-4 pb-2 border-b border-gray-200">
+                                <h3 class="text-lg font-bold text-lion-dark font-serif">Buku Tamu (<span id="wishCount">3</span>)</h3>
+                                <span class="bg-lion-red/10 text-lion-red text-[10px] font-bold uppercase px-2 py-1 rounded">Ter-update</span>
+                            </div>
+
+                            <!-- Scrollable Wishes Box -->
+                            <div id="wishesBox" class="flex-1 overflow-y-auto space-y-4 pr-1">
+                                <!-- Dummy Wish 1 -->
+                                <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex items-start space-x-3.5">
+                                    <div class="w-10 h-10 rounded-full bg-lion-red/10 text-lion-red flex items-center justify-center font-bold flex-shrink-0 text-sm">
+                                        AP
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex items-center justify-between">
+                                            <h4 class="font-bold text-xs text-lion-dark truncate">Andi Pratama</h4>
+                                            <span class="bg-green-100 text-green-700 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center space-x-0.5">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Hadir</span>
+                                            </span>
+                                        </div>
+                                        <p class="text-[10px] text-gray-400 mt-0.5"><i class="far fa-clock mr-1"></i>2 jam yang lalu</p>
+                                        <p class="text-xs text-gray-600 mt-2 leading-relaxed bg-gray-50/50 p-2.5 rounded-xl border border-gray-50">"Selamat atas peluncuran tahunannya! Semoga Lion Parcel terus melebarkan sayapnya semakin kuat dan cepat di tahun 2026 ini."</p>
+                                    </div>
+                                </div>
+
+                                <!-- Dummy Wish 2 -->
+                                <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex items-start space-x-3.5">
+                                    <div class="w-10 h-10 rounded-full bg-lion-yellow/20 text-lion-dark flex items-center justify-center font-bold flex-shrink-0 text-sm">
+                                        SN
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex items-center justify-between">
+                                            <h4 class="font-bold text-xs text-lion-dark truncate">Siti Nurdiana</h4>
+                                            <span class="bg-yellow-100 text-yellow-700 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center space-x-0.5">
+                                                <i class="fas fa-question-circle"></i>
+                                                <span>Tentatif</span>
+                                            </span>
+                                        </div>
+                                        <p class="text-[10px] text-gray-400 mt-0.5"><i class="far fa-clock mr-1"></i>4 jam yang lalu</p>
+                                        <p class="text-xs text-gray-600 mt-2 leading-relaxed bg-gray-50/50 p-2.5 rounded-xl border border-gray-50">"Semoga sukses besar acaranya! Sedang diupayakan hadir tepat waktu selepas dinas luar kota. Sukses untuk peluncuran barunya!"</p>
+                                    </div>
+                                </div>
+
+                                <!-- Dummy Wish 3 -->
+                                <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex items-start space-x-3.5">
+                                    <div class="w-10 h-10 rounded-full bg-lion-red/10 text-lion-red flex items-center justify-center font-bold flex-shrink-0 text-sm">
+                                        RK
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex items-center justify-between">
+                                            <h4 class="font-bold text-xs text-lion-dark truncate">Rizky Kurniawan</h4>
+                                            <span class="bg-green-100 text-green-700 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center space-x-0.5">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Hadir</span>
+                                            </span>
+                                        </div>
+                                        <p class="text-[10px] text-gray-400 mt-0.5"><i class="far fa-clock mr-1"></i>1 hari yang lalu</p>
+                                        <p class="text-xs text-gray-600 mt-2 leading-relaxed bg-gray-50/50 p-2.5 rounded-xl border border-gray-50">"Undangan yang sangat eksklusif. Terima kasih atas kehormatannya, pasti hadir bersama perwakilan cabang utama."</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER & BRANDING -->
+        <footer class="bg-lion-dark text-white pt-16 pb-32 px-4 relative overflow-hidden">
+            <!-- Subtle Logo Background -->
+            <div class="absolute -right-16 -bottom-16 w-80 h-80 bg-lion-red/5 rounded-full filter blur-xl"></div>
+            
+            <div class="max-w-4xl mx-auto text-center relative z-10">
+                <div class="flex items-center justify-center space-x-2 mb-4">
+                    <span class="text-2xl font-serif font-bold text-lion-yellow">Lion</span>
+                    <span class="text-2xl font-bold tracking-tight text-white">February</span>
+                </div>
+                <div class="w-12 h-[1px] bg-lion-red/40 mx-auto mb-6"></div>
+                <p class="text-xs text-gray-400 max-w-md mx-auto leading-relaxed mb-8">
+                    Terima kasih atas segala perhatian dan dukungan Anda pada rangkaian program kemajuan infrastruktur pengiriman terintegrasi.
+                </p>
+
+                <!-- Footer Socials or links mock -->
+                <div class="flex justify-center space-x-4 mb-10">
+                    <a href="#" class="w-9 h-9 bg-white/5 hover:bg-lion-red text-gray-300 hover:text-white rounded-full flex items-center justify-center transition-colors">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 bg-white/5 hover:bg-lion-red text-gray-300 hover:text-white rounded-full flex items-center justify-center transition-colors">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 bg-white/5 hover:bg-lion-red text-gray-300 hover:text-white rounded-full flex items-center justify-center transition-colors">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+
+                <!-- Watermark -->
+                <div class="text-[10px] text-gray-500">
+                    <p class="mb-1">Modified by</p>
+                    <a href="https://undangan.296.web.id" target="_blank" class="text-lion-yellow hover:underline font-semibold font-serif">296GROUP</a>
+                </div>
+            </div>
+        </footer>
+
+        <!-- STICKY BOTTOM NAVIGATION BAR -->
+        <nav class="fixed bottom-6 inset-x-4 max-w-lg mx-auto bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-gray-100 z-40 p-2 flex items-center justify-around">
+            <button onclick="scrollToSection('beranda')" class="flex flex-col items-center space-y-1 py-1 text-lion-red transition-all transform active:scale-90 hover:text-lion-red">
+                <i class="fas fa-home text-sm"></i>
+                <span class="text-[9px] font-bold uppercase tracking-wider">Home</span>
+            </button>
+            <button onclick="scrollToSection('acara')" class="flex flex-col items-center space-y-1 py-1 text-gray-400 transition-all transform active:scale-90 hover:text-lion-red">
+                <i class="fas fa-calendar-alt text-sm"></i>
+                <span class="text-[9px] font-bold uppercase tracking-wider">Acara</span>
+            </button>
+            <button onclick="scrollToSection('pembicara')" class="flex flex-col items-center space-y-1 py-1 text-gray-400 transition-all transform active:scale-90 hover:text-lion-red">
+                <i class="fas fa-microphone-alt text-sm"></i>
+                <span class="text-[9px] font-bold uppercase tracking-wider">Speaker</span>
+            </button>
+            <button onclick="scrollToSection('agenda')" class="flex flex-col items-center space-y-1 py-1 text-gray-400 transition-all transform active:scale-90 hover:text-lion-red">
+                <i class="fas fa-stream text-sm"></i>
+                <span class="text-[9px] font-bold uppercase tracking-wider">Agenda</span>
+            </button>
+            <button onclick="scrollToSection('rsvp')" class="flex flex-col items-center space-y-1 py-1 text-gray-400 transition-all transform active:scale-90 hover:text-lion-red">
+                <i class="fas fa-comments text-sm"></i>
+                <span class="text-[9px] font-bold uppercase tracking-wider">RSVP</span>
+            </button>
+        </nav>
+
+        <!-- Custom Notification Alert Box (No annoying alerts used!) -->
+        <div id="customAlert" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-[200] max-w-sm w-[calc(100%-2rem)] bg-lion-dark text-white py-3 px-5 rounded-2xl shadow-2xl flex items-center space-x-3 transition-all duration-500 opacity-0 pointer-events-none translate-y-[-20px]">
+            <div class="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-check"></i>
+            </div>
+            <div class="flex-1">
+                <h4 class="font-bold text-xs">Pesan Terkirim</h4>
+                <p id="alertMessage" class="text-[10px] text-gray-300">Konfirmasi RSVP Anda berhasil dicatat.</p>
+            </div>
+            <button onclick="dismissAlert()" class="text-gray-400 hover:text-white transition-colors">
+                <i class="fas fa-times text-sm"></i>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Set dynamic recipient name from URL parameters e.g., index.html?to=Budi+Santoso
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const guestName = params.get('to');
+            if (guestName) {
+                // Formatting name
+                document.getElementById('recipientName').innerText = decodeURIComponent(guestName);
+            }
+
+            // Animate entrance of cover gate elements
+            setTimeout(() => {
+                const brand = document.getElementById('gateBrand');
+                const card = document.getElementById('gateCard');
+                const footer = document.getElementById('gateFooter');
+                
+                brand.classList.remove('scale-95', 'opacity-0');
+                brand.classList.add('scale-100', 'opacity-100');
+                
+                card.classList.remove('scale-90', 'opacity-0');
+                card.classList.add('scale-100', 'opacity-100');
+                
+                footer.classList.remove('opacity-0');
+                footer.classList.add('opacity-100');
+            }, 150);
+
+            // Set up active bottom navigation tracking
+            window.addEventListener('scroll', handleNavigationHighlighting);
+        });
+
+        // Open Invitation Interaction
+        function openInvitation() {
+            // Unlock scrolling
+            document.body.classList.remove('locked');
+            
+            // Hide Cover Gate with translation
+            const gate = document.getElementById('coverGate');
+            gate.classList.add('translate-y-[-100%]', 'opacity-0');
+            setTimeout(() => {
+                gate.style.display = 'none';
+            }, 1000);
+
+            // Show main content nicely
+            const content = document.getElementById('mainContent');
+            content.classList.remove('opacity-0');
+            content.classList.add('opacity-100');
+
+            // Play instrumental background music
+            const audio = document.getElementById('bgmAudio');
+            audio.play().then(() => {
+                document.getElementById('musicControl').classList.remove('hidden');
+            }).catch(err => {
+                console.log('Autoplay blocked initially. User interaction enabled playback.');
+                document.getElementById('musicControl').classList.remove('hidden');
+            });
+
+            // Start Countdown Timer
+            initCountdown();
+        }
+
+        // Music Controls Play/Pause
+        let musicPlaying = true;
+        function toggleMusic() {
+            const audio = document.getElementById('bgmAudio');
+            const icon = document.getElementById('musicIcon');
+            if (musicPlaying) {
+                audio.pause();
+                icon.classList.remove('fa-spin');
+                musicPlaying = false;
+            } else {
+                audio.play();
+                icon.classList.add('fa-spin');
+                musicPlaying = true;
+            }
+        }
+
+        // Target Event Date (Let's set it to some future date, e.g., 2026-02-26)
+        const targetDate = new Date('February 26, 2026 18:00:00').getTime();
+
+        function initCountdown() {
+            const interval = setInterval(() => {
+                const now = new Date().getTime();
+                const difference = targetDate - now;
+
+                if (difference <= 0) {
+                    clearInterval(interval);
+                    document.getElementById('days').innerText = "00";
+                    document.getElementById('hours').innerText = "00";
+                    document.getElementById('minutes').innerText = "00";
+                    document.getElementById('seconds').innerText = "00";
+                    return;
+                }
+
+                // Time calculations
+                const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((difference % (1000 * 60)) / 1000);
+
+                // Update UI elements with leading zeros
+                document.getElementById('days').innerText = d < 10 ? '0' + d : d;
+                document.getElementById('hours').innerText = h < 10 ? '0' + h : h;
+                document.getElementById('minutes').innerText = m < 10 ? '0' + m : m;
+                document.getElementById('seconds').innerText = s < 10 ? '0' + s : s;
+
+            }, 1000);
+        }
+
+        // Scroll to specific section smoothly
+        function scrollToSection(id) {
+            const target = document.getElementById(id);
+            if (target) {
+                window.scrollTo({
+                    top: target.offsetTop - 30,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // Highlights corresponding tab based on current scroll position
+        function handleNavigationHighlighting() {
+            const sections = ['beranda', 'acara', 'pembicara', 'agenda', 'rsvp'];
+            const navButtons = document.querySelectorAll('nav button');
+
+            let currentSection = '';
+            const scrollPos = window.scrollY + window.innerHeight / 3;
+
+            sections.forEach(secId => {
+                const secElement = document.getElementById(secId);
+                if (secElement) {
+                    const top = secElement.offsetTop;
+                    const height = secElement.offsetHeight;
+                    if (scrollPos >= top && scrollPos < top + height) {
+                        currentSection = secId;
+                    }
+                }
+            });
+
+            navButtons.forEach((btn, index) => {
+                const secName = sections[index];
+                if (secName === currentSection) {
+                    btn.classList.add('text-lion-red');
+                    btn.classList.remove('text-gray-400');
+                } else {
+                    btn.classList.remove('text-lion-red');
+                    btn.classList.add('text-gray-400');
+                }
+            });
+        }
+
+        // Interactive Wish / Guest Book submission handler (Local storage & UI update)
+        function handleRSVPSubmit(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('formName').value.trim();
+            const status = document.getElementById('formStatus').value;
+            const count = document.getElementById('formCount').value;
+            const message = document.getElementById('formMessage').value.trim();
+
+            if (!name || !status || !message) return;
+
+            // Generate initials for profile badge
+            const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+
+            // Setup Badge styles depending on status choice
+            let badgeClass = 'bg-green-100 text-green-700';
+            let badgeIcon = 'fa-check-circle';
+            if (status === 'Tidak Hadir') {
+                badgeClass = 'bg-red-100 text-red-700';
+                badgeIcon = 'fa-times-circle';
+            } else if (status === 'Ragu-ragu') {
+                badgeClass = 'bg-yellow-100 text-yellow-700';
+                badgeIcon = 'fa-question-circle';
+            }
+
+            // Create a brand new DOM card for the Guestbook feed
+            const newWishHTML = `
+                <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex items-start space-x-3.5 animate-pulse transition-all duration-700">
+                    <div class="w-10 h-10 rounded-full bg-lion-red/10 text-lion-red flex items-center justify-center font-bold flex-shrink-0 text-sm">
+                        ${initials}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-bold text-xs text-lion-dark truncate">${name}</h4>
+                            <span class="${badgeClass} text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center space-x-0.5">
+                                <i class="fas ${badgeIcon}"></i>
+                                <span>${status}</span>
+                            </span>
+                        </div>
+                        <p class="text-[10px] text-gray-400 mt-0.5"><i class="far fa-clock mr-1"></i>Baru Saja</p>
+                        <p class="text-xs text-gray-600 mt-2 leading-relaxed bg-gray-50/50 p-2.5 rounded-xl border border-gray-50">"${message}"</p>
+                    </div>
+                </div>
+            `;
+
+            // Insert on top of the wishes feed list container
+            const box = document.getElementById('wishesBox');
+            box.insertAdjacentHTML('afterbegin', newWishHTML);
+
+            // Increment the counter UI total count
+            const countSpan = document.getElementById('wishCount');
+            const currentCount = parseInt(countSpan.innerText);
+            countSpan.innerText = currentCount + 1;
+
+            // Reset Form Values gracefully
+            document.getElementById('rsvpForm').reset();
+
+            // Trigger beautiful Non-disruptive Custom success Alert
+            showAlert(`Terima kasih ${name}, konfirmasi kehadiran (${status}) dan ucapan sukses Anda berhasil terkirim!`);
+
+            // Scroll to the first newly added guest item list
+            box.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Show elegant Custom Toast Notification
+        let alertTimeout;
+        function showAlert(msg) {
+            const alertBox = document.getElementById('customAlert');
+            document.getElementById('alertMessage').innerText = msg;
+            
+            alertBox.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-20px]');
+            alertBox.classList.add('opacity-100', 'translate-y-0');
+
+            clearTimeout(alertTimeout);
+            alertTimeout = setTimeout(() => {
+                dismissAlert();
+            }, 6000);
+        }
+
+        function dismissAlert() {
+            const alertBox = document.getElementById('customAlert');
+            alertBox.classList.remove('opacity-100', 'translate-y-0');
+            alertBox.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-20px]');
+        }
+
+        // Save event details mock into Google Calendar
+        function saveToCalendar() {
+            const title = encodeURIComponent("Lion February Annual Gathering 2026");
+            const details = encodeURIComponent("Hadir dalam malam apresiasi mitra dan peluncuran program logistik masa depan Lion February.");
+            const location = encodeURIComponent("Grand Ballroom Hotel Mulia, Jl. Asia Afrika, Senayan, Jakarta Pusat");
+            const dateStr = "20260226T180000/20260226T220000"; // Kamis 26 Feb 2026 18:00 - 22:00
+
+            const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dateStr}&details=${details}&location=${location}`;
+            window.open(calendarUrl, '_blank');
+        }
+    </script>
+</body>
+</html>

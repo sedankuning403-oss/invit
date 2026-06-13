@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Undangan Pernikahan Reyhan & Anissa"/>
+    <meta property="og:description" content="Dengan penuh kebahagiaan, kami mengundang Anda untuk hadir di hari istimewa kami."/>
+    <meta property="og:image" content="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/catin.webp"/>
+    <meta property="og:type" content="website"/>
+
+    <title>Undangan Pernikahan Reyhan & Anissa</title>
+
+    <!-- Google Fonts & AOS Library -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet"/>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- --- FAVICON (SVG Crown Emoji) --- -->
+    <link href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEita0_M2O-eCuyAVlkD8OIaq8QYjANaZTr61ExHZgO5wk5R3k_-Qg-UMLUIh2Xs1yfe9vHOXM7zl_DZN09EghVT3pmPEpsV5agqavbc54CnQ0CW01eoDtXxhgmVkXReU_tUy04HvF0BgltUDzZSaf35yaVUmnE9bi9_uIjrzpxl-852I-HjE0-2W_mYhJjm/s1280/logo%20296%20studios.png" rel="icon" sizes="32x32" type="image/png"
+    <!-- -->
+    <style>
+        :root {
+            --primary: #d4af37;
+            --bg: #fffaf0;
+            --text: #444;
+            --overlay: rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #1a1a1a; /* Background luar mewah untuk tampilan desktop */
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Container utama: mengunci tampilan di desktop agar seperti aplikasi mobile premium */
+        #wedding-p4 {
+            width: 100%;
+            max-width: 480px; /* Standar emas untuk undangan seluler di desktop */
+            min-height: 100vh;
+            background-color: var(--bg);
+            position: relative;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #p4-loader {
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            background: #fff; 
+            z-index: 10000; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            transition: opacity 0.5s ease;
+        }
+
+        #p4-loader img {
+            max-width: 80px;
+            height: auto;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+
+        .p4-flower { 
+            position: absolute; 
+            width: clamp(70px, 20vw, 110px); /* Ukuran dinamis sesuai layar */
+            z-index: 5; 
+            opacity: 0.85; 
+            pointer-events: none; 
+        }
+        .t-l { top: 0; left: 0; }
+        .t-r { top: 0; right: 0; transform: scaleX(-1); }
+        .b-l { bottom: 0; left: 0; transform: scaleY(-1); }
+        .b-r { bottom: 0; right: 0; transform: scale(-1); }
+
+        .p4-section { 
+            padding: 60px 24px; 
+            text-align: center; 
+            position: relative; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            width: 100%;
+        }
+        
+        #p4-cover { 
+            height: 100vh; 
+            transition: opacity 0.8s ease;
+            justify-content: space-around;
+            padding: 80px 24px;
+        }
+
+        #p4-cover h3 {
+            font-size: clamp(1.2rem, 5vw, 1.6rem);
+            letter-spacing: 2px;
+        }
+
+        #p4-cover h1 {
+            font-size: clamp(2rem, 8vw, 3rem);
+            line-height: 1.2;
+            margin: 10px 0;
+        }
+        
+        .p4-guest-box { 
+            border: 2px solid var(--primary); 
+            padding: 20px 15px; 
+            margin: 15px 0; 
+            background: rgba(255, 255, 255, 0.9); 
+            border-radius: 15px; 
+            width: 100%; 
+            max-width: 320px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .p4-guest-box p {
+            font-size: 0.85rem;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .p4-guest-box h2 {
+            font-size: clamp(1.2rem, 5vw, 1.5rem);
+            color: #222;
+            margin: 8px 0;
+        }
+
+        .p4-btn { 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 14px 30px; 
+            border-radius: 25px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .p4-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+        }
+
+        .p4-nav {
+            position: fixed; 
+            bottom: 20px; 
+            left: 50%; 
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 420px;
+            background: rgba(255,255,255,0.92); 
+            display: flex; 
+            justify-content: space-evenly;
+            gap: 5px;
+            padding: 10px 15px; 
+            border-radius: 40px; 
+            z-index: 999; 
+            border: 1px solid rgba(212,175,55,0.25);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15); 
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            align-items: center;
+        }
+
+        .p4-nav-item { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            width: 32px;  
+            height: 32px; 
+            transition: transform 0.2s ease;
+            text-decoration: none;
+            background: none; 
+            border: none; 
+            padding: 4px;
+            border-radius: 50%;
+        }
+
+        .p4-nav-item img { 
+            width: 100%;  
+            height: 100%; 
+            object-fit: contain; 
+            filter: sepia(0.3) saturate(1.5);
+        }
+
+        .p4-nav-item:active {
+            transform: scale(0.85);
+            background-color: rgba(212,175,55,0.1);
+        }
+
+        .p4-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 12px; 
+            width: 100%;
+            max-width: 400px; 
+            margin: 25px auto; 
+        }
+
+        .p4-grid img { 
+            width: 100%; 
+            aspect-ratio: 1/1; 
+            object-fit: cover; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Bingkai Foto Presisi */
+        .p4-frame-main { 
+            border: 6px solid white; 
+            outline: 1px solid var(--primary); 
+            border-radius: 120px 120px 0 0; 
+            width: 210px; 
+            height: 290px; 
+            overflow: hidden; 
+            margin-bottom: 20px; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .p4-frame-circle { 
+            border: 4px solid var(--primary); 
+            border-radius: 50%; 
+            width: 170px; 
+            height: 170px; 
+            overflow: hidden; 
+            margin: 20px auto; 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+
+        .p4-frame-main img, .p4-frame-circle img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
+
+        .p4-tl { 
+            position: relative; 
+            width: 100%; 
+            max-width: 400px; 
+            margin: 35px auto 20px; 
+        }
+
+        .p4-tl::before { 
+            content: ''; 
+            position: absolute; 
+            width: 2px; 
+            background: var(--primary); 
+            top: 0; 
+            bottom: 0; 
+            left: 50%; 
+            transform: translateX(-50%);
+            opacity: 0.5;
+        }
+
+        .p4-tl-item { 
+            display: flex; 
+            margin-bottom: 25px; 
+            font-size: 0.85rem; 
+            align-items: center;
+        }
+
+        .p4-tl-l { 
+            width: 50%; 
+            text-align: right; 
+            padding-right: 20px; 
+        }
+
+        .p4-tl-r { 
+            width: 50%; 
+            text-align: left; 
+            padding-left: 20px; 
+        }
+
+        .p4-arab { 
+            font-family: 'Amiri', serif; 
+            font-size: clamp(1.2rem, 5vw, 1.6rem); 
+            line-height: 2.2; 
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .p4-arti {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            padding: 0 10px;
+            color: #555;
+        }
+
+        .p4-timer { 
+            display: flex; 
+            gap: 12px; 
+            justify-content: center; 
+            margin-top: 25px; 
+            width: 100%;
+        }
+
+        .p4-time-box { 
+            background: white; 
+            border: 1px solid rgba(212, 175, 55, 0.5); 
+            padding: 10px 5px; 
+            border-radius: 12px; 
+            width: 65px; 
+            font-size: 0.75rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+        }
+
+        .p4-time-box span { 
+            display: block; 
+            font-size: 1.3rem; 
+            font-weight: bold; 
+            color: var(--primary); 
+            margin-bottom: 2px;
+        }
+
+        /* RSVP Form */
+        #p4-rsvp input, #p4-rsvp textarea {
+            width: 90%; 
+            padding: 12px; 
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        #p4-rsvp input:focus, #p4-rsvp textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .hidden { 
+            display: none !important; 
+        }
+    </style>
+</head>
+<body>
+
+<div id="wedding-p4">
+    <!-- Loader Aplikasi -->
+    <div id="p4-loader">
+        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEita0_M2O-eCuyAVlkD8OIaq8QYjANaZTr61ExHZgO5wk5R3k_-Qg-UMLUIh2Xs1yfe9vHOXM7zl_DZN09EghVT3pmPEpsV5agqavbc54CnQ0CW01eoDtXxhgmVkXReU_tUy04HvF0BgltUDzZSaf35yaVUmnE9bi9_uIjrzpxl-852I-HjE0-2W_mYhJjm/s1280/logo%20296%20studios.png" alt="Logo Loader"/>
+    </div>
+
+    <section class="p4-section" id="p4-cover">
+        <img class="p4-flower t-l" src="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/pojokkiriatas.webp" alt="bunga"/>
+        <img class="p4-flower t-r" src="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/pojokkiriatas.webp" alt="bunga"/>
+        <img class="p4-flower b-l" src="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/pojokkiriatas.webp" alt="bunga"/>
+        <img class="p4-flower b-r" src="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/pojokkiriatas.webp" alt="bunga"/>
+
+        <div>
+            <h3 style="font-family:'Playfair Display'">Happy Wedding</h3>
+            <p style="margin-top: 5px; font-size: 0.9rem; letter-spacing: 1px;">The Wedding of</p>
+        </div>
+
+        <h1 style="font-family:'Great Vibes'; color: var(--primary);">Reyhan Hamzah & Anissa Salsabila</h1>
+
+        <div class="p4-guest-box">
+            <p>Kepada Yth.</p>
+            <h2 id="p4-nama-tamu">Nama Tamu</h2>
+            <p style="font-size: 0.75rem">Di Tempat</p>
+        </div>
+        
+        <button class="p4-btn" onclick="bukaP4()">Buka Undangan</button>
+    </section>
+
+    <div id="p4-content" class="hidden">
+        <!-- Halaman Beranda Utama -->
+        <section class="p4-section" id="p4-home">
+            <img class="p4-flower t-l" src="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/pojokkiriatas.webp" alt="bunga"/>
+            <img class="p4-flower t-r" src="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/pojokkiriatas.webp" alt="bunga"/>
+         
+            <div class="p4-frame-main">
+                <img src="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/catin.webp" alt="Mempelai Utama"/>
+            </div>
+
+            <div data-aos="fade-down" style="padding: 0 10px;">   
+                <h2 style="font-family:'Great Vibes'; font-size: 2.2rem; margin-bottom: 10px;">Anissa Salsabila & Reyhan Hamzah</h2>
+                <p style="font-size: 0.9rem; line-height: 1.5;">Kami akan menikah & kami ingin Anda menjadi bagian dari hari istimewa kami.</p>
+            </div>  
+
+            <div data-aos="fade-up">    
+                <div class="p4-timer">
+                    <div class="p4-time-box"><span id="p4-d">00</span>Hari</div>
+                    <div class="p4-time-box"><span id="p4-h">00</span>Jam</div>
+                    <div class="p4-time-box"><span id="p4-m">00</span>Menit</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Halaman Ayat Suci -->
+        <section class="p4-section">
+            <div data-aos="fade-down">  
+                <h2 dir="rtl" class="p4-arab">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</h2>
+                <p style="font-weight: bold; margin-bottom: 15px;">The Wedding of Reyhan Hamzah & Anissa Salsabila</p>
+                <p style="font-size: 0.85rem; padding: 0 15px; margin-bottom: 20px;">"Atas Rahmat Tuhan Yang Maha Esa kami bermaksud mengundang Anda di acara Kami..."</p>
+                <div class="p4-frame-circle">
+                    <img src="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/catin2.webp" alt="Mempelai Bulat"/>
+                </div>
+            </div>
+
+            <div data-aos="fade-up" style="margin-top: 25px;">
+                <div class="p4-arab" dir="rtl">
+                    وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِنْ أَنْفُسِكُمْ أَزْوَاجًا لِتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِقَوْمٍ يَتَفَكَّرُونَ
+                </div>
+                <div class="p4-arti">
+                    <i>"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang."</i>
+                    <br><b style="display: block; margin-top: 8px;">(QS. Ar-Rum: 21)</b>
+                </div>
+            </div>
+        </section>
+
+        <section class="p4-section" id="p4-mempelai" style="gap: 30px;">
+            <div data-aos="fade-right">
+                <h2 style="font-family:'Great Vibes'; font-size: 2.5rem; color: var(--primary);">Reyhan Hamzah</h2>
+                <p style="font-size: 0.85rem; margin-top: 5px;">Putra dari Bapak Hery Hamzah & Ibu Yuni Silalahi</p>
+            </div>
+            <p style="font-family: 'Great Vibes'; font-size: 1.8rem; color: var(--primary); margin: 5px 0;">~ dengan ~</p>
+            <div data-aos="fade-left">
+                <h2 style="font-family:'Great Vibes'; font-size: 2.5rem; color: var(--primary);">Anissa Salsabila</h2>
+                <p style="font-size: 0.85rem; margin-top: 5px;">Putri dari Bapak Sahrul Gunawan & Ibu Sri Rahayu</p>
+            </div>
+        </section>
+
+        <section class="p4-section" id="p4-lokasi">
+            <div data-aos="fade-up" style="margin-bottom: 25px;">
+                <h2 style="font-family:'Playfair Display'; margin-bottom: 8px;">Save The Date</h2>
+                <p style="font-weight: bold; color: var(--primary);">Minggu, 12 Desember 2026</p>
+                <br>
+                <a href="https://maps.google.com" target="_blank" rel="noopener" class="p4-btn" style="text-decoration:none; display: inline-block;">📍 Buka Lokasi</a>
+            </div>
+
+            <div class="p4-tl">
+                <div class="p4-tl-item" data-aos="fade-right">
+                    <div class="p4-tl-l"><b>Tamu Datang</b></div>
+                    <div class="p4-tl-r">08.00 WIB</div>
+                </div>
+                <div class="p4-tl-item" data-aos="fade-left">
+                    <div class="p4-tl-l">10.00 WIB</div>
+                    <div class="p4-tl-r"><b>Akad Nikah</b></div>
+                </div>
+                <div class="p4-tl-item" data-aos="fade-right">
+                    <div class="p4-tl-l"><b>Resepsi</b></div>
+                    <div class="p4-tl-r">11.00 WIB</div>
+                </div>
+                <div class="p4-tl-item" data-aos="fade-left">
+                    <div class="p4-tl-l">14.00 WIB</div>
+                    <div class="p4-tl-r"><b>Selesai</b></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="p4-section" id="p4-gift">
+            <div data-aos="fade-down" style="width: 100%;">  
+                <h2 style="margin-bottom: 15px;">Kirim Hadiah</h2>
+                <div class="p4-guest-box" style="width:100%; margin: 15px auto;">
+                    <p style="color: #222; margin-bottom: 15px; font-weight: bold;">💳 Bank BCA: 12345678 <br/> A/N Reyhan Hamzah</p>
+                    <p style="font-weight: bold; font-size: 0.8rem; margin-bottom: 10px; color: var(--primary);">QRIS</p>
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhyPs9c0mclx5mR6972fWelFfDOow3aefgEutOx78qc0duXB9Wa5d5gBAASMlqrC3zcdrW0cdwG5JMYuDzQ0KwuqTnVBJtcToMlXghzgncgZ559IupCeEgHn0UY7D0oGc0DdWY5uELERxNvkl4Q8xfxhKHYuUXDbfZ1TAATgwGAMRh5EeGJsomk6l99FSWa/s976/qris.jpeg" alt="QRIS" style="width: 130px; height: auto; display: block; margin: 0 auto; border-radius: 8px;"/>
+                </div>
+            </div>
+
+            <div data-aos="fade-up" style="width: 100%; margin-top: 30px;">
+                <div id="p4-rsvp">
+                    <h2 style="margin-bottom: 10px;">RSVP</h2>
+                    <input type="text" placeholder="Nama Anda" aria-label="Nama Anda"/><br/>
+                    <textarea placeholder="Tulis ucapan hangat & konfirmasi kehadiran..." aria-label="Ucapan"></textarea><br/>
+                    <button class="p4-btn" style="margin-top: 10px;">Kirim</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="p4-section" id="p4-galeri">
+            <h2 style="font-family:'Playfair Display'; margin-bottom: 10px;">Galeri Foto</h2>
+            <div class="p4-grid">
+                <div data-aos="fade-right"><img src="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/demo4/g1.webp" alt="Galeri 1"/></div>
+                <div data-aos="fade-left"><img src="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/demo4/g2.webp" alt="Galeri 2"/></div>
+                <div data-aos="fade-right"><img src="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/demo4/g3.webp" alt="Galeri 3"/></div>
+                <div data-aos="fade-left"><img src="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/demo4/g4.webp" alt="Galeri 4"/></div>
+            </div>
+        </section>
+
+        <!-- Penutup Terima Kasih -->
+        <section class="p4-section" style="background: #fdf5e6; min-height: 50vh;">
+            <div data-aos="fade-up">  
+                <div class="p4-frame-circle" style="width:110px; height:110px; margin-bottom: 15px;">
+                    <img src="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/catin2.webp" alt="Mempelai Kecil"/>
+                </div>
+                <h2 style="font-family:'Great Vibes'; font-size: 2.2rem; color: var(--primary);">Reyhan Hamzah & Anissa Salsabila</h2>
+                <p style="margin-top: 10px; font-weight: bold; letter-spacing: 1px;">Terima Kasih</p>
+            </div>
+        </section>
+
+        <!-- Menu Navigasi Bawah -->
+        <nav class="p4-nav">
+            <a class="p4-nav-item" href="#p4-home" title="Home"><img src="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/demo4/icon-home.svg" alt="Home"/></a>
+            <a class="p4-nav-item" href="#p4-rsvp" title="RSVP"><img src="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/demo4/icon-people.svg" alt="Mempelai"/></a>
+            <a class="p4-nav-item" href="#p4-galeri" title="Galeri"><img src="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/demo4/icon-picture.svg" alt="Galeri"/></a>
+            <a class="p4-nav-item" href="#p4-lokasi" title="Lokasi"><img src="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/demo4/icon-map.svg" alt="Lokasi"/></a>
+            <a class="p4-nav-item" href="#p4-gift" title="Hadiah"><img src="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/demo4/icon-qrcode.svg" alt="Gift"/></a>
+            <button class="p4-nav-item" onclick="toggleP4Scroll()" title="Auto Scroll"><img src="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/demo4/scroll-down.webp" alt="Scroll"/></button>
+            <button class="p4-nav-item" onclick="toggleP4Music()" title="Musik"><img src="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/demo4/icon-sound.svg" alt="Music"/></button>
+        </nav>
+    </div>
+
+    <!-- Background Musik -->
+    <audio id="p4-music" loop preload="auto">
+        <source src="https://raw.githubusercontent.com/elrosyadi296/elrosyadi296/main/demo4/demo4.mp3" type="audio/mpeg"/>
+    </audio>
+</div>
+
+<script>
+    // 1. Ambil Nama Tamu dari Parameter URL
+    const p4Params = new URLSearchParams(window.location.search);
+    const p4To = p4Params.get('to');
+    if (p4To) {
+        document.getElementById('p4-nama-tamu').innerText = decodeURIComponent(p4To.replace(/\+/g, " "));
+    }
+
+    // 2. Transisi Loader ke Cover Berakhir Halus
+    window.addEventListener('load', () => {
+        const loader = document.getElementById('p4-loader');
+        setTimeout(() => { 
+            loader.style.opacity = "0";
+            setTimeout(() => loader.classList.add('hidden'), 500);
+        }, 1500);
+    });
+
+    // 3. Fungsi Membuka Undangan (Consolidated)
+    let p4ScrollInterval;
+    let p4ScrollActive = false;
+
+    function bukaP4() {
+        const cover = document.getElementById('p4-cover');
+        cover.style.opacity = "0";
+        
+        setTimeout(() => {
+            cover.classList.add('hidden');
+            document.getElementById('p4-content').classList.remove('hidden');
+            
+            // Putar Musik Otomatis
+            const music = document.getElementById('p4-music');
+            music.play().catch(e => console.log("Menunggu interaksi pengguna untuk memutar musik"));
+            
+            // Inisialisasi AOS (Animate On Scroll)
+            AOS.init({ 
+                duration: 1200, 
+                once: true 
+            });
+
+            // Mulai Auto Scroll Pelan & Halus
+            startAutoScroll();
+        }, 800);
+    }
+
+    // 4. Sistem Auto Scroll Berhenti Otomatis Saat Disentuh Pengguna
+    function startAutoScroll() {
+        p4ScrollActive = true;
+        p4ScrollInterval = setInterval(() => {
+            window.scrollBy(0, 1);
+        }, 45); // Kecepatan gerak sangat lembut
+    }
+
+    function stopAutoScroll() {
+        if (p4ScrollActive) {
+            clearInterval(p4ScrollInterval);
+            p4ScrollActive = false;
+        }
+    }
+
+    // Matikan auto-scroll jika pengguna berinteraksi langsung dengan layar
+    window.addEventListener("touchstart", stopAutoScroll, { passive: true });
+    window.addEventListener("mousedown", stopAutoScroll, { passive: true });
+    window.addEventListener("wheel", stopAutoScroll, { passive: true });
+
+    // 5. Tombol Kontrol Manual Auto Scroll di Navigasi
+    function toggleP4Scroll() {
+        if (!p4ScrollActive) {
+            startAutoScroll();
+        } else {
+            stopAutoScroll();
+        }
+    }
+
+    // 6. Kontrol Putar/Jeda Musik
+    function toggleP4Music() {
+        const m = document.getElementById('p4-music');
+        if (m.paused) {
+            m.play();
+        } else {
+            m.pause();
+        }
+    }
+
+    // 7. Timer Hitung Mundur (Memperbaiki bug variabel 'gap')
+    const p4Target = new Date("Dec 12, 2026 08:00:00").getTime();
+    setInterval(() => {
+        const p4Now = new Date().getTime();
+        const p4Gap = p4Target - p4Now;
+        if (p4Gap > 0) {
+            document.getElementById('p4-d').innerText = Math.floor(p4Gap / (1000 * 60 * 60 * 24));
+            document.getElementById('p4-h').innerText = Math.floor((p4Gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById('p4-m').innerText = Math.floor((p4Gap % (1000 * 60 * 60)) / (1000 * 60));
+        }
+    }, 1000);
+</script>
+</body>
+</html>
