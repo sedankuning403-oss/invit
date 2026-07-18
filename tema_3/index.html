@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Undangan Pernikahan — Reverie</title>
+<meta name="description" content="Undangan Pernikahan Digital">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Mrs+Saint+Delafield&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Ambient particles canvas (petals + stars) -->
+<canvas id="reverie-canvas"></canvas>
+
+<!-- ===================== GATE / COVER ===================== -->
+<section id="gate" class="gate">
+  <div class="gate__frame">
+    <p class="eyebrow">Undangan Pernikahan</p>
+    <div class="gate__ornament" aria-hidden="true">
+      <svg viewBox="0 0 120 40"><path d="M0 20 C 20 0, 40 40, 60 20 S 100 0, 120 20" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+    </div>
+    <h1 class="script-name" id="gate-names">Ayla <span>&amp;</span> Rangga</h1>
+    <p class="gate__date" id="gate-date">Sabtu, 12 September 2026</p>
+
+    <div class="gate__guest">
+      <p>Kepada Yth.</p>
+      <p class="gate__guest-name" id="guest-name">Bapak/Ibu/Saudara/i</p>
+    </div>
+
+    <button id="open-btn" class="btn btn--ghost">
+      <span>Buka Undangan</span>
+    </button>
+  </div>
+</section>
+
+<!-- ===================== MAIN CONTENT ===================== -->
+<main id="invitation" class="invitation" hidden>
+
+  <!-- HERO -->
+  <section class="section hero">
+    <div class="hero__stars" aria-hidden="true"></div>
+    <p class="eyebrow eyebrow--light">Kami akan menikah</p>
+    <h1 class="script-name script-name--hero">Ayla <span>&amp;</span> Rangga</h1>
+    <p class="hero__quote">
+      "Dua jiwa, satu mimpi. Dengan penuh syukur, kami mengundang Anda
+      untuk menjadi saksi dan mendoakan awal perjalanan kami."
+    </p>
+    <div class="scroll-hint" aria-hidden="true"><span></span></div>
+  </section>
+
+  <!-- COUPLE -->
+  <section class="section couple">
+    <p class="eyebrow">Mempelai</p>
+    <div class="couple__grid">
+      <article class="couple__card">
+        <div class="couple__photo" aria-hidden="true"></div>
+        <h2 class="script-name script-name--sm">Ayla Kirana</h2>
+        <p class="couple__parents">Putri dari<br>Bapak Hendra Wijaya &amp; Ibu Maya Wijaya</p>
+      </article>
+      <div class="couple__divider" aria-hidden="true">&amp;</div>
+      <article class="couple__card">
+        <div class="couple__photo" aria-hidden="true"></div>
+        <h2 class="script-name script-name--sm">Rangga Aditya</h2>
+        <p class="couple__parents">Putra dari<br>Bapak Surya Aditya &amp; Ibu Ratna Aditya</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- COUNTDOWN -->
+  <section class="section countdown-section">
+    <p class="eyebrow eyebrow--light">Hitung Mundur Menuju Hari Bahagia</p>
+    <div class="countdown" id="countdown">
+      <div class="countdown__item"><span class="countdown__num" id="cd-day">00</span><span class="countdown__label">Hari</span></div>
+      <div class="countdown__item"><span class="countdown__num" id="cd-hour">00</span><span class="countdown__label">Jam</span></div>
+      <div class="countdown__item"><span class="countdown__num" id="cd-min">00</span><span class="countdown__label">Menit</span></div>
+      <div class="countdown__item"><span class="countdown__num" id="cd-sec">00</span><span class="countdown__label">Detik</span></div>
+    </div>
+  </section>
+
+  <!-- EVENTS -->
+  <section class="section events">
+    <p class="eyebrow">Acara</p>
+    <h2 class="section-title">Waktu &amp; Tempat</h2>
+    <div class="events__grid">
+      <article class="event-card">
+        <p class="event-card__label">Akad Nikah</p>
+        <p class="event-card__date">Sabtu, 12 September 2026</p>
+        <p class="event-card__time">08.00 — 10.00 WIB</p>
+        <p class="event-card__place">Masjid Al-Muttaqin<br>Jl. Kenanga No. 21, Yogyakarta</p>
+        <a class="btn btn--outline" id="map-akad" href="#" target="_blank" rel="noopener">Lihat Peta</a>
+      </article>
+      <article class="event-card">
+        <p class="event-card__label">Resepsi</p>
+        <p class="event-card__date">Sabtu, 12 September 2026</p>
+        <p class="event-card__time">11.00 — 14.00 WIB</p>
+        <p class="event-card__place">Graha Kirana Ballroom<br>Jl. Malioboro No. 88, Yogyakarta</p>
+        <a class="btn btn--outline" id="map-resepsi" href="#" target="_blank" rel="noopener">Lihat Peta</a>
+      </article>
+    </div>
+    <button class="btn btn--ghost" id="add-calendar">+ Tambahkan ke Kalender</button>
+  </section>
+
+  <!-- LOVE STORY -->
+  <section class="section story">
+    <p class="eyebrow eyebrow--light">Kisah Kami</p>
+    <h2 class="section-title section-title--light">Sebuah Perjalanan</h2>
+    <div class="story__timeline">
+      <div class="story__item">
+        <p class="story__year">2019</p>
+        <p class="story__text">Pertama bertemu di sebuah kedai kopi kecil, percakapan singkat yang berubah menjadi pertemanan.</p>
+      </div>
+      <div class="story__item">
+        <p class="story__year">2021</p>
+        <p class="story__text">Berteman menjadi dekat, saling menopang lewat suka dan duka.</p>
+      </div>
+      <div class="story__item">
+        <p class="story__year">2024</p>
+        <p class="story__text">Rangga melamar Ayla di puncak bukit saat matahari terbenam.</p>
+      </div>
+      <div class="story__item">
+        <p class="story__year">2026</p>
+        <p class="story__text">Kami memilih untuk melangkah bersama, selamanya.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="section gallery">
+    <p class="eyebrow">Galeri</p>
+    <h2 class="section-title">Momen Kami</h2>
+    <div class="gallery__grid" id="gallery-grid">
+      <div class="gallery__item ph-1"></div>
+      <div class="gallery__item ph-2"></div>
+      <div class="gallery__item ph-3"></div>
+      <div class="gallery__item ph-4"></div>
+      <div class="gallery__item ph-5"></div>
+      <div class="gallery__item ph-6"></div>
+    </div>
+    <p class="gallery__hint">Ganti bidang di atas dengan foto Anda — lihat dokumentasi bagian "Mengganti Foto".</p>
+  </section>
+
+  <!-- GIFT -->
+  <section class="section gift">
+    <p class="eyebrow eyebrow--light">Tanda Kasih</p>
+    <h2 class="section-title section-title--light">Kirim Hadiah</h2>
+    <p class="gift__text">
+      Doa restu Anda adalah karunia yang paling berarti bagi kami. Namun jika berkenan
+      memberi tanda kasih, kami sediakan pilihan berikut.
+    </p>
+    <div class="gift__card">
+      <p class="gift__bank">Bank Reverie</p>
+      <p class="gift__number" id="bank-number">1234 5678 9099</p>
+      <p class="gift__owner">a.n. Ayla Kirana</p>
+      <button class="btn btn--outline" id="copy-bank">Salin Nomor Rekening</button>
+    </div>
+  </section>
+
+  <!-- GUEST BOOK / RSVP -->
+  <section class="section guestbook">
+    <p class="eyebrow">Buku Tamu</p>
+    <h2 class="section-title">Kirim Doa &amp; Konfirmasi Kehadiran</h2>
+
+    <form id="guestbook-form" class="guestbook__form">
+      <div class="field">
+        <label for="gb-name">Nama</label>
+        <input type="text" id="gb-name" name="nama" required maxlength="60" placeholder="Nama lengkap Anda">
+      </div>
+
+      <div class="field">
+        <label for="gb-attend">Konfirmasi Kehadiran</label>
+        <select id="gb-attend" name="kehadiran" required>
+          <option value="" disabled selected>Pilih salah satu</option>
+          <option value="Hadir">Hadir</option>
+          <option value="Tidak Hadir">Tidak Hadir</option>
+          <option value="Masih Ragu">Masih Ragu</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="gb-message">Ucapan &amp; Doa</label>
+        <textarea id="gb-message" name="ucapan" rows="4" required maxlength="500" placeholder="Tuliskan ucapan dan doa terbaik Anda..."></textarea>
+      </div>
+
+      <button type="submit" class="btn btn--solid" id="gb-submit">
+        <span class="btn__label">Kirim</span>
+      </button>
+      <p class="guestbook__status" id="gb-status" role="status" aria-live="polite"></p>
+    </form>
+
+    <div class="guestbook__list-wrap">
+      <div class="guestbook__list" id="guestbook-list">
+        <p class="guestbook__loading" id="gb-loading">Memuat ucapan...</p>
+      </div>
+      <button class="btn btn--ghost" id="gb-load-more" hidden>Muat Lebih Banyak</button>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section class="section closing">
+    <div class="closing__ornament" aria-hidden="true">✦</div>
+    <p class="closing__text">
+      Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i
+      berkenan hadir dan memberikan doa restu.
+    </p>
+    <h2 class="script-name script-name--sm">Ayla &amp; Rangga</h2>
+    <p class="closing__thanks">Terima kasih atas doa dan restunya.</p>
+    <p class="closing__watermark">Dibuat dengan hati — Reverie Invitation</p>
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

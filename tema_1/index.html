@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Undangan Pernikahan — Raras &amp; Bagus</title>
+<meta name="description" content="Undangan Pernikahan Raras & Bagus">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ AUDIO ============ -->
+<audio id="bg-audio" loop preload="none">
+  <source src="" type="audio/mpeg">
+</audio>
+<button id="audio-toggle" class="audio-toggle" aria-label="Putar musik">
+  <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M3 10v4h4l5 5V5L7 10H3z"/></svg>
+</button>
+
+<!-- ============ COVER ============ -->
+<section id="cover" class="cover">
+  <div class="gate">
+    <svg class="gate-svg" viewBox="0 0 400 600" preserveAspectRatio="xMidYMax meet">
+      <path class="gate-line gate-line--outer" d="M20,600 L20,180 Q20,60 200,40 Q380,60 380,180 L380,600" />
+      <path class="gate-line gate-line--inner" d="M50,600 L50,190 Q50,90 200,72 Q350,90 350,190 L350,600" />
+      <path class="gate-line gate-line--kawung" d="M200,40 L200,10 M170,50 Q200,15 230,50" />
+      <circle class="gate-dot" cx="200" cy="20" r="5"/>
+    </svg>
+  </div>
+
+  <div class="cover-inner">
+    <p class="eyebrow" data-i18n>Kepada Yth. Bapak/Ibu/Saudara/i</p>
+    <p class="guest-name" id="guest-name">Tamu Undangan</p>
+    <div class="cover-ornament">✦</div>
+    <p class="cover-label">Undangan Pernikahan</p>
+    <h1 class="cover-names">Raras <span class="amp">&amp;</span> Bagus</h1>
+    <p class="cover-date" id="cover-date">12 . 12 . 2026</p>
+    <button id="open-invitation" class="btn-open">
+      <span>Buka Undangan</span>
+    </button>
+  </div>
+</section>
+
+<!-- ============ MAIN CONTENT ============ -->
+<main id="main-content" class="main-content" hidden>
+
+  <!-- HERO -->
+  <section class="section hero" data-reveal>
+    <div class="ornament-corner ornament-corner--tl"></div>
+    <div class="ornament-corner ornament-corner--br"></div>
+    <p class="section-eyebrow">Assalamu'alaikum Warahmatullahi Wabarakatuh</p>
+    <blockquote class="quote">
+      "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu pasangan dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya di antaramu rasa kasih dan sayang."
+      <cite>— QS. Ar-Rum: 21</cite>
+    </blockquote>
+    <p class="hero-sub">Dengan penuh syukur, kami mengundang Bapak/Ibu/Saudara/i untuk berkenan hadir merestui pernikahan kami</p>
+  </section>
+
+  <!-- MEMPELAI -->
+  <section class="section couple" data-reveal>
+    <p class="section-eyebrow">Mempelai</p>
+    <div class="couple-grid">
+      <div class="couple-card">
+        <div class="couple-photo" style="--img:linear-gradient(160deg,#5B1526,#C9A24B);"></div>
+        <h3 class="couple-name">Raras Kirana Wibisono</h3>
+        <p class="couple-parent">Putri dari<br>Bapak Suryo Wibisono &amp; Ibu Ningsih Rahayu</p>
+        <div class="couple-social">
+          <a href="#" target="_blank" rel="noopener">@raras.kirana</a>
+        </div>
+      </div>
+      <div class="couple-and">&amp;</div>
+      <div class="couple-card">
+        <div class="couple-photo" style="--img:linear-gradient(160deg,#3D0C1B,#E8CD8A);"></div>
+        <h3 class="couple-name">Bagus Aditya Nugroho</h3>
+        <p class="couple-parent">Putra dari<br>Bapak Ahmad Nugroho &amp; Ibu Sri Wahyuni</p>
+        <div class="couple-social">
+          <a href="#" target="_blank" rel="noopener">@bagus.aditya</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COUNTDOWN -->
+  <section class="section countdown-section" data-reveal>
+    <p class="section-eyebrow">Menanti Hari Bahagia</p>
+    <div class="countdown" id="countdown">
+      <div class="countdown-box"><span id="cd-days">00</span><small>Hari</small></div>
+      <div class="countdown-box"><span id="cd-hours">00</span><small>Jam</small></div>
+      <div class="countdown-box"><span id="cd-minutes">00</span><small>Menit</small></div>
+      <div class="countdown-box"><span id="cd-seconds">00</span><small>Detik</small></div>
+    </div>
+    <button id="btn-calendar" class="btn-outline">+ Tambahkan ke Kalender</button>
+  </section>
+
+  <!-- ACARA -->
+  <section class="section events" data-reveal>
+    <p class="section-eyebrow">Rangkaian Acara</p>
+    <div class="events-grid">
+      <div class="event-card">
+        <p class="event-kind">Akad Nikah</p>
+        <p class="event-date">Sabtu, 12 Desember 2026</p>
+        <p class="event-time">08.00 — 10.00 WIB</p>
+        <p class="event-place">Kediaman Mempelai Wanita<br>Jl. Kaliurang KM 8, Sleman, Yogyakarta</p>
+        <a href="https://maps.google.com" target="_blank" rel="noopener" class="btn-outline btn-sm">Buka Peta</a>
+      </div>
+      <div class="event-card">
+        <p class="event-kind">Resepsi</p>
+        <p class="event-date">Sabtu, 12 Desember 2026</p>
+        <p class="event-time">11.00 — 14.00 WIB</p>
+        <p class="event-place">Pendopo Agung Royal Ambarrukmo<br>Jl. Laksda Adisucipto, Yogyakarta</p>
+        <a href="https://maps.google.com" target="_blank" rel="noopener" class="btn-outline btn-sm">Buka Peta</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERI -->
+  <section class="section gallery" data-reveal>
+    <p class="section-eyebrow">Galeri</p>
+    <div class="gallery-grid" id="gallery-grid">
+      <!-- gallery items injected/edited via CONFIG.gallery in script.js -->
+    </div>
+  </section>
+
+  <!-- LIVE STREAMING -->
+  <section class="section streaming" data-reveal>
+    <p class="section-eyebrow">Turut Menyaksikan</p>
+    <p class="streaming-sub">Bagi yang berhalangan hadir, kami mengundang untuk turut menyaksikan secara virtual</p>
+    <div class="streaming-buttons">
+      <a class="btn-solid" href="#" target="_blank" rel="noopener">YouTube</a>
+      <a class="btn-outline" href="#" target="_blank" rel="noopener">Instagram Live</a>
+      <a class="btn-outline" href="#" target="_blank" rel="noopener">Zoom</a>
+    </div>
+  </section>
+
+  <!-- HADIAH -->
+  <section class="section gift" data-reveal>
+    <p class="section-eyebrow">Tanda Kasih</p>
+    <p class="gift-sub">Doa restu Anda adalah karunia yang berharga. Namun jika ingin memberi tanda kasih, kami sediakan amplop digital berikut.</p>
+    <div class="gift-cards">
+      <div class="gift-card">
+        <p class="gift-bank">Bank Central Asia</p>
+        <p class="gift-number" id="gift-rek-1">1234567890</p>
+        <p class="gift-owner">a.n. Raras Kirana Wibisono</p>
+        <button class="btn-copy" data-copy-target="gift-rek-1">Salin Nomor</button>
+      </div>
+      <div class="gift-card">
+        <p class="gift-bank">Bank Mandiri</p>
+        <p class="gift-number" id="gift-rek-2">0987654321</p>
+        <p class="gift-owner">a.n. Bagus Aditya Nugroho</p>
+        <button class="btn-copy" data-copy-target="gift-rek-2">Salin Nomor</button>
+      </div>
+    </div>
+    <div class="gift-address">
+      <p class="gift-address-label">Kirim Hadiah</p>
+      <p class="gift-address-text" id="gift-address">Jl. Kaliurang KM 8, No. 21, Sleman, Daerah Istimewa Yogyakarta, 55581</p>
+      <button class="btn-copy" data-copy-target="gift-address">Salin Alamat</button>
+    </div>
+  </section>
+
+  <!-- RSVP & BUKU TAMU -->
+  <section class="section rsvp" data-reveal>
+    <p class="section-eyebrow">RSVP &amp; Buku Tamu</p>
+    <p class="rsvp-sub">Konfirmasi kehadiran dan kirimkan doa restu untuk kami</p>
+
+    <form id="guestbook-form" class="guestbook-form">
+      <div class="form-row">
+        <label for="gb-nama">Nama</label>
+        <input type="text" id="gb-nama" name="nama" placeholder="Nama Anda" required maxlength="60">
+      </div>
+      <div class="form-row">
+        <label for="gb-kehadiran">Konfirmasi Kehadiran</label>
+        <select id="gb-kehadiran" name="kehadiran" required>
+          <option value="">Pilih konfirmasi</option>
+          <option value="Hadir">Hadir</option>
+          <option value="Tidak Hadir">Tidak Hadir</option>
+          <option value="Ragu-ragu">Masih Ragu-ragu</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="gb-ucapan">Ucapan &amp; Doa</label>
+        <textarea id="gb-ucapan" name="ucapan" rows="3" placeholder="Tuliskan ucapan dan doa terbaik Anda" required maxlength="300"></textarea>
+      </div>
+      <button type="submit" class="btn-solid btn-block" id="gb-submit">
+        <span class="btn-label">Kirim Ucapan</span>
+      </button>
+      <p class="form-status" id="gb-status" role="status" aria-live="polite"></p>
+    </form>
+
+    <div class="guestbook-list-wrap">
+      <p class="guestbook-list-title"><span id="gb-count">0</span> Ucapan</p>
+      <div id="guestbook-list" class="guestbook-list">
+        <p class="guestbook-empty" id="guestbook-empty">Memuat ucapan...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PENUTUP -->
+  <section class="section closing" data-reveal>
+    <div class="gate gate--footer">
+      <svg class="gate-svg gate-svg--footer" viewBox="0 0 400 200" preserveAspectRatio="xMidYMin meet">
+        <path class="gate-line gate-line--outer" d="M20,0 L20,140 Q20,190 200,190 Q380,190 380,140 L380,0" />
+      </svg>
+    </div>
+    <p class="closing-quote">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.</p>
+    <p class="closing-thanks">Kami yang berbahagia,</p>
+    <p class="closing-names">Raras &amp; Bagus</p>
+    <p class="closing-watermark">Undangan digital oleh <a href="#" target="_blank" rel="noopener">296 Studios</a></p>
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
