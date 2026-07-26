@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>Sekar & Danendra — Undangan Pernikahan</title>
+<meta name="description" content="Undangan pernikahan digital Sekar & Danendra. Wabi, tema Japanese Minimalist — tenang, elegan, penuh ruang untuk bernapas.">
+
+<!-- ============================================================
+  TEMPLATE-ID   : WD-2026-014
+  NAMA TEMPLATE : Wabi — Japanese Minimalist Wedding Invitation
+  VERSI         : 1.0.0
+  TEMA          : Japanese Minimalist
+  296 STUDIOS
+=============================================================== -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;800&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================
+   1. DESIGN TOKENS — Primitive → Semantic → Component
+   Tema: Japanese Minimalist (Wabi-Sabi)
+========================================================= */
+:root{
+  /* -- primitive -- */
+  --p-washi:      #F6F2E9;
+  --p-washi-deep: #EFE8D8;
+  --p-ink:        #2A2926;
+  --p-ink-soft:   #55534C;
+  --p-sumi:       #79776C;
+  --p-vermillion: #A8452F;
+  --p-vermillion-deep:#7E3120;
+  --p-sage:       #8A9678;
+  --p-gold:       #B08D4F;
+  --p-white:      #FFFFFF;
+  --p-line:       rgba(42,41,38,0.14);
+
+  /* -- semantic -- */
+  --bg-page:        var(--p-washi);
+  --bg-panel:       var(--p-washi-deep);
+  --bg-inverse:     var(--p-ink);
+  --text-primary:   var(--p-ink);
+  --text-muted:     var(--p-sumi);
+  --text-inverse:   var(--p-washi);
+  --accent-seal:    var(--p-vermillion);
+  --accent-seal-deep:var(--p-vermillion-deep);
+  --accent-leaf:    var(--p-sage);
+  --accent-gold:    var(--p-gold);
+  --border-hairline:var(--p-line);
+
+  /* -- component -- */
+  --font-display: 'Shippori Mincho', serif;
+  --font-body: 'Noto Sans JP', 'Hiragino Sans', sans-serif;
+  --radius-seal: 50%;
+  --radius-card: 4px;
+  --radius-pill: 999px;
+  --shadow-soft: 0 12px 40px -18px rgba(42,41,38,0.35);
+  --ease-ink: cubic-bezier(.19,1,.22,1);
+  --space-section: clamp(64px, 10vw, 140px);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font-body);
+  background:var(--bg-page);
+  color:var(--text-primary);
+  line-height:1.7;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+h1,h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:.02em;}
+.container{max-width:720px;margin:0 auto;padding:0 24px;}
+.eyebrow{
+  font-size:12px;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--accent-seal);font-weight:500;
+}
+.section{padding:var(--space-section) 0;position:relative;}
+.section-title{font-size:clamp(28px,5vw,42px);margin:14px 0 8px;}
+.section-sub{color:var(--text-muted);font-size:15px;max-width:46ch;}
+.center{text-align:center;margin-left:auto;margin-right:auto;}
+
+/* seigaiha wave texture, used sparingly as section backdrops */
+.washi-texture{
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(42,41,38,0.035) 0, transparent 45%),
+    radial-gradient(circle at 80% 60%, rgba(168,69,47,0.04) 0, transparent 40%);
+}
+
+/* -- ink-stroke divider (SVG line-draw signature element) -- */
+.ink-divider{width:120px;height:24px;margin:22px auto;display:block;}
+.ink-divider path{
+  fill:none;stroke:var(--accent-seal);stroke-width:2;
+  stroke-dasharray:200;stroke-dashoffset:200;
+  transition:stroke-dashoffset 1.4s var(--ease-ink);
+}
+.reveal.in-view .ink-divider path{stroke-dashoffset:0;}
+
+/* -- reveal on scroll -- */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease-ink), transform .9s var(--ease-ink);}
+.reveal.in-view{opacity:1;transform:translateY(0);}
+
+/* -- pill / brush-underline buttons -- */
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 34px;border:1px solid var(--text-primary);
+  border-radius:var(--radius-pill);font-size:13px;letter-spacing:.14em;
+  text-transform:uppercase;position:relative;overflow:hidden;
+  transition:color .5s var(--ease-ink);
+}
+.btn::before{
+  content:"";position:absolute;inset:0;background:var(--text-primary);
+  transform:translateX(-101%);transition:transform .5s var(--ease-ink);z-index:0;
+}
+.btn span{position:relative;z-index:1;transition:color .5s var(--ease-ink);}
+.btn:hover::before{transform:translateX(0);}
+.btn:hover span{color:var(--text-inverse);}
+.btn.btn-seal{border-color:var(--accent-seal);color:var(--accent-seal);}
+.btn.btn-seal::before{background:var(--accent-seal);}
+.btn.btn-seal:hover span{color:var(--text-inverse);}
+
+/* =========================================================
+   2. LOADING SCREEN
+========================================================= */
+#loading{
+  position:fixed;inset:0;background:var(--bg-inverse);color:var(--text-inverse);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:9999;transition:opacity .8s var(--ease-ink), visibility .8s;
+}
+#loading .seal{
+  width:64px;height:64px;border-radius:var(--radius-seal);border:1.5px solid var(--accent-seal);
+  display:flex;align-items:center;justify-content:center;margin-bottom:18px;
+  animation:stampPulse 1.6s ease-in-out infinite;
+}
+#loading .seal-dot{width:8px;height:8px;background:var(--accent-seal);border-radius:50%;}
+#loading p{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--p-sumi);}
+@keyframes stampPulse{0%,100%{transform:scale(1);opacity:.7;}50%{transform:scale(1.12);opacity:1;}}
+#loading.hidden{opacity:0;visibility:hidden;}
+
+/* =========================================================
+   3. COVER SCREEN
+========================================================= */
+#cover{
+  position:fixed;inset:0;z-index:500;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;color:var(--text-inverse);overflow:hidden;
+  transition:transform 1.1s var(--ease-ink), opacity 1.1s var(--ease-ink);
+}
+#cover::before{
+  content:"";position:absolute;inset:0;
+  background-image:linear-gradient(180deg, rgba(20,19,17,.55), rgba(20,19,17,.75)), url('https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=1600&auto=format&fit=crop');
+  background-size:cover;background-position:center;z-index:-1;
+}
+#cover.opened{transform:translateY(-100%);opacity:0;pointer-events:none;}
+.cover-kanji{
+  writing-mode:vertical-rl;font-family:var(--font-display);font-size:15px;
+  letter-spacing:.5em;color:var(--accent-seal);opacity:.85;position:absolute;
+  right:6%;top:14%;
+}
+.cover-eyebrow{font-size:12px;letter-spacing:.4em;text-transform:uppercase;opacity:.8;margin-bottom:18px;}
+.cover-names{font-size:clamp(40px,9vw,80px);line-height:1.15;}
+.cover-and{display:block;font-size:.4em;color:var(--accent-seal);margin:6px 0;}
+.cover-date{margin-top:18px;font-size:14px;letter-spacing:.22em;opacity:.85;}
+.cover-open-btn{
+  margin-top:44px;width:78px;height:78px;border-radius:50%;border:1px solid rgba(246,242,233,.5);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;
+  animation:floatY 3s ease-in-out infinite;
+}
+.cover-open-btn small{font-size:9px;letter-spacing:.2em;text-transform:uppercase;}
+@keyframes floatY{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.cover-guest{margin-top:16px;font-size:12px;color:var(--p-washi-deep);opacity:.75;}
+.cover-guest b{color:var(--text-inverse);opacity:1;}
+
+/* =========================================================
+   4. HERO
+========================================================= */
+#hero{padding-top:calc(var(--space-section) + 20px);text-align:center;}
+.hero-eyebrow{margin-bottom:18px;}
+.hero-names{font-size:clamp(38px,7vw,64px);}
+.hero-desc{color:var(--text-muted);max-width:52ch;margin:18px auto 0;font-size:15px;}
+
+/* countdown as stamp rings */
+.countdown{display:flex;justify-content:center;gap:clamp(10px,4vw,28px);margin-top:48px;flex-wrap:wrap;}
+.count-ring{
+  width:88px;height:88px;border-radius:50%;border:1px solid var(--border-hairline);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:var(--p-white);box-shadow:var(--shadow-soft);position:relative;
+}
+.count-ring::after{
+  content:"";position:absolute;inset:-1px;border-radius:50%;
+  border:1px solid var(--accent-seal);opacity:.35;
+}
+.count-num{font-family:var(--font-display);font-size:26px;color:var(--accent-seal-deep);}
+.count-label{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);margin-top:2px;}
+
+/* =========================================================
+   5. PROFILE
+========================================================= */
+.profile-grid{display:grid;grid-template-columns:1fr;gap:56px;margin-top:56px;}
+.profile-card{text-align:center;}
+.profile-photo{
+  width:168px;height:168px;border-radius:50%;object-fit:cover;margin:0 auto 22px;
+  border:1px solid var(--border-hairline);padding:6px;background:var(--p-white);
+}
+.profile-name{font-size:24px;margin-bottom:4px;}
+.profile-role{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-seal);margin-bottom:12px;}
+.profile-desc{font-size:14px;color:var(--text-muted);max-width:34ch;margin:0 auto;}
+.profile-amp{font-family:var(--font-display);font-size:30px;color:var(--accent-gold);margin:8px 0;}
+
+/* =========================================================
+   6. EVENT DETAILS
+========================================================= */
+.event-card{
+  background:var(--p-white);border:1px solid var(--border-hairline);border-radius:var(--radius-card);
+  padding:clamp(28px,6vw,52px);text-align:center;box-shadow:var(--shadow-soft);position:relative;
+}
+.event-card::before{
+  content:"";position:absolute;top:-1px;left:50%;transform:translateX(-50%);
+  width:40px;height:2px;background:var(--accent-seal);
+}
+.event-row{display:flex;flex-direction:column;gap:6px;padding:20px 0;border-top:1px solid var(--border-hairline);}
+.event-row:first-of-type{border-top:none;}
+.event-row .label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);}
+.event-row .value{font-size:17px;font-family:var(--font-display);}
+.event-card .btn{margin-top:22px;}
+
+/* =========================================================
+   7. TIMELINE (Love Story)
+========================================================= */
+.timeline{position:relative;margin-top:56px;padding-left:32px;}
+.timeline::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:1px;background:var(--border-hairline);}
+.tl-item{position:relative;padding-bottom:48px;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-dot{
+  position:absolute;left:-32px;top:2px;width:11px;height:11px;border-radius:50%;
+  background:var(--accent-seal);box-shadow:0 0 0 4px var(--bg-page), 0 0 0 5px var(--border-hairline);
+}
+.tl-year{font-size:11px;letter-spacing:.2em;color:var(--accent-seal);text-transform:uppercase;margin-bottom:6px;}
+.tl-title{font-size:19px;margin-bottom:6px;}
+.tl-text{font-size:14px;color:var(--text-muted);max-width:48ch;}
+
+/* =========================================================
+   8. GALLERY
+========================================================= */
+.gallery-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:48px;
+}
+.gallery-grid img{
+  width:100%;height:100%;object-fit:cover;border-radius:var(--radius-card);cursor:pointer;
+  transition:transform .6s var(--ease-ink), filter .6s;filter:grayscale(.1);
+}
+.gallery-grid img:hover{transform:scale(1.03);filter:grayscale(0);}
+.g-tall{grid-row:span 2;}
+#lightbox{
+  position:fixed;inset:0;background:rgba(20,19,17,.92);z-index:2000;
+  display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;
+  transition:opacity .4s, visibility .4s;
+}
+#lightbox.active{opacity:1;visibility:visible;}
+#lightbox img{max-width:88vw;max-height:82vh;border:4px solid var(--p-washi);}
+#lightbox .lb-close{position:absolute;top:26px;right:32px;color:var(--text-inverse);font-size:28px;}
+
+/* =========================================================
+   9. GUEST BOOK
+========================================================= */
+.rsvp-form{display:grid;gap:14px;margin-top:44px;}
+.rsvp-form input, .rsvp-form select, .rsvp-form textarea{
+  width:100%;padding:14px 16px;border:1px solid var(--border-hairline);border-radius:var(--radius-card);
+  background:var(--p-white);font-family:inherit;font-size:14px;color:var(--text-primary);
+}
+.rsvp-form textarea{resize:vertical;min-height:90px;}
+.rsvp-form label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;display:block;}
+.rsvp-submit{justify-self:start;margin-top:6px;}
+.guest-list{margin-top:48px;display:grid;gap:14px;max-height:420px;overflow-y:auto;padding-right:6px;}
+.guest-item{
+  background:var(--p-white);border:1px solid var(--border-hairline);border-radius:var(--radius-card);
+  padding:18px 20px;
+}
+.guest-item .g-name{font-weight:700;font-size:14px;}
+.guest-item .g-status{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-seal);margin-left:8px;}
+.guest-item .g-msg{font-size:13px;color:var(--text-muted);margin-top:6px;}
+.guest-empty{text-align:center;color:var(--text-muted);font-size:13px;padding:20px 0;}
+
+/* =========================================================
+   10. DIGITAL ENVELOPE
+========================================================= */
+.envelope-wrap{margin-top:48px;display:grid;gap:16px;}
+.envelope-card{
+  background:var(--bg-inverse);color:var(--text-inverse);border-radius:var(--radius-card);
+  padding:26px 28px;display:flex;justify-content:space-between;align-items:center;gap:14px;
+  border-left:3px solid var(--accent-seal);
+}
+.env-bank{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-gold);}
+.env-number{font-family:var(--font-display);font-size:20px;letter-spacing:.03em;margin-top:4px;}
+.env-holder{font-size:12px;color:var(--p-sumi);margin-top:2px;}
+.copy-btn{
+  border:1px solid rgba(246,242,233,.4);border-radius:var(--radius-pill);padding:9px 18px;
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;
+  transition:background .3s;
+}
+.copy-btn:hover{background:rgba(246,242,233,.12);}
+.qris-box{text-align:center;background:var(--p-white);border:1px solid var(--border-hairline);border-radius:var(--radius-card);padding:24px;}
+.qris-box img{width:180px;margin:0 auto 12px;}
+.qris-box .label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted);}
+
+/* =========================================================
+   11. MUSIC TOGGLE
+========================================================= */
+#music-toggle{
+  position:fixed;bottom:28px;left:28px;z-index:400;width:52px;height:52px;border-radius:50%;
+  background:var(--bg-inverse);color:var(--text-inverse);display:flex;align-items:center;justify-content:center;
+  box-shadow:var(--shadow-soft);
+}
+#music-toggle .bars{display:flex;gap:2px;align-items:flex-end;height:16px;}
+#music-toggle .bars span{width:2px;background:var(--accent-seal);animation:eq 1s ease-in-out infinite;}
+#music-toggle.paused .bars span{animation-play-state:paused;height:4px !important;}
+#music-toggle .bars span:nth-child(1){height:8px;animation-delay:0s;}
+#music-toggle .bars span:nth-child(2){height:16px;animation-delay:.2s;}
+#music-toggle .bars span:nth-child(3){height:10px;animation-delay:.4s;}
+@keyframes eq{0%,100%{height:4px;}50%{height:16px;}}
+
+/* =========================================================
+   12. BACK TO TOP
+========================================================= */
+#back-to-top{
+  position:fixed;bottom:28px;right:28px;z-index:400;width:52px;height:52px;border-radius:50%;
+  border:1px solid var(--border-hairline);background:var(--p-white);box-shadow:var(--shadow-soft);
+  display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;
+  transition:opacity .4s, visibility .4s, transform .4s;
+}
+#back-to-top.show{opacity:1;visibility:visible;}
+#back-to-top:hover{transform:translateY(-4px);}
+
+/* =========================================================
+   13. FOOTER
+========================================================= */
+footer{text-align:center;padding:60px 24px 40px;color:var(--text-inverse);background:var(--bg-inverse);}
+footer .f-names{font-size:26px;margin-bottom:10px;}
+footer .f-thanks{font-size:13px;color:var(--p-sumi);max-width:44ch;margin:0 auto 22px;}
+footer .f-copy{font-size:11px;letter-spacing:.1em;color:var(--p-sumi);}
+footer .f-copy b{color:var(--accent-gold);}
+
+@media(min-width:720px){
+  .profile-grid{grid-template-columns:1fr auto 1fr;align-items:center;}
+  .gallery-grid{grid-template-columns:repeat(3,1fr);}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     PUSAT KONFIGURASI TEMPLATE — ubah semua data di sini
+=============================================================== -->
+<script>
+const CONFIG = {
+  templateId: "WD-2026-014",
+  templateName: "Wabi — Japanese Minimalist Wedding Invitation",
+  brideName: "Sekar Ayuningtyas",
+  groomName: "Danendra Wicaksana",
+  eventDate: "2026-11-14T09:00:00",
+  eventLocation: "Graha Kayu Sanctuary, Jl. Kenanga No. 8, Bandung",
+  googleMapsUrl: "https://maps.google.com/?q=Graha+Kayu+Sanctuary+Bandung",
+  musicUrl: "", // Tempel URL musik latar (mp3) di sini
+  whatsappNumber: "6281234567890",
+  bankName: "Bank Mandiri",
+  accountNumber: "1370099887766",
+  accountHolder: "Sekar Ayuningtyas",
+  qrisImage: "", // Tempel URL gambar QRIS di sini
+  googleSheetUrl: "" // Tempel URL Web App Google Apps Script di sini
+};
+</script>
+
+<!-- LOADING SCREEN -->
+<div id="loading">
+  <div class="seal"><div class="seal-dot"></div></div>
+  <p>Membuka Undangan</p>
+</div>
+
+<!-- COVER SCREEN -->
+<section id="cover">
+  <span class="cover-kanji">結 婚 式 ・ 招 待</span>
+  <p class="cover-eyebrow">The Wedding Of</p>
+  <h1 class="cover-names">Sekar<span class="cover-and">&amp;</span>Danendra</h1>
+  <p class="cover-date">14 November 2026 — Bandung</p>
+  <p class="cover-guest" id="guestLine">Kepada Yth. <b>Bapak/Ibu/Saudara/i</b></p>
+  <button class="cover-open-btn" id="openInvite" aria-label="Buka Undangan">
+    <small>Buka</small><small>Undangan</small>
+  </button>
+</section>
+
+<!-- HERO -->
+<section id="hero" class="section">
+  <div class="container center">
+    <p class="eyebrow hero-eyebrow reveal">Menuju Hari Bahagia</p>
+    <h2 class="hero-names reveal">Sekar &amp; Danendra</h2>
+    <svg class="ink-divider reveal" viewBox="0 0 120 24"><path d="M2 12 C 30 2, 90 22, 118 12"/></svg>
+    <p class="hero-desc reveal">Dengan penuh syukur, kami mengundang Bapak/Ibu/Saudara/i untuk turut hadir merayakan hari pernikahan kami, dalam kesederhanaan dan kehangatan.</p>
+    <div class="countdown reveal" id="countdown">
+      <div class="count-ring"><span class="count-num" id="cd-days">00</span><span class="count-label">Hari</span></div>
+      <div class="count-ring"><span class="count-num" id="cd-hours">00</span><span class="count-label">Jam</span></div>
+      <div class="count-ring"><span class="count-num" id="cd-mins">00</span><span class="count-label">Menit</span></div>
+      <div class="count-ring"><span class="count-num" id="cd-secs">00</span><span class="count-label">Detik</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROFILE -->
+<section class="section washi-texture">
+  <div class="container">
+    <div class="profile-grid">
+      <div class="profile-card reveal">
+        <img class="profile-photo" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600&auto=format&fit=crop" alt="Foto Sekar">
+        <h3 class="profile-name">Sekar Ayuningtyas</h3>
+        <p class="profile-role">Mempelai Wanita</p>
+        <p class="profile-desc">Putri kedua dari Bapak Hariyanto &amp; Ibu Wulandari.</p>
+      </div>
+      <div class="profile-amp reveal">&amp;</div>
+      <div class="profile-card reveal">
+        <img class="profile-photo" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=600&auto=format&fit=crop" alt="Foto Danendra">
+        <h3 class="profile-name">Danendra Wicaksana</h3>
+        <p class="profile-role">Mempelai Pria</p>
+        <p class="profile-desc">Putra pertama dari Bapak Sutrisno &amp; Ibu Ratnasari.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENT DETAILS -->
+<section class="section">
+  <div class="container center">
+    <p class="eyebrow reveal">Detail Acara</p>
+    <h2 class="section-title reveal">Kami Nantikan Kehadiran</h2>
+    <div class="event-card reveal" style="margin-top:40px;text-align:left;">
+      <div class="event-row"><span class="label">Akad Nikah</span><span class="value">Sabtu, 14 November 2026 — 09.00 WIB</span></div>
+      <div class="event-row"><span class="label">Resepsi</span><span class="value">Sabtu, 14 November 2026 — 11.00–14.00 WIB</span></div>
+      <div class="event-row"><span class="label">Lokasi</span><span class="value" id="locationText">Graha Kayu Sanctuary, Bandung</span></div>
+      <div class="center">
+        <a class="btn btn-seal" id="mapsBtn" target="_blank" rel="noopener"><span>Buka Google Maps</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOVE STORY / TIMELINE -->
+<section class="section washi-texture">
+  <div class="container">
+    <p class="eyebrow center reveal">Perjalanan Kami</p>
+    <h2 class="section-title center reveal">Love Story</h2>
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <span class="tl-dot"></span>
+        <p class="tl-year">2019</p>
+        <h3 class="tl-title">Pertemuan Pertama</h3>
+        <p class="tl-text">Berawal dari sebuah acara kampus, langkah kecil yang perlahan membawa kami pada jalan yang sama.</p>
+      </div>
+      <div class="tl-item reveal">
+        <span class="tl-dot"></span>
+        <p class="tl-year">2022</p>
+        <h3 class="tl-title">Merajut Komitmen</h3>
+        <p class="tl-text">Melalui musim yang berbeda, kami belajar saling menopang dan memilih satu sama lain berulang kali.</p>
+      </div>
+      <div class="tl-item reveal">
+        <span class="tl-dot"></span>
+        <p class="tl-year">2026</p>
+        <h3 class="tl-title">Menuju Pernikahan</h3>
+        <p class="tl-text">Dengan restu kedua keluarga, kami memutuskan untuk melangkah bersama, menuju babak baru kehidupan.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="section">
+  <div class="container">
+    <p class="eyebrow center reveal">Galeri</p>
+    <h2 class="section-title center reveal">Momen Kami</h2>
+    <div class="gallery-grid reveal" id="galleryGrid">
+      <img class="g-tall" src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop" alt="Galeri 1">
+      <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=800&auto=format&fit=crop" alt="Galeri 2">
+      <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=800&auto=format&fit=crop" alt="Galeri 3">
+      <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=800&auto=format&fit=crop" alt="Galeri 4">
+      <img class="g-tall" src="https://images.unsplash.com/photo-1606216794074-735e91aa2c92?q=80&w=800&auto=format&fit=crop" alt="Galeri 5">
+      <img src="https://images.unsplash.com/photo-1533283815538-3689fe28b34a?q=80&w=800&auto=format&fit=crop" alt="Galeri 6">
+    </div>
+  </div>
+</section>
+<div id="lightbox"><span class="lb-close">&times;</span><img id="lightboxImg" src="" alt="Preview"></div>
+
+<!-- GUEST BOOK -->
+<section class="section washi-texture">
+  <div class="container">
+    <p class="eyebrow center reveal">Buku Tamu</p>
+    <h2 class="section-title center reveal">Kirim Doa &amp; Ucapan</h2>
+    <form class="rsvp-form reveal" id="rsvpForm">
+      <div>
+        <label for="gName">Nama</label>
+        <input type="text" id="gName" required placeholder="Nama Anda">
+      </div>
+      <div>
+        <label for="gStatus">Konfirmasi Kehadiran</label>
+        <select id="gStatus" required>
+          <option value="Hadir">Hadir</option>
+          <option value="Tidak Hadir">Tidak Hadir</option>
+          <option value="Ragu-ragu">Masih Ragu</option>
+        </select>
+      </div>
+      <div>
+        <label for="gMsg">Ucapan &amp; Doa</label>
+        <textarea id="gMsg" required placeholder="Tuliskan ucapan dan doa terbaik Anda..."></textarea>
+      </div>
+      <button type="submit" class="btn btn-seal rsvp-submit"><span>Kirim Ucapan</span></button>
+    </form>
+    <div class="guest-list" id="guestList"></div>
+  </div>
+</section>
+
+<!-- DIGITAL ENVELOPE -->
+<section class="section">
+  <div class="container">
+    <p class="eyebrow center reveal">Amplop Digital</p>
+    <h2 class="section-title center reveal">Tanda Kasih</h2>
+    <p class="section-sub center reveal" style="margin:0 auto;">Doa restu Bapak/Ibu/Saudara/i adalah karunia terindah. Namun jika berkenan memberi tanda kasih, dapat melalui:</p>
+    <div class="envelope-wrap reveal">
+      <div class="envelope-card">
+        <div>
+          <p class="env-bank" id="bankNameText">Bank Mandiri</p>
+          <p class="env-number" id="accNumberText">1370099887766</p>
+          <p class="env-holder" id="accHolderText">a.n. Sekar Ayuningtyas</p>
+        </div>
+        <button class="copy-btn" id="copyAccBtn">Salin</button>
+      </div>
+      <div class="qris-box" id="qrisBox">
+        <p class="label">Scan QRIS</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="f-names">Sekar &amp; Danendra</p>
+  <p class="f-thanks">Terima kasih atas doa, restu, dan kehadiran Bapak/Ibu/Saudara/i. Kehadiran Anda adalah kebahagiaan bagi kami.</p>
+  <svg class="ink-divider" viewBox="0 0 120 24" style="opacity:.6;"><path d="M2 12 C 30 2, 90 22, 118 12" stroke-dashoffset="0"/></svg>
+  <p class="f-copy">© 2026 Sekar &amp; Danendra — with love, <b>296 STUDIOS</b></p>
+</footer>
+
+<!-- MUSIC TOGGLE -->
+<button id="music-toggle" aria-label="Putar/Jeda Musik">
+  <div class="bars"><span></span><span></span><span></span></div>
+</button>
+<audio id="bgMusic" loop></audio>
+
+<!-- BACK TO TOP -->
+<button id="back-to-top" aria-label="Kembali ke atas">↑</button>
+
+<script>
+/* =========================================================
+   LOADING SCREEN
+========================================================= */
+window.addEventListener("load", () => {
+  const loading = document.getElementById("loading");
+  setTimeout(() => loading.classList.add("hidden"), 900);
+});
+
+/* =========================================================
+   COVER OPEN
+========================================================= */
+const cover = document.getElementById("cover");
+const openBtn = document.getElementById("openInvite");
+const bgMusic = document.getElementById("bgMusic");
+openBtn.addEventListener("click", () => {
+  cover.classList.add("opened");
+  document.body.style.overflow = "auto";
+  if (CONFIG.musicUrl) {
+    bgMusic.src = CONFIG.musicUrl;
+    bgMusic.play().catch(()=>{});
+    document.getElementById("music-toggle").classList.remove("paused");
+  }
+});
+document.body.style.overflow = "hidden";
+
+/* Ambil nama tamu dari parameter URL ?to=Nama */
+const urlParams = new URLSearchParams(window.location.search);
+const guestName = urlParams.get("to");
+if (guestName) {
+  document.getElementById("guestLine").innerHTML = `Kepada Yth. <b>${decodeURIComponent(guestName)}</b>`;
+}
+
+/* =========================================================
+   ISI DATA DARI CONFIG
+========================================================= */
+document.getElementById("mapsBtn").href = CONFIG.googleMapsUrl;
+document.getElementById("locationText").textContent = CONFIG.eventLocation;
+document.getElementById("bankNameText").textContent = CONFIG.bankName;
+document.getElementById("accNumberText").textContent = CONFIG.accountNumber;
+document.getElementById("accHolderText").textContent = "a.n. " + CONFIG.accountHolder;
+if (CONFIG.qrisImage) {
+  document.getElementById("qrisBox").innerHTML =
+    `<img src="${CONFIG.qrisImage}" alt="QRIS"><p class="label">Scan QRIS untuk memberi tanda kasih</p>`;
+}
+
+/* =========================================================
+   COUNTDOWN TIMER
+========================================================= */
+function updateCountdown(){
+  const target = new Date(CONFIG.eventDate).getTime();
+  const now = new Date().getTime();
+  const diff = target - now;
+  if (diff <= 0){
+    document.getElementById("countdown").innerHTML = "<p style='font-family:var(--font-display);font-size:20px;'>Hari bahagia telah tiba 🌸</p>";
+    return;
+  }
+  const d = Math.floor(diff / (1000*60*60*24));
+  const h = Math.floor((diff / (1000*60*60)) % 24);
+  const m = Math.floor((diff / (1000*60)) % 60);
+  const s = Math.floor((diff / 1000) % 60);
+  document.getElementById("cd-days").textContent = String(d).padStart(2,"0");
+  document.getElementById("cd-hours").textContent = String(h).padStart(2,"0");
+  document.getElementById("cd-mins").textContent = String(m).padStart(2,"0");
+  document.getElementById("cd-secs").textContent = String(s).padStart(2,"0");
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+/* =========================================================
+   SCROLL REVEAL ANIMATION
+========================================================= */
+const revealEls = document.querySelectorAll(".reveal");
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting){
+      entry.target.classList.add("in-view");
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.18 });
+revealEls.forEach(el => io.observe(el));
+
+/* =========================================================
+   GALLERY LIGHTBOX
+========================================================= */
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightboxImg");
+document.querySelectorAll("#galleryGrid img").forEach(img => {
+  img.addEventListener("click", () => {
+    lightboxImg.src = img.src;
+    lightbox.classList.add("active");
+  });
+});
+lightbox.addEventListener("click", () => lightbox.classList.remove("active"));
+
+/* =========================================================
+   GUEST BOOK — Local Storage + Google Sheets Ready
+========================================================= */
+const STORAGE_KEY = "wd2026014_guestbook";
+
+function getGuests(){
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch(e){ return []; }
+}
+function saveGuests(list){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+}
+function renderGuests(){
+  const list = getGuests();
+  const wrap = document.getElementById("guestList");
+  if (list.length === 0){
+    wrap.innerHTML = '<p class="guest-empty">Jadilah yang pertama mengirim ucapan &amp; doa.</p>';
+    return;
+  }
+  wrap.innerHTML = list.slice().reverse().map(g => `
+    <div class="guest-item">
+      <span class="g-name">${escapeHtml(g.name)}</span><span class="g-status">${escapeHtml(g.status)}</span>
+      <p class="g-msg">${escapeHtml(g.message)}</p>
+    </div>
+  `).join("");
+}
+function escapeHtml(str){
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// Tempel URL Web App Google Apps Script di sini (lihat CONFIG.googleSheetUrl)
+async function sendToGoogleSheet(data){
+  if (!CONFIG.googleSheetUrl) return; // biarkan kosong sampai URL Apps Script tersedia
+  try{
+    await fetch(CONFIG.googleSheetUrl, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+  }catch(err){
+    console.warn("Gagal mengirim ke Google Sheet:", err);
+  }
+}
+
+document.getElementById("rsvpForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const name = document.getElementById("gName").value.trim();
+  const status = document.getElementById("gStatus").value;
+  const message = document.getElementById("gMsg").value.trim();
+  if (!name || !message) return;
+
+  const entry = { name, status, message, timestamp: new Date().toISOString() };
+  const list = getGuests();
+  list.push(entry);
+  saveGuests(list);
+  renderGuests();
+  await sendToGoogleSheet(entry);
+  e.target.reset();
+});
+renderGuests();
+
+/* =========================================================
+   COPY REKENING
+========================================================= */
+document.getElementById("copyAccBtn").addEventListener("click", () => {
+  navigator.clipboard.writeText(CONFIG.accountNumber).then(() => {
+    const btn = document.getElementById("copyAccBtn");
+    const original = btn.textContent;
+    btn.textContent = "Tersalin!";
+    setTimeout(() => btn.textContent = original, 1800);
+  });
+});
+
+/* =========================================================
+   MUSIC TOGGLE
+========================================================= */
+const musicBtn = document.getElementById("music-toggle");
+musicBtn.classList.add("paused");
+musicBtn.addEventListener("click", () => {
+  if (!CONFIG.musicUrl) return;
+  if (bgMusic.paused){
+    bgMusic.play();
+    musicBtn.classList.remove("paused");
+  } else {
+    bgMusic.pause();
+    musicBtn.classList.add("paused");
+  }
+});
+
+/* =========================================================
+   BACK TO TOP + light parallax on cover
+========================================================= */
+const backToTop = document.getElementById("back-to-top");
+window.addEventListener("scroll", () => {
+  backToTop.classList.toggle("show", window.scrollY > 500);
+});
+backToTop.addEventListener("click", () => window.scrollTo({ top:0, behavior:"smooth" }));
+
+/* WhatsApp share helper (available for future CTA use) */
+function shareToWhatsApp(){
+  const text = encodeURIComponent(`Anda diundang ke pernikahan Sekar & Danendra. Lihat undangan: ${window.location.href}`);
+  window.open(`https://wa.me/${CONFIG.whatsappNumber}?text=${text}`, "_blank");
+}
+</script>
+</body>
+</html>
