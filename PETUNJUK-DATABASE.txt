@@ -1,0 +1,26 @@
+296 UNDANGAN — DATABASE BARU UNTUK SETIAP PESANAN
+================================================
+
+1. Buat Google Spreadsheet kosong.
+2. Buka Ekstensi > Apps Script.
+3. Tempel isi file setup_database_undangan.gs ke Code.gs.
+4. Jalankan fungsi setupDatabaseUndangan() satu kali dan izinkan akses.
+5. Pilih Deploy > New deployment > Web app.
+6. Atur Execute as: Me dan Who has access: Anyone.
+7. Salin URL Web App yang berakhiran /exec.
+8. Buka database-config.js di folder template pesanan.
+9. Ganti MASUKKAN_URL_WEB_APP_APPS_SCRIPT_DI_SINI dengan URL tersebut.
+
+Lakukan langkah ini untuk setiap pesanan baru. Setiap pesanan memakai
+Spreadsheet dan URL Web App sendiri sehingga data pelanggan tidak bercampur.
+
+CATATAN
+-------
+- Jangan mengubah nama database-config.js dan database-connector.js.
+- Kedua file tersebut harus tetap satu folder dengan index.html.
+- Jika satu desain dipakai untuk beberapa pasangan/acara, ubah nilai eventId
+  di bagian akhir index.html agar setiap acara mempunyai EVENT_ID unik.
+- Template tanpa formulir bawaan akan memperoleh tombol "Konfirmasi Kehadiran"
+  otomatis dari integrasi pusat.
+- setup-database.gs sudah tersedia di setiap folder template.
+- Data masuk ke sheet RESPON; rekapnya tersedia di sheet RINGKASAN.

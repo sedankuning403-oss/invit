@@ -485,7 +485,7 @@
 <!-- SCRIPT HANDLERS -->
 <script>
 // API/URL Google Apps Script dari script awal Anda
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyO7GH5voW_Gch5m3JPpVOXf75K-MUHGLwSO2WQ7mEdWN8iokbtNFjfFqV9PGoZKnk_/exec';
+const SCRIPT_URL = ''; // Dinonaktifkan: gunakan 296-undangan-config.js
 
 // 1. URL & PARAMETER TAMU
 const u = new URLSearchParams(window.location.search);
@@ -618,6 +618,7 @@ function getAvatarLetter(name) {
 
 // 9. LOAD DATA DOA / UCAPAN DARI API
 async function loadUcapan() {
+  if (!SCRIPT_URL) return;
   const container = document.getElementById("display-ucapan");
   try {
     const response = await fetch(SCRIPT_URL);
@@ -674,6 +675,13 @@ document.getElementById("form-rsvp").addEventListener("submit", (e) => {
   fd.append('nama', document.getElementById("rsvp-nama").value);
   fd.append('hadir', document.getElementById("rsvp-hadir").value);
   fd.append('ucapan', document.getElementById("rsvp-ucapan").value);
+
+  if (!SCRIPT_URL) {
+    showToast("Konfirmasi sedang dikirim ke database pusat.");
+    document.getElementById("rsvp-ucapan").value = "";
+    btn.disabled = false; btn.innerHTML = originalText;
+    return;
+  }
 
   fetch(SCRIPT_URL, { method: 'POST', body: fd })
   .then(() => {
@@ -740,5 +748,10 @@ const observer = new IntersectionObserver(entries => {
 
 document.querySelectorAll(".fade").forEach(el => observer.observe(el));
 </script>
+
+<!-- 296-DATABASE-INTEGRATION -->
+<script src="database-config.js"></script>
+<script>window.UNDANGAN_296_PAGE={eventId:"gold-and-emerald",template:"gold-and-emerald"};</script>
+<script src="database-connector.js"></script>
 </body>
 </html>
