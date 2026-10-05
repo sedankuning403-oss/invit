@@ -485,7 +485,7 @@
 <!-- SCRIPT HANDLERS -->
 <script>
 // API/URL Google Apps Script dari script awal Anda
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxPZ63VyGl4cJ7jctvn3DH33Eh0RFQdS7Z80zgZgI842HIdWVaDRMBT7n2n2q1l2_tq/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxddycJ33qd_0zLJ0pjEjSt33552_1e6JfaVXOFndSGl8sFeJbq5Xc4VvllcHzWKYHzjQ/exec';
 
 // 1. URL & PARAMETER TAMU
 const u = new URLSearchParams(window.location.search);
@@ -616,11 +616,18 @@ function getAvatarLetter(name) {
   return name ? name.trim().charAt(0).toUpperCase() : '?';
 }
 
+// Escape HTML agar input tamu tidak merusak tampilan / disisipi script
+function escapeHtml(str) {
+  return String(str == null ? '' : str)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 // 9. LOAD DATA DOA / UCAPAN DARI API
 async function loadUcapan() {
   const container = document.getElementById("display-ucapan");
   try {
-    const response = await fetch(SCRIPT_URL);
+    const response = await fetch(SCRIPT_URL + '?t=' + Date.now());
     const result = await response.json();
     if (result.status === "success" && result.data.length > 0) {
       container.innerHTML = "";
@@ -629,7 +636,7 @@ async function loadUcapan() {
         const div = document.createElement("div");
         div.className = "bg-white/70 p-4 rounded-2xl border border-[#b3923b]/20 shadow-sm flex gap-3.5 items-start transition hover:bg-white/95 hover:shadow";
         
-        const letter = getAvatarLetter(item.nama);
+        const letter = escapeHtml(getAvatarLetter(item.nama));
         const presenceClass = item.kehadiran === 'Hadir' 
           ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' 
           : 'bg-rose-50 text-rose-700 border border-rose-100';
@@ -644,12 +651,12 @@ async function loadUcapan() {
           </div>
           <div class="flex-grow space-y-1">
             <div class="flex justify-between items-start gap-2">
-              <span class="font-sans-lux font-bold text-stone-800 text-xs">${item.nama}</span>
+              <span class="font-sans-lux font-bold text-stone-800 text-xs">${escapeHtml(item.nama)}</span>
               <span class="text-[9px] px-2 py-0.5 rounded-full ${presenceClass} flex items-center font-bold">
-                ${presenceIcon} ${item.kehadiran}
+                ${presenceIcon} ${escapeHtml(item.kehadiran)}
               </span>
             </div>
-            <p class="italic text-stone-600 text-xs leading-relaxed mt-1">"${item.ucapan || '-'}"</p>
+            <p class="italic text-stone-600 text-xs leading-relaxed mt-1">"${escapeHtml(item.ucapan || '-')}"</p>
           </div>
         `;
         container.appendChild(div);
@@ -665,18 +672,24 @@ async function loadUcapan() {
 // 10. RSVP FORM SUBMISSION
 document.getElementById("form-rsvp").addEventListener("submit", (e) => {
   e.preventDefault();
-  const btn = e.target.querySelector('button');
+  // FIX: ambil tombol SUBMIT (sebelumnya mengambil tombol "Hadir" karena button pertama di form)
+  const btn = e.target.querySelector('button[type="submit"]');
+  if (btn.disabled) return;
   const originalText = btn.innerHTML;
   btn.disabled = true; 
   btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin mr-1"></i> Mengirim...`;
   
-  const fd = new FormData();
-  fd.append('nama', document.getElementById("rsvp-nama").value);
-  fd.append('hadir', document.getElementById("rsvp-hadir").value);
-  fd.append('ucapan', document.getElementById("rsvp-ucapan").value);
+  // FIX: kirim sebagai x-www-form-urlencoded agar pasti terbaca di e.parameter Apps Script
+  const body = new URLSearchParams();
+  body.append('nama', document.getElementById("rsvp-nama").value.trim());
+  body.append('hadir', document.getElementById("rsvp-hadir").value);
+  body.append('ucapan', document.getElementById("rsvp-ucapan").value.trim());
 
-  fetch(SCRIPT_URL, { method: 'POST', body: fd })
-  .then(() => {
+  fetch(SCRIPT_URL, { method: 'POST', body: body })
+  .then(res => res.json())
+  .then(result => {
+    // FIX: cek balasan server, jangan anggap sukses hanya karena fetch tidak error
+    if (result.status !== "success") throw new Error(result.message || "Gagal menyimpan");
     showToast("Konfirmasi kehadiran Anda telah tersimpan!");
     document.getElementById("rsvp-ucapan").value = "";
     loadUcapan();
