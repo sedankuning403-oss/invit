@@ -59,14 +59,17 @@
     }
 
     /* SCROLL ANIMATION EFFECTS */
+    /* Fade in  (scroll ke bawah): section langsung muncul, tulisan menyusul.
+       Fade out (scroll ke atas) : section menunggu 0.5 detik supaya tulisan hilang lebih dulu. */
     .fade { 
       opacity: 0; 
       transform: translateY(35px); 
-      transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1); 
+      transition: opacity 0.9s ease-in 0.5s, transform 0.9s ease-in 0.5s; 
     }
     .fade.show { 
       opacity: 1; 
       transform: translateY(0); 
+      transition: opacity 1.2s ease-out 0s, transform 0.8s ease-out 0s; 
     }
 
     /* CHIC MUSIC FLOATING BAR & AUDIO CONTROLLER */
@@ -137,7 +140,7 @@
     .fade-in-section {
     opacity: 0;
     transform: translateY(40px);
-    transition: opacity 1.2s ease-out, transform 0.8s ease-out;
+    transition: opacity 0.9s ease-in 0.5s, transform 0.9s ease-in 0.5s;
     will-change: opacity, transform;
     }
 
@@ -145,6 +148,26 @@
     .fade-in-section.is-visible {
     opacity: 1;
     transform: translateY(0);
+    transition: opacity 1.2s ease-out 0s, transform 0.8s ease-out 0s;
+    }
+
+    /* FADE IN / FADE OUT UNTUK SEMUA TULISAN */
+    /* Hilang (fade out): langsung tanpa jeda, jadi selalu lebih dulu dari section */
+    .fade-text {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.5s ease-in, transform 0.5s ease-in;
+    }
+    /* Muncul (fade in): jeda per-elemen diatur lewat JS (transition-delay) agar berurutan */
+    .fade-text.text-show {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.9s ease-out, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    /* Teks di dalam tombol: hanya fade (tanpa bergeser) supaya layout tombol tidak berubah */
+    .fade-text.fade-text-flat,
+    .fade-text.fade-text-flat.text-show {
+      transform: none;
     }
 
   </style>
@@ -721,12 +744,12 @@ document.getElementById("form-rsvp").addEventListener("submit", (e) => {
 // 11. COPY REKENING (Sesuai panduan iframe: document.execCommand)
 function copyText() {
   const tempInput = document.createElement("input");
-  tempInput.value = "1370018293041";
+  tempInput.value = "915834187";
   document.body.appendChild(tempInput);
   tempInput.select();
   try {
     document.execCommand("copy");
-    showToast("Nomor rekening Mandiri berhasil disalin!");
+    showToast("Nomor rekening BNI berhasil disalin!");
   } catch (err) {
     showToast("Gagal menyalin rekening.");
   }
@@ -760,20 +783,112 @@ function createDust() {
 createDust();
 
 
-// 13. INTERSECTION OBSERVER UNTUK ANIMASI FADE-IN SAAT SCROLL
-const scrollObserver = new IntersectionObserver((entries, observer) => {
-  entries.forEach(e => { 
-    if (e.isIntersecting) {
-      e.target.classList.add("show");
-      // Opsional: Hentikan observasi agar animasi hanya jalan 1 kali saat di-scroll ke bawah
-      observer.unobserve(e.target); 
-    }
-  });
-}, { threshold: 0.15 }); // Meningkatkan kecerahan deteksi menjadi 15% bagian masuk layar
+// 13. FADE IN / FADE OUT SAAT SCROLL (SECTION + SEMUA TULISAN)
+// Scroll ke bawah : section muncul (fade in), lalu tulisan-tulisannya menyusul (fade in).
+// Scroll ke atas  : tulisan hilang lebih dulu (fade out), baru section/kotaknya ikut hilang.
+(function () {
+  const mainContent = document.getElementById("main-content");
+  const registered = new WeakSet();
 
-// Mengamati semua elemen yang memiliki class "fade"
-document.querySelectorAll(".fade").forEach(el => scrollObserver.observe(el));
+  // Tag yang tidak ikut dianimasikan sebagai teks
+  const SKIP_TAGS = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "IFRAME", "INPUT", "TEXTAREA", "SELECT", "OPTION"]);
 
+  // Apakah elemen yang tidak terlihat itu berada di BAWAH layar (bukan di atas)?
+  // Jika di bawah -> disembunyikan lagi (fade out). Jika di atas (sudah terlewati) -> tetap tampil.
+  function isBelow(el, rect) {
+    const box = el.closest("#display-ucapan");
+    const ref = box ? box.getBoundingClientRect() : { top: 0, height: window.innerHeight };
+    return rect.top > ref.top + ref.height / 2;
+  }
+
+  // --- Observer SECTION (kotak) ---
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const r = entry.boundingClientRect;
+      if (!r.width && !r.height) return; // masih display:none (undangan belum dibuka)
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+      } else if (isBelow(entry.target, r)) {
+        entry.target.classList.remove("show");
+      }
+    });
+  }, { threshold: 0, rootMargin: "0px 0px -8% 0px" });
+
+  // --- Observer TULISAN ---
+  const textObserver = new IntersectionObserver((entries) => {
+    let k = 0; // urutan muncul dalam satu gelombang, untuk efek berurutan
+    entries.forEach(entry => {
+      const el = entry.target;
+      const r = entry.boundingClientRect;
+      if (!r.width && !r.height) return;
+      if (entry.isIntersecting) {
+        if (!el.classList.contains("text-show")) {
+          // jeda dasar 0.25 detik agar tulisan muncul SETELAH section
+          el.style.transitionDelay = Math.min(0.25 + k * 0.07, 0.8) + "s";
+          k++;
+          el.classList.add("text-show");
+        }
+      } else if (isBelow(el, r)) {
+        el.style.transitionDelay = "0s"; // hilang langsung (lebih dulu dari section)
+        el.classList.remove("text-show");
+      } else {
+        el.style.transitionDelay = "0s";
+        el.classList.add("text-show");
+      }
+    });
+  }, { threshold: 0, rootMargin: "0px 0px -14% 0px" });
+
+  function hasOwnText(el) {
+    return Array.from(el.childNodes).some(n => n.nodeType === 3 && n.textContent.trim() !== "");
+  }
+
+  function registerText(el) {
+    if (registered.has(el)) return;
+    registered.add(el);
+    textObserver.observe(el);
+  }
+
+  // Tombol: bungkus teksnya dengan <span> agar tombolnya sendiri (hover/klik) tidak terganggu
+  function wrapButtonText(btn) {
+    Array.from(btn.childNodes).forEach(node => {
+      if (node.nodeType === 3 && node.textContent.trim() !== "") {
+        const span = document.createElement("span");
+        span.className = "fade-text fade-text-flat";
+        btn.replaceChild(span, node);
+        span.appendChild(node);
+        registerText(span);
+      }
+    });
+  }
+
+  // Cari semua elemen yang berisi tulisan langsung, lalu daftarkan
+  function scanText(root) {
+    const list = [root].concat(Array.from(root.querySelectorAll("*")));
+    list.forEach(el => {
+      if (registered.has(el) || el instanceof SVGElement) return;
+      if (SKIP_TAGS.has(el.tagName)) return;
+      if (el.tagName === "BUTTON") { wrapButtonText(el); return; }
+      if (el.classList.contains("fade-text")) { registerText(el); return; }
+      // jika induknya sudah dianimasikan sebagai teks, cukup induknya saja
+      if (el.parentElement && el.parentElement.closest(".fade-text")) return;
+      if (hasOwnText(el)) {
+        el.classList.add("fade-text");
+        registerText(el);
+      }
+    });
+  }
+
+  // Mulai amati semua section dan semua tulisan
+  document.querySelectorAll(".fade").forEach(el => sectionObserver.observe(el));
+  scanText(mainContent);
+
+  // Tulisan yang dibuat belakangan (mis. daftar ucapan dari database) otomatis ikut dianimasikan
+  new MutationObserver((mutations) => {
+    mutations.forEach(m => {
+      m.addedNodes.forEach(n => { if (n.nodeType === 1) scanText(n); });
+    });
+  }).observe(mainContent, { childList: true, subtree: true });
+})();
 
 </script>
 </body>
